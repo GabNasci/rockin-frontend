@@ -1,7 +1,8 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { FeedIcon, HomeIcon, SearchIcon, UserIcon } from "../icons";
+import { NavButton } from "./nav_button";
 
 const navItems = [
   { href: "/home", label: "Home", icon: HomeIcon },
@@ -12,28 +13,18 @@ const navItems = [
 
 export default function MobileNav() {
   const pathname = usePathname();
-  const router = useRouter();
 
   return (
     <nav className="md:hidden fixed bottom-0 left-0 w-full bg-white shadow-md flex justify-around">
-      {navItems.map(({ href, label, icon: Icon }) => {
-        const isActive = pathname === href;
-
-        return (
-          <button
-            key={href}
-            className={`flex flex-col items-center cursor-pointer hover:bg-background  gap-1 w-full py-4 transition ${
-              isActive
-                ? "text-primary border-b-4 border-primary"
-                : "text-muted-foreground"
-            }`}
-            onClick={() => router.push(href)}
-          >
-            <Icon className="h-6 w-6" />
-            <span className="text-xs">{label}</span>
-          </button>
-        );
-      })}
+      {navItems.map(({ href, label, icon }) => (
+        <NavButton
+          key={href}
+          href={href}
+          label={label}
+          icon={icon}
+          isActive={pathname === href}
+        />
+      ))}
     </nav>
   );
 }
