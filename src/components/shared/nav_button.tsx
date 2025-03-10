@@ -20,7 +20,7 @@ export function NavButton({
 
   return (
     <button
-      className={`flex flex-col items-center cursor-pointer hover:bg-background gap-1 w-full py-4 transition ${
+      className={`flex flex-col items-center cursor-pointer hover:bg-background gap-1 w-full py-4 md:py-2 transition ${
         isActive
           ? "text-primary border-b-4 border-primary"
           : "text-muted-foreground"

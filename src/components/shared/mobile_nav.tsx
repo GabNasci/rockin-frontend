@@ -1,22 +1,25 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { FeedIcon, HomeIcon, SearchIcon, UserIcon } from "../icons";
 import { NavButton } from "./nav_button";
-
-const navItems = [
-  { href: "/home", label: "Home", icon: HomeIcon },
-  { href: "/feed", label: "Feed", icon: FeedIcon },
-  { href: "/search", label: "Buscar", icon: SearchIcon },
-  { href: "/profile", label: "Perfil", icon: UserIcon },
-];
+import { useMemo } from "react";
+import { navItems } from "@/lib/constants";
 
 export default function MobileNav() {
   const pathname = usePathname();
 
+  const items = useMemo(() => {
+    return navItems.map(({ href, label, icon }) => ({
+      href,
+      label,
+      icon,
+      isActive: pathname === href,
+    }));
+  }, [pathname]);
+
   return (
     <nav className="md:hidden fixed bottom-0 left-0 w-full bg-white shadow-md flex justify-around">
-      {navItems.map(({ href, label, icon }) => (
+      {items.map(({ href, label, icon }) => (
         <NavButton
           key={href}
           href={href}

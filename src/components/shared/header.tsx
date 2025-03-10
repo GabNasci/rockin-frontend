@@ -3,18 +3,21 @@
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { NavButton } from "./nav_button";
+import { navItems } from "@/lib/constants";
+import { useMemo, memo } from "react";
+import { UserIcon } from "../icons";
 
-import { FeedIcon, HomeIcon, SearchIcon, UserIcon } from "../icons";
-
-const navItems = [
-  { href: "/home", label: "Home", icon: HomeIcon },
-  { href: "/feed", label: "Feed", icon: FeedIcon },
-  { href: "/search", label: "Buscar", icon: SearchIcon },
-  { href: "/profile", label: "Perfil", icon: UserIcon },
-];
-
-export default function Header() {
+const Header = memo(function Header() {
   const pathname = usePathname();
+
+  const items = useMemo(() => {
+    return navItems.map(({ href, label, icon }) => ({
+      href,
+      label,
+      icon,
+      isActive: pathname === href,
+    }));
+  }, [pathname]);
 
   return (
     <header className="bg-white flex md:justify-between justify-center px-16 fixed top-0 left-0 right-0 z-50">
@@ -27,7 +30,7 @@ export default function Header() {
         />
       </div>
       <div className="hidden md:flex items-center justify-center gap-8 flex-1/3">
-        {navItems.slice(0, 3).map(({ href, label, icon }) => (
+        {items.slice(0, 3).map(({ href, label, icon }) => (
           <NavButton
             key={href}
             href={href}
@@ -49,4 +52,6 @@ export default function Header() {
       </div>
     </header>
   );
-}
+});
+
+export default Header;
