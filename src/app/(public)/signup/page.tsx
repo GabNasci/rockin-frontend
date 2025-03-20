@@ -1,12 +1,16 @@
-import { Button } from "@/components/ui/button";
-import MultiStepCampaign from "./_components/multi-step-signup-form";
+import CreateAccountCard from "./_components/form/create-account-card";
+// import CredentialsStep from "./_components/form/steps/credentials-step";
+import ProfileInfoStep from "./_components/form/steps/profile-info-step";
+import FormLogo from "./_components/formLogo";
 
 export default function SignUp() {
   return (
-    <div className="flex min-h-screen flex-col items-center p-24">
-      <h1 className="">Sign Up Page</h1>
-      <Button>Click me</Button>
-      <MultiStepCampaign />
+    <div className="flex min-h-screen flex-col items-center">
+      <FormLogo />
+      <CreateAccountCard>
+        {/* <CredentialsStep /> */}
+        <ProfileInfoStep />
+      </CreateAccountCard>
     </div>
   );
 }
