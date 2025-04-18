@@ -26,3 +26,14 @@ export const profileInfoSchema = z.object({
 });
 
 export type ProfileInfoSchema = z.infer<typeof profileInfoSchema>;
+
+export const genresAndSpecialitiesSchema = z.object({
+  genres: z.array(z.string()).min(1, "Selecione pelo menos um gênero"),
+  specialities: z
+    .array(z.string())
+    .min(1, "Selecione pelo menos uma especialidade"),
+});
+
+export type GenresAndSpecialitiesSchema = z.infer<
+  typeof genresAndSpecialitiesSchema
+>;
