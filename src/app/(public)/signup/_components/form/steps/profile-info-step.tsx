@@ -19,13 +19,13 @@ import {
 } from "@/components/ui/select";
 import {
   profileInfoSchema,
-  ProfileInfoSchema,
+  ProfileInfoData,
 } from "@/schemas/CreateProfileSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 export default function ProfileInfoStep() {
-  const form = useForm<ProfileInfoSchema>({
+  const form = useForm<ProfileInfoData>({
     resolver: zodResolver(profileInfoSchema),
     defaultValues: {
       name: "",
@@ -34,7 +34,7 @@ export default function ProfileInfoStep() {
     },
   });
 
-  const onSubmit = (values: ProfileInfoSchema) => {
+  const onSubmit = (values: ProfileInfoData) => {
     console.log(values);
   };
   return (

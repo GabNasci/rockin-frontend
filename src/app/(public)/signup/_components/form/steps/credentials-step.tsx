@@ -12,13 +12,13 @@ import {
 import { Input } from "@/components/ui/input";
 import {
   credentialsSchema,
-  CredentialsSchema,
+  CredentialsData,
 } from "@/schemas/CreateProfileSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 export default function CredentialsStep() {
-  const form = useForm<CredentialsSchema>({
+  const form = useForm<CredentialsData>({
     resolver: zodResolver(credentialsSchema),
     defaultValues: {
       email: "",
@@ -27,7 +27,7 @@ export default function CredentialsStep() {
     },
   });
 
-  const onSubmit = (values: CredentialsSchema) => {
+  const onSubmit = (values: CredentialsData) => {
     console.log(values);
   };
   return (

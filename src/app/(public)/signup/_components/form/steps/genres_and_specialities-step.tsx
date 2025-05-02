@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/form";
 import {
   genresAndSpecialitiesSchema,
-  GenresAndSpecialitiesSchema,
+  GenresAndSpecialitiesData,
 } from "@/schemas/CreateProfileSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -20,7 +20,7 @@ import MultipleSelector, { Option } from "@/components/shared/multi-select";
 const OPTIONS: Option[] = [{ label: "Baterista", value: "1" }];
 
 export default function GenresAndSpecialitiesStep() {
-  const form = useForm<GenresAndSpecialitiesSchema>({
+  const form = useForm<GenresAndSpecialitiesData>({
     resolver: zodResolver(genresAndSpecialitiesSchema),
     defaultValues: {
       genres: [],
@@ -28,7 +28,7 @@ export default function GenresAndSpecialitiesStep() {
     },
   });
 
-  const onSubmit = (values: GenresAndSpecialitiesSchema) => {
+  const onSubmit = (values: GenresAndSpecialitiesData) => {
     console.log(values);
   };
   return (
