@@ -1,3 +1,4 @@
+import { HANDLE_REGEX } from "@/lib/constants";
 import { z } from "zod";
 
 export const credentialsSchema = z
@@ -21,7 +22,8 @@ export const profileInfoSchema = z.object({
   name: z.string().min(3, { message: "Nome deve ter no mínimo 3 caracteres" }),
   handle: z
     .string()
-    .min(3, { message: "Nome de usuário deve ter no mínimo 3 caracteres" }),
+    .min(3, { message: "Nome de usuário deve ter no mínimo 3 caracteres" })
+    .regex(HANDLE_REGEX, { message: "Nome de usuário inválido" }),
   profileType: z.string().min(1, "Selecione um tipo de perfil"),
 });
 
@@ -37,6 +39,16 @@ export const genresAndSpecialitiesSchema = z.object({
 export type GenresAndSpecialitiesData = z.infer<
   typeof genresAndSpecialitiesSchema
 >;
+
+export const locationSchema = z.object({
+  latitude: z.string().min(1, "Selecione uma latitude"),
+  longitude: z.string().min(1, "Selecione uma longitude"),
+  city: z.string().min(1, "Selecione uma cidade"),
+  state: z.string().min(1, "Selecione um estado").max(2, "Selecione um estado"),
+  country: z.string().min(1, "Selecione um país"),
+});
+
+export type LocationData = z.infer<typeof locationSchema>;
 
 export const profileSchema = z
   .object({
@@ -58,9 +70,19 @@ export const profileSchema = z
     specialities: z
       .array(z.string())
       .min(1, "Selecione pelo menos uma especialidade"),
+    location: z.object({
+      latitude: z.string().min(1, "Selecione uma latitude"),
+      longitude: z.string().min(1, "Selecione uma longitude"),
+      city: z.string().min(1, "Selecione uma cidade"),
+      state: z
+        .string()
+        .min(1, "Selecione um estado")
+        .max(2, "Selecione um estado"),
+      country: z.string().min(1, "Selecione um país"),
+    }),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
+    message: "As senhas não conferem",
     path: ["confirmPassword"],
   });
 

@@ -10,14 +10,17 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useMultiStepForm } from "@/lib/contexts/multi-step-form.context";
 import {
-  credentialsSchema,
   CredentialsData,
+  credentialsSchema,
 } from "@/schemas/CreateProfileSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 export default function CredentialsStep() {
+  const { nextStep, data, updateData } = useMultiStepForm<CredentialsData>();
+
   const form = useForm<CredentialsData>({
     resolver: zodResolver(credentialsSchema),
     defaultValues: {
@@ -27,8 +30,13 @@ export default function CredentialsStep() {
     },
   });
 
+  const { control, handleSubmit } = form;
+
   const onSubmit = (values: CredentialsData) => {
+    updateData(values);
+    console.log(data);
     console.log(values);
+    nextStep();
   };
   return (
     <div>
@@ -37,9 +45,13 @@ export default function CredentialsStep() {
       </CardDescription>
       <div className="pt-4">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form
+            onSubmit={handleSubmit(onSubmit, (e) => console.log(e))}
+            className="space-y-8"
+            onError={(e) => console.log(e)}
+          >
             <FormField
-              control={form.control}
+              control={control}
               name="email"
               render={({ field }) => (
                 <FormItem>
@@ -52,32 +64,40 @@ export default function CredentialsStep() {
               )}
             />
             <FormField
-              control={form.control}
+              control={control}
               name="password"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Senha:</FormLabel>
                   <FormControl>
-                    <Input placeholder="Digite uma senha" {...field} />
+                    <Input
+                      placeholder="Digite uma senha"
+                      type="password"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <FormField
-              control={form.control}
+              control={control}
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Confirmar senha:</FormLabel>
                   <FormControl>
-                    <Input placeholder="Confirme sua senha" {...field} />
+                    <Input
+                      placeholder="Confirme sua senha"
+                      type="password"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button className="w-full" type="submit">
+            <Button className="w-full cursor-pointer" type="submit">
               Avançar
             </Button>
           </form>

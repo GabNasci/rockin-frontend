@@ -10,16 +10,27 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import {
-  genresAndSpecialitiesSchema,
   GenresAndSpecialitiesData,
+  genresAndSpecialitiesSchema,
+  ProfileData,
 } from "@/schemas/CreateProfileSchema";
+import MultipleSelector from "@/components/shared/multi-select";
+import { useMultiStepForm } from "@/lib/contexts/multi-step-form.context";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import MultipleSelector, { Option } from "@/components/shared/multi-select";
-
-const OPTIONS: Option[] = [{ label: "Baterista", value: "1" }];
+import { useSpecialitiesByProfileType } from "@/models/specialities/useSpecialities";
+import { useGenres } from "@/models/genres/useSpecialities";
+import { Spinner } from "@/components/ui/spinner";
+import { mapToOptions } from "@/lib/utils";
 
 export default function GenresAndSpecialitiesStep() {
+  const { data, updateData, nextStep } = useMultiStepForm<ProfileData>();
+  const { data: specialitiesData } = useSpecialitiesByProfileType(
+    Number(data.profileType),
+  );
+  console.log(specialitiesData);
+  const { data: genresData } = useGenres();
+
   const form = useForm<GenresAndSpecialitiesData>({
     resolver: zodResolver(genresAndSpecialitiesSchema),
     defaultValues: {
@@ -28,9 +39,29 @@ export default function GenresAndSpecialitiesStep() {
     },
   });
 
+  const { handleSubmit, control } = form;
+
+  if (!specialitiesData || !genresData)
+    return <Spinner size={"medium"} className="text-primary" />;
+
+  const genresOptions = mapToOptions(
+    genresData,
+    (g) => g.name,
+    (g) => g.id,
+  );
+
+  const specialitiesOptions = mapToOptions(
+    specialitiesData,
+    (s) => s.name,
+    (s) => s.id,
+  );
+
   const onSubmit = (values: GenresAndSpecialitiesData) => {
+    updateData(values);
     console.log(values);
+    nextStep();
   };
+
   return (
     <div>
       <CardDescription className="flex justify-center">
@@ -38,12 +69,12 @@ export default function GenresAndSpecialitiesStep() {
       </CardDescription>
       <div className="pt-4">
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
             <FormField
-              control={form.control}
+              control={control}
               name="genres"
               render={({ field }) => {
-                const selectedOptions = OPTIONS.filter((opt) =>
+                const selectedOptions = genresOptions.filter((opt) =>
                   field.value?.includes(opt.value),
                 );
 
@@ -57,7 +88,7 @@ export default function GenresAndSpecialitiesStep() {
                           const newIds = newOptions.map((opt) => opt.value);
                           field.onChange(newIds);
                         }}
-                        defaultOptions={OPTIONS}
+                        defaultOptions={genresOptions}
                         placeholder="Selecione os gêneros..."
                         emptyIndicator={
                           <p className="text-center text-sm leading-1 text-muted-foreground">
@@ -72,10 +103,10 @@ export default function GenresAndSpecialitiesStep() {
               }}
             />
             <FormField
-              control={form.control}
+              control={control}
               name="specialities"
               render={({ field }) => {
-                const selectedOptions = OPTIONS.filter((opt) =>
+                const selectedOptions = specialitiesOptions.filter((opt) =>
                   field.value?.includes(opt.value),
                 );
 
@@ -89,7 +120,7 @@ export default function GenresAndSpecialitiesStep() {
                           const newIds = newOptions.map((opt) => opt.value);
                           field.onChange(newIds);
                         }}
-                        defaultOptions={OPTIONS}
+                        defaultOptions={specialitiesOptions}
                         placeholder="Selecione as especialidades..."
                         emptyIndicator={
                           <p className="text-center text-sm leading-1 text-muted-foreground">
@@ -103,7 +134,7 @@ export default function GenresAndSpecialitiesStep() {
                 );
               }}
             />
-            <Button className="w-full" type="submit">
+            <Button className="w-full cursor-pointer" type="submit">
               Avançar
             </Button>
           </form>

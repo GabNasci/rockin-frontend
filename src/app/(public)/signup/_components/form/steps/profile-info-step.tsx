@@ -17,6 +17,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Spinner } from "@/components/ui/spinner";
+import { useMultiStepForm } from "@/lib/contexts/multi-step-form.context";
+import { useProfileTypes } from "@/models/profileTypes/useProfileTypes";
 import {
   profileInfoSchema,
   ProfileInfoData,
@@ -25,6 +28,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 export default function ProfileInfoStep() {
+  const { nextStep, updateData } = useMultiStepForm<ProfileInfoData>();
+  const { data: profileTypesData } = useProfileTypes();
+
   const form = useForm<ProfileInfoData>({
     resolver: zodResolver(profileInfoSchema),
     defaultValues: {
@@ -35,8 +41,12 @@ export default function ProfileInfoStep() {
   });
 
   const onSubmit = (values: ProfileInfoData) => {
-    console.log(values);
+    updateData(values);
+    nextStep();
   };
+  if (!profileTypesData)
+    return <Spinner size={"medium"} className="text-primary" />;
+
   return (
     <div>
       <CardDescription className="flex justify-center">
@@ -87,16 +97,22 @@ export default function ProfileInfoStep() {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="1">Músico</SelectItem>
-                      <SelectItem value="2">Estabelescimento</SelectItem>
+                      {profileTypesData.map((profileType) => (
+                        <SelectItem
+                          key={profileType.id}
+                          value={String(profileType.id)}
+                        >
+                          {profileType.name}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button className="w-full" type="submit">
-              Criar Perfil
+            <Button className="w-full cursor-pointer" type="submit">
+              Avançar
             </Button>
           </form>
         </Form>
