@@ -25,13 +25,15 @@ export default function LocationStep() {
 
   const form = useForm<LocationData>({
     resolver: zodResolver(locationSchema),
-    defaultValues: {
-      city: "",
-      state: "",
-      country: "",
-      latitude: "",
-      longitude: "",
-    },
+    defaultValues: data.location
+      ? { ...data.location }
+      : {
+          city: "",
+          state: "",
+          country: "",
+          latitude: "",
+          longitude: "",
+        },
   });
 
   const { handleSubmit, control } = form;
@@ -93,7 +95,7 @@ export default function LocationStep() {
             />
 
             <Button className="w-full cursor-pointer" type="submit">
-              Avançar
+              Criar Conta
             </Button>
           </form>
         </Form>

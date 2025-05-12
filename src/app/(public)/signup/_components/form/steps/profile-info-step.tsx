@@ -28,16 +28,18 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 export default function ProfileInfoStep() {
-  const { nextStep, updateData } = useMultiStepForm<ProfileInfoData>();
+  const { nextStep, updateData, data } = useMultiStepForm<ProfileInfoData>();
   const { data: profileTypesData } = useProfileTypes();
 
   const form = useForm<ProfileInfoData>({
     resolver: zodResolver(profileInfoSchema),
-    defaultValues: {
-      name: "",
-      handle: "",
-      profileType: "",
-    },
+    defaultValues: data
+      ? { ...data }
+      : {
+          name: "",
+          handle: "",
+          profileType: "",
+        },
   });
 
   const onSubmit = (values: ProfileInfoData) => {

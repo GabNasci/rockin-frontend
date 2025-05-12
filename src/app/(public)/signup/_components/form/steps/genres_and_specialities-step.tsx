@@ -33,10 +33,12 @@ export default function GenresAndSpecialitiesStep() {
 
   const form = useForm<GenresAndSpecialitiesData>({
     resolver: zodResolver(genresAndSpecialitiesSchema),
-    defaultValues: {
-      genres: [],
-      specialities: [],
-    },
+    defaultValues: data
+      ? { ...data }
+      : {
+          genres: [],
+          specialities: [],
+        },
   });
 
   const { handleSubmit, control } = form;

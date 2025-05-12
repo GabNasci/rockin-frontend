@@ -23,11 +23,13 @@ export default function CredentialsStep() {
 
   const form = useForm<CredentialsData>({
     resolver: zodResolver(credentialsSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-      confirmPassword: "",
-    },
+    defaultValues: data
+      ? { ...data }
+      : {
+          email: "",
+          password: "",
+          confirmPassword: "",
+        },
   });
 
   const { control, handleSubmit } = form;
