@@ -44,7 +44,7 @@ export const locationSchema = z.object({
   latitude: z.string().min(1, "Selecione uma latitude"),
   longitude: z.string().min(1, "Selecione uma longitude"),
   city: z.string().min(1, "Selecione uma cidade"),
-  state: z.string().min(1, "Selecione um estado").max(2, "Selecione um estado"),
+  state: z.string().min(1, "Selecione um estado"),
   country: z.string().min(1, "Selecione um país"),
 });
 

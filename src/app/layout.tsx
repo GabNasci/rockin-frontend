@@ -4,6 +4,7 @@ import Header from "@/components/shared/header";
 import MobileNav from "@/components/shared/mobile_nav";
 import { QueryProvider } from "@/lib/react-query/QueryProvider";
 import { Toaster } from "sonner";
+import Script from "next/script";
 
 const montserrat = Montserrat({ variable: "--font-sans", subsets: ["latin"] });
 
@@ -23,6 +24,10 @@ export default function RootLayout({
           {children}
           <MobileNav />
           <Toaster position="top-center" />
+          <Script
+            src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}
+            strategy="beforeInteractive"
+          />
         </QueryProvider>
       </body>
     </html>
