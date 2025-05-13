@@ -10,6 +10,10 @@ import { UserIcon } from "../icons";
 const Header = memo(function Header() {
   const pathname = usePathname();
 
+  const showHeader = useMemo(() => {
+    return pathname !== "/login" && pathname !== "/signup";
+  }, [pathname]);
+
   const items = useMemo(() => {
     return navItems.map(({ href, label, icon }) => ({
       href,
@@ -18,6 +22,8 @@ const Header = memo(function Header() {
       isActive: pathname === href,
     }));
   }, [pathname]);
+
+  if (!showHeader) return null;
 
   return (
     <header className="bg-white flex md:justify-between justify-center px-16 fixed top-0 left-0 right-0 z-50">

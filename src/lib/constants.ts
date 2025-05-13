@@ -6,3 +6,5 @@ export const navItems = [
   { href: "/search", label: "Buscar", icon: SearchIcon },
   { href: "/profile", label: "Perfil", icon: UserIcon },
 ];
+
+export const HANDLE_REGEX = /^[a-zA-Z0-9._]+$/;
