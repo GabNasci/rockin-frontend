@@ -1,8 +1,8 @@
 // hooks/useCreateProfile.ts
 import { useMutation } from "@tanstack/react-query";
-import { toast } from "sonner";
-import { Profile } from "./types";
 import { createProfile } from "./api";
+import { Profile } from "./types";
+import { toast } from "@/lib/toast";
 
 export function useCreateProfile() {
   return useMutation({

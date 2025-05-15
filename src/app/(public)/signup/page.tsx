@@ -3,7 +3,7 @@ import CreateAccountCard from "./_components/form/create-account-card";
 import GenresAndSpecialitiesStep from "./_components/form/steps/genres_and_specialities-step";
 import CredentialsStep from "./_components/form/steps/credentials-step";
 import ProfileInfoStep from "./_components/form/steps/profile-info-step";
-import FormLogo from "./_components/formLogo";
+import FormLogo from "../../../components/shared/formLogo";
 import {
   MultiStepFormProvider,
   useMultiStepForm,

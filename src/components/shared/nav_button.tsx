@@ -1,5 +1,8 @@
 "use client";
 
+import { getImageUrl } from "@/lib/utils";
+import { useMe } from "@/models/auth/useAuth";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ComponentType } from "react";
 
@@ -17,6 +20,20 @@ export function NavButton({
   isActive,
 }: NavButtonProps) {
   const router = useRouter();
+  const { data: user } = useMe();
+  const profileRedirect = (hrefProp: string) => {
+    if (hrefProp === "/profile") {
+      if (user) {
+        router.push("/profile");
+      } else {
+        router.push("/login");
+      }
+    } else {
+      router.push(hrefProp);
+    }
+  };
+
+  const showImage = user !== undefined && user.avatar && label == "Perfil";
 
   return (
     <button
@@ -25,9 +42,20 @@ export function NavButton({
           ? "text-primary border-b-4 border-primary"
           : "text-muted-foreground"
       }`}
-      onClick={() => router.push(href)}
+      onClick={() => profileRedirect(href)}
     >
-      <Icon className="h-6 w-6" />
+      {showImage ? (
+        <Image
+          src={getImageUrl(user.avatar)}
+          alt={user.name}
+          width={24}
+          height={24}
+          className="rounded-full"
+        />
+      ) : (
+        <Icon className="h-6 w-6" />
+      )}
+
       <span className="text-xs">{label}</span>
     </button>
   );

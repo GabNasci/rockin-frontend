@@ -21,24 +21,24 @@ import { useForm } from "react-hook-form";
 import { useSpecialitiesByProfileType } from "@/models/specialities/useSpecialities";
 import { useGenres } from "@/models/genres/useSpecialities";
 import { Spinner } from "@/components/ui/spinner";
-import { mapToOptions } from "@/lib/utils";
+import { isEmptyObject, mapToOptions } from "@/lib/utils";
 
 export default function GenresAndSpecialitiesStep() {
   const { data, updateData, nextStep } = useMultiStepForm<ProfileData>();
   const { data: specialitiesData } = useSpecialitiesByProfileType(
     Number(data.profileType),
   );
-  console.log(specialitiesData);
   const { data: genresData } = useGenres();
 
   const form = useForm<GenresAndSpecialitiesData>({
     resolver: zodResolver(genresAndSpecialitiesSchema),
-    defaultValues: data
-      ? { ...data }
-      : {
-          genres: [],
-          specialities: [],
-        },
+    defaultValues:
+      data && !isEmptyObject(data)
+        ? { ...data }
+        : {
+            genres: [],
+            specialities: [],
+          },
   });
 
   const { handleSubmit, control } = form;
@@ -60,7 +60,6 @@ export default function GenresAndSpecialitiesStep() {
 
   const onSubmit = (values: GenresAndSpecialitiesData) => {
     updateData(values);
-    console.log(values);
     nextStep();
   };
 
