@@ -6,10 +6,10 @@ export const credentialsSchema = z
     email: z.string().email({ message: "Email inválido" }),
     password: z
       .string()
-      .min(6, { message: "A senha deve ter no mínimo 6 caracteres" }),
+      .min(8, { message: "A senha deve ter no mínimo 8 caracteres" }),
     confirmPassword: z
       .string()
-      .min(6, { message: "A senha deve ter no mínimo 6 caracteres" }),
+      .min(8, { message: "A senha deve ter no mínimo 8 caracteres" }),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords do not match",
@@ -65,7 +65,7 @@ export const profileSchema = z
     handle: z
       .string()
       .min(3, { message: "Nome de usuário deve ter no mínimo 3 caracteres" }),
-    profileType: z.string().min(1, "Selecione um tipo de perfil"),
+    profileType: z.coerce.number().min(1, "Selecione um tipo de perfil"),
     genres: z.array(z.string()).min(1, "Selecione pelo menos um gênero"),
     specialities: z
       .array(z.string())

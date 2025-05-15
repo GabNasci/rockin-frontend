@@ -19,29 +19,36 @@ import { useMultiStepForm } from "@/lib/contexts/multi-step-form.context";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { LocationAutocomplete } from "../locationAutocomplete";
+import { useCreateProfile } from "@/models/profiles/useProfiles";
+import { convertToNumbers } from "@/lib/utils";
 
 export default function LocationStep() {
   const { data, updateData } = useMultiStepForm<ProfileData>();
+  const { mutate } = useCreateProfile();
 
   const form = useForm<LocationData>({
     resolver: zodResolver(locationSchema),
-    defaultValues: data.location
-      ? { ...data.location }
-      : {
-          city: "",
-          state: "",
-          country: "",
-          latitude: "",
-          longitude: "",
-        },
+    defaultValues: {
+      city: "",
+      state: "",
+      country: "",
+      latitude: "",
+      longitude: "",
+    },
   });
 
   const { handleSubmit, control } = form;
 
   const onSubmit = (values: LocationData) => {
     updateData({ location: values });
-    console.log({
-      ...data,
+    mutate({
+      name: data.name,
+      handle: data.handle,
+      email: data.email,
+      password: data.password,
+      profileTypeId: Number(data.profileType),
+      genres: convertToNumbers(data.genres),
+      specialities: convertToNumbers(data.specialities),
       location: {
         ...values,
       },
@@ -56,10 +63,7 @@ export default function LocationStep() {
       </CardDescription>
       <div className="pt-4">
         <Form {...form}>
-          <form
-            onSubmit={handleSubmit(onSubmit, (e) => console.log(e))}
-            className="space-y-8"
-          >
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
             <FormField
               control={control}
               name="city"

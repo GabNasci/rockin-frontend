@@ -6,6 +6,14 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export function convertToNumbers(strings: string[]): number[] {
+  return strings.map((str) => Number(str));
+}
+
+export function isEmptyObject(obj: object) {
+  return Object.keys(obj).length === 0;
+}
+
 export function mapToOptions<T>(
   items: T[] | undefined | null,
   getLabel: (item: T) => string,

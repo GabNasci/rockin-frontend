@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/select";
 import { Spinner } from "@/components/ui/spinner";
 import { useMultiStepForm } from "@/lib/contexts/multi-step-form.context";
+import { isEmptyObject } from "@/lib/utils";
 import { useProfileTypes } from "@/models/profileTypes/useProfileTypes";
 import {
   profileInfoSchema,
@@ -33,13 +34,14 @@ export default function ProfileInfoStep() {
 
   const form = useForm<ProfileInfoData>({
     resolver: zodResolver(profileInfoSchema),
-    defaultValues: data
-      ? { ...data }
-      : {
-          name: "",
-          handle: "",
-          profileType: "",
-        },
+    defaultValues:
+      data && !isEmptyObject(data)
+        ? { ...data }
+        : {
+            name: "",
+            handle: "",
+            profileType: "",
+          },
   });
 
   const onSubmit = (values: ProfileInfoData) => {

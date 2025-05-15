@@ -2,7 +2,7 @@ export type Profile = {
   email: string;
   name: string;
   handle: string;
-  profileType: number;
+  profileTypeId: number;
   password: string;
   specialities: number[];
   genres: number[];

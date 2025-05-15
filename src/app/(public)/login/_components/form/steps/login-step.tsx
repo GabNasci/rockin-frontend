@@ -19,7 +19,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-export default function CredentialsStep() {
+export default function LoginStep() {
   const { nextStep, data, updateData } = useMultiStepForm<CredentialsData>();
 
   const form = useForm<CredentialsData>({
