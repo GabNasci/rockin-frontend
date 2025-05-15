@@ -25,9 +25,9 @@ export default function MobileNav() {
 
   return (
     <nav className="md:hidden fixed bottom-0 left-0 w-full bg-white shadow-md flex justify-around">
-      {items.map(({ href, label, icon }) => (
+      {items.map(({ href, label, icon }, index) => (
         <NavButton
-          key={href}
+          key={index}
           href={href}
           label={label}
           icon={icon}

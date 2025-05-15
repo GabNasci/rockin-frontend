@@ -1,4 +1,4 @@
-import { toast } from "sonner";
+import { toast } from "../toast";
 
 type BackendErrorResponse = {
   message: string[];
@@ -32,15 +32,13 @@ function handleError(error: unknown) {
   if (isBackendErrorResponse(error)) {
     const backendError = error.response.data;
     backendError.message.forEach((msg) =>
-      toast.error(`${prefix} ${backendError.statusCode}: ${msg}`, {
-        richColors: true,
-      }),
+      toast.error(`${prefix} ${backendError.statusCode}: ${msg}`),
     );
   } else {
     const message =
       error instanceof Error ? error.message : "Erro desconhecido";
 
-    toast.error(`${prefix}: ${message}`, { richColors: true });
+    toast.error(`${prefix}: ${message}`);
   }
 }
 

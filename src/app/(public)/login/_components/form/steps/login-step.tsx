@@ -10,40 +10,31 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useMultiStepForm } from "@/lib/contexts/multi-step-form.context";
-import { isEmptyObject } from "@/lib/utils";
-import {
-  CredentialsData,
-  credentialsSchema,
-} from "@/schemas/CreateProfileSchema";
+import { useLogin } from "@/models/auth/useAuth";
+import { LoginData, loginSchema } from "@/schemas/LoginSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 export default function LoginStep() {
-  const { nextStep, data, updateData } = useMultiStepForm<CredentialsData>();
+  const { mutate } = useLogin();
 
-  const form = useForm<CredentialsData>({
-    resolver: zodResolver(credentialsSchema),
-    defaultValues:
-      data && !isEmptyObject(data)
-        ? { ...data }
-        : {
-            email: "",
-            password: "",
-            confirmPassword: "",
-          },
+  const form = useForm<LoginData>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   });
 
   const { control, handleSubmit } = form;
 
-  const onSubmit = (values: CredentialsData) => {
-    updateData(values);
-    nextStep();
+  const onSubmit = (values: LoginData) => {
+    mutate(values);
   };
   return (
     <div>
       <CardDescription className="flex justify-center">
-        Defina suas credenciais de acesso.
+        Realize o login com suas credenciais de acesso.
       </CardDescription>
       <div className="pt-4">
         <Form {...form}>
@@ -55,7 +46,7 @@ export default function LoginStep() {
                 <FormItem>
                   <FormLabel>Email:</FormLabel>
                   <FormControl>
-                    <Input placeholder="Digite seu melhor email" {...field} />
+                    <Input placeholder="Digite email" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -69,24 +60,7 @@ export default function LoginStep() {
                   <FormLabel>Senha:</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Digite uma senha"
-                      type="password"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={control}
-              name="confirmPassword"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Confirmar senha:</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Confirme sua senha"
+                      placeholder="Digite sua senha"
                       type="password"
                       {...field}
                     />

@@ -8,3 +8,5 @@ export const navItems = [
 ];
 
 export const HANDLE_REGEX = /^[a-zA-Z0-9._]+$/;
+
+export const TOKEN_KEY = "äuth_token";
