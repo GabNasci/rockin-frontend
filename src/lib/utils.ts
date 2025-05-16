@@ -26,7 +26,7 @@ export function mapToOptions<T>(
   }));
 }
 
-export function getImageUrl(imageName: string) {
+export function getImageUrl(imageName: string | null | undefined) {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   return `${baseUrl}/uploads/${imageName}`;
 }
