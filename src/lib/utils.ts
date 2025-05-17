@@ -30,3 +30,8 @@ export function getImageUrl(imageName: string | null | undefined) {
   const baseUrl = process.env.NEXT_PUBLIC_API_URL;
   return `${baseUrl}/uploads/${imageName}`;
 }
+
+export function getHandleByPathhname(pathname: string) {
+  const handle = pathname.split("/").pop();
+  return handle;
+}

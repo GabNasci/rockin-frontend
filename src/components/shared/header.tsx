@@ -8,6 +8,7 @@ import { useMemo, memo } from "react";
 import { UserIcon } from "../icons";
 import { useAuth } from "@/lib/contexts/auth-context";
 import { useRouter } from "next/navigation";
+import { getHandleByPathhname } from "@/lib/utils";
 
 const Header = memo(function Header() {
   const router = useRouter();
@@ -47,7 +48,7 @@ const Header = memo(function Header() {
       )}
       <div className="flex items-center md:flex-1/3 py-4 md:py-0">
         {isProfilePage ? (
-          <h1 className="font-bold">@{user?.handle}</h1>
+          <h1 className="font-bold">@{getHandleByPathhname(pathname)}</h1>
         ) : (
           <Image
             src="/imgs/rockin-logo.svg"
