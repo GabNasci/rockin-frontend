@@ -1,11 +1,11 @@
 "use client";
 
-import { MeResponse } from "@/models/auth/types";
+import { ProfileResponse } from "@/models/auth/types";
 import { useMe } from "@/models/auth/useAuth";
 import { createContext, useContext, ReactNode } from "react";
 
 type AuthContextType = {
-  user: MeResponse | null;
+  user: ProfileResponse | null;
   isLoggedIn: boolean;
   isLoading: boolean;
 };

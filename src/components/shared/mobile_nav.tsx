@@ -4,22 +4,24 @@ import { usePathname } from "next/navigation";
 import { NavButton } from "./nav_button";
 import { useMemo } from "react";
 import { navItems } from "@/lib/constants";
+import { useAuth } from "@/lib/contexts/auth-context";
 
 export default function MobileNav() {
   const pathname = usePathname();
+  const { user } = useAuth();
 
   const showNav = useMemo(() => {
     return pathname !== "/login" && pathname !== "/signup";
   }, [pathname]);
 
   const items = useMemo(() => {
-    return navItems.map(({ href, label, icon }) => ({
+    return navItems(user?.handle).map(({ href, label, icon }) => ({
       href,
       label,
       icon,
       isActive: pathname === href,
     }));
-  }, [pathname]);
+  }, [pathname, user?.handle]);
 
   if (!showNav) return null;
 

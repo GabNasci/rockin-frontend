@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { login, fetchMe } from "./api";
-import { LoginData, MeResponse } from "./types";
+import { LoginData, ProfileResponse } from "./types";
 import { useRouter } from "next/navigation";
 import { TOKEN_KEY } from "@/lib/constants";
 import { toast } from "@/lib/toast";
@@ -23,12 +23,12 @@ export function useLogin() {
 }
 
 export function useMe() {
-  return useQuery<MeResponse>({
+  return useQuery<ProfileResponse>({
     queryKey: ["me"],
     queryFn: fetchMe,
     retry: 1,
     staleTime: 1000 * 60 * 5, // 5 minutos
     enabled: true,
-    //      typeof window !== "undefined" && !!localStorage.getItem("auth_token"),
+    //  typeof window !== "undefined" && !!localStorage.getItem("auth_token"),
   });
 }
