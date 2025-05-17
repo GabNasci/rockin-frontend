@@ -10,9 +10,19 @@ export default function MobileNav() {
   const pathname = usePathname();
   const { user } = useAuth();
 
+  const profileHandle = pathname.startsWith("/profile/")
+    ? pathname.split("/")[2]
+    : null;
+
   const showNav = useMemo(() => {
-    return pathname !== "/login" && pathname !== "/signup";
-  }, [pathname]);
+    if (pathname === "/login" || pathname === "/signup") return false;
+
+    if (profileHandle && user?.handle && profileHandle !== user.handle) {
+      return false;
+    }
+
+    return true;
+  }, [pathname, user?.handle, profileHandle]);
 
   const items = useMemo(() => {
     return navItems(user?.handle).map(({ href, label, icon }) => ({

@@ -30,4 +30,5 @@ export type ProfileResponse = {
   followers: Recomendation[];
   following: Recomendation[];
   bands: Band[];
+  posts: { text: string }[];
 };
