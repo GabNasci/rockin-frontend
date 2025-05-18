@@ -3,8 +3,8 @@
 import { usePathname } from "next/navigation";
 import { NavButton } from "./nav_button";
 import { useMemo } from "react";
-import { navItems } from "@/lib/constants";
 import { useAuth } from "@/lib/contexts/auth-context";
+import { navItems } from "@/lib/utils";
 
 export default function MobileNav() {
   const pathname = usePathname();
