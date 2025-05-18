@@ -2,9 +2,10 @@
 
 import { getImageUrl } from "@/lib/utils";
 import { useMe } from "@/models/auth/useAuth";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ComponentType } from "react";
+import { UserIcon } from "../icons";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 interface NavButtonProps {
   href: string;
@@ -45,17 +46,15 @@ export function NavButton({
       onClick={() => profileRedirect(href)}
     >
       {showImage ? (
-        <Image
-          src={getImageUrl(user.avatar)}
-          alt={user.name}
-          width={24}
-          height={24}
-          className="rounded-full"
-        />
+        <Avatar className="w-6 h-6 flex items-center justify-center bg-gray-100">
+          <AvatarImage src={getImageUrl(user.avatar)} />
+          <AvatarFallback>
+            <UserIcon className="text-gray-300" />
+          </AvatarFallback>
+        </Avatar>
       ) : (
-        <Icon className="h-6 w-6" />
+        <Icon className={`w-6 h-6`} />
       )}
-
       <span className="text-xs">{label}</span>
     </button>
   );
