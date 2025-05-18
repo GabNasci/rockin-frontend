@@ -19,7 +19,7 @@ import { useMultiStepForm } from "@/lib/contexts/multi-step-form.context";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useSpecialitiesByProfileType } from "@/models/specialities/useSpecialities";
-import { useGenres } from "@/models/genres/useSpecialities";
+import { useGenres } from "@/models/genres/useGenres";
 import { Spinner } from "@/components/ui/spinner";
 import { isEmptyObject, mapToOptions } from "@/lib/utils";
 
