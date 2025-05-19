@@ -2,7 +2,6 @@ import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { Option } from "@/components/shared/multi-select";
 import { pageTitles, routesWithBackButton } from "./constants";
-import path from "path";
 import { FeedIcon, HomeIcon, SearchIcon, UserIcon } from "@/components/icons";
 
 export function cn(...inputs: ClassValue[]) {
@@ -51,9 +50,7 @@ export const navItems = (handle: string | undefined) => [
 ];
 
 export const mustHaveBackButton = (pathname: string) => {
-  return routesWithBackButton
-    .map((route) => path.join("/", route))
-    .includes(pathname);
+  return routesWithBackButton.some((route) => pathname.includes(route));
 };
 
 export const getTitlePage = (pathname: string) => {
@@ -61,5 +58,5 @@ export const getTitlePage = (pathname: string) => {
 };
 
 export const haveTitle = (pathname: string) => {
-  return pageTitles.map((title) => pathname.includes(title.path));
+  return !!pageTitles.find((title) => pathname.includes(title.path));
 };

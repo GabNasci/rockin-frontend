@@ -3,10 +3,7 @@ import Image from "next/image";
 
 export function MiddleHeader({ pathname }: { pathname: string }) {
   const isProfilePage = pathname.includes("/profile");
-  console.log("isProfilePage", isProfilePage);
-  console.log("pathname", pathname);
-  console.log("haveTitle(pathname)", haveTitle(pathname));
-  console.log("getHandleByPathhname(pathname)", getHandleByPathhname(pathname));
+
   if (isProfilePage)
     return <h1 className="font-bold">@{getHandleByPathhname(pathname)}</h1>;
 

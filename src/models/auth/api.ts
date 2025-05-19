@@ -8,6 +8,5 @@ export async function login(payload: LoginData): Promise<LoginResponse> {
 
 export async function fetchMe(): Promise<ProfileResponse> {
   const res = await api.get("/profiles/me");
-  console.log("/me", res.data);
   return res.data;
 }
