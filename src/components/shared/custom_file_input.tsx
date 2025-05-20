@@ -42,14 +42,23 @@ export function CustomFileInput({
                 multiple
                 accept="image/*"
                 onChange={(e) => {
-                  const selected = Array.from(e.target.files || []);
-                  form.setValue(name, selected);
+                  const newFiles = Array.from(e.target.files || []);
+                  const currentFiles = form.getValues(name) || [];
+                  const combined = [...currentFiles, ...newFiles].filter(
+                    (file, index, self) =>
+                      index ===
+                      self.findIndex(
+                        (f) => f.name === file.name && f.size === file.size,
+                      ),
+                  );
+                  form.setValue(name, combined);
                   handleFileChange(e);
                 }}
                 ref={inputRef}
                 className="hidden"
               />
               <Button
+                type="button"
                 className="bg-transparent hover:bg-transparent hover:text-primary cursor-pointer text-gray-400 shadow-none "
                 onClick={handleClick}
               >

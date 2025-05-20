@@ -2,13 +2,13 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { X } from "lucide-react";
 import Image from "next/image";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
@@ -20,11 +20,18 @@ import UserAvatar from "@/components/shared/user_avatar";
 import { useAuth } from "@/lib/contexts/auth-context";
 import { Loading } from "@/components/shared/loading";
 import { CustomFileInput } from "@/components/shared/custom_file_input";
+import { useCreatePost } from "@/models/posts/usePosts";
+import { Input } from "@/components/ui/input";
+import { SimpleProfile } from "@/models/profiles/types";
+import ProfileBadge from "../../../../components/shared/profileBadge";
+import { AddProfileDialog } from "./_components/addProfilesDialog";
+import { X } from "lucide-react";
 
 export default function AddPostPage() {
   const [files, setFiles] = useState<File[]>([]);
+  const [taggedProfiles, setProfiles] = useState<SimpleProfile[]>([]);
+  const { mutate: createPost } = useCreatePost();
   const { user } = useAuth();
-
   const form = useForm<CreatePostData>({
     resolver: zodResolver(createPostSchema),
     defaultValues: {
@@ -49,15 +56,11 @@ export default function AddPostPage() {
   };
 
   const onSubmit = async (values: CreatePostData) => {
-    console.log(values);
-
-    const formData = new FormData();
-    if (values.text) formData.append("text", values.text);
-    values.medias?.forEach((file) => {
-      formData.append("medias", file);
+    console.log({
+      ...values,
+      taggedProfiles: taggedProfiles.map((profile) => profile.id),
     });
-    console.log(formData);
-    setFiles([]);
+    createPost(values);
   };
 
   if (!user) return <Loading />;
@@ -65,7 +68,7 @@ export default function AddPostPage() {
   return (
     <div className=" mt-20 ">
       <Form {...form}>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit, (err) => console.log(err))}>
           <Card className="w-full border-0 rounded-none shadow-none m-0 px-4">
             <div className="flex w-full">
               <UserAvatar avatar={user.avatar} className="w-10 h-10" />
@@ -118,6 +121,30 @@ export default function AddPostPage() {
               control={control}
               form={form}
               handleFileChange={handleFileChange}
+            />
+            <div className="flex flex-wrap">
+              {taggedProfiles.length > 0 &&
+                taggedProfiles.map((profile) => (
+                  <ProfileBadge key={profile.id} profile={profile} />
+                ))}
+              <AddProfileDialog
+                taggedProfiles={taggedProfiles}
+                setProfiles={setProfiles}
+              />
+            </div>
+
+            <FormField
+              control={control}
+              name="link"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Link:</FormLabel>
+                  <FormControl>
+                    <Input placeholder="Digite um link..." {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
           </Card>
           <div className="mt-4 flex justify-end px-3">

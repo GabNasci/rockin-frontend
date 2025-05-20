@@ -4,7 +4,12 @@ export const createPostSchema = z
   .object({
     text: z
       .string()
-      .max(280, "O texto deve ter no máximo 280 caracteres")
+      .max(250, "O texto deve ter no máximo 250 caracteres")
+      .optional()
+      .or(z.literal("")),
+    link: z
+      .string()
+      .url("O link deve ser uma URL válida")
       .optional()
       .or(z.literal("")),
     medias: z

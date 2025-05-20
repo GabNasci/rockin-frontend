@@ -1,6 +1,10 @@
-// hooks/useCreateProfile.ts
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { createProfile, findProfileByHandle } from "./api";
+import {
+  createProfile,
+  findProfileByHandle,
+  getProfiles,
+  searchFollowings,
+} from "./api";
 import { Profile } from "./types";
 import { toast } from "@/lib/toast";
 import { useRouter } from "next/navigation";
@@ -20,5 +24,18 @@ export function useGetProfileByHandle(handle: string) {
   return useQuery({
     queryKey: ["profile", handle],
     queryFn: () => findProfileByHandle(handle),
+  });
+}
+
+export function useGetProfiles() {
+  return useQuery({
+    queryKey: ["profiles"],
+    queryFn: () => getProfiles(),
+  });
+}
+
+export function useSearchFollowings() {
+  return useMutation({
+    mutationFn: (search: string) => searchFollowings(search),
   });
 }

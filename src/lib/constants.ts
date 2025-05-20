@@ -4,9 +4,19 @@ export const HANDLE_REGEX = /^[a-zA-Z0-9._]+$/;
 
 export const TOKEN_KEY = "äuth_token";
 
+export enum ProfileTypeID {
+  MUSICIAN = 1,
+  ESTABLISHMENT = 2,
+  BAND = 3,
+}
+
 export const pageTitles = [
   {
     path: "/post",
     title: "Publicação",
   },
 ];
+
+export const navRoutes = ["/home", "/feed", "/search", "/profile"];
+
+export const mustHideNavbarRoutes = ["/post", "/signup"];

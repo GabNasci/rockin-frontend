@@ -1,7 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { Option } from "@/components/shared/multi-select";
-import { pageTitles, routesWithBackButton } from "./constants";
+import { navRoutes, pageTitles, routesWithBackButton } from "./constants";
 import { FeedIcon, HomeIcon, SearchIcon, UserIcon } from "@/components/icons";
 
 export function cn(...inputs: ClassValue[]) {
@@ -38,7 +38,7 @@ export function getHandleByPathhname(pathname: string) {
   return handle;
 }
 
-export const navItems = (handle: string | undefined) => [
+export const navItems = (handle?: string | undefined) => [
   { href: "/home", label: "Home", icon: HomeIcon },
   { href: "/feed", label: "Feed", icon: FeedIcon },
   { href: "/search", label: "Buscar", icon: SearchIcon },
@@ -48,6 +48,10 @@ export const navItems = (handle: string | undefined) => [
     icon: UserIcon,
   },
 ];
+
+export const pathIsInNavRoutes = (pathname: string) => {
+  return navRoutes.find((item) => pathname.includes(item));
+};
 
 export const mustHaveBackButton = (pathname: string) => {
   return routesWithBackButton.some((route) => pathname.includes(route));
