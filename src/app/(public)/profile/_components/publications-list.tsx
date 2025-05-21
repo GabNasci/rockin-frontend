@@ -1,30 +1,34 @@
+import Loader from "@/components/shared/loader";
+import PublicationCard from "@/components/shared/publication_card";
 import { Card, CardHeader } from "@/components/ui/card";
+import { PostResponse } from "@/models/posts/types";
 
 type PublicationsListProps = {
-  posts: { text: string }[];
+  posts: PostResponse[] | undefined;
+  isLoading?: boolean;
 };
 
-export function PublicationsList({ posts }: PublicationsListProps) {
+export function PublicationsList({ posts, isLoading }: PublicationsListProps) {
   return (
-    <div>
-      <Card className="rounded-none shadow-none border-0 pb-0 pt-3">
-        <CardHeader className="font-bold text-center text-primary text-xl border-b-3 border-primary">
+    <div className="pb-50">
+      <Card className="rounded-none shadow-none border-0 pt-0 bg-transparent">
+        <CardHeader className="pt-3 bg-white font-bold text-center text-primary text-xl border-b-3 border-primary">
           Publicações
         </CardHeader>
       </Card>
-      <Card className="rounded-none shadow-none border-0">
-        {posts.length > 0 ? (
+      <div className="flex flex-col gap-4 pt-3">
+        {posts && posts.length > 0 ? (
           posts.map((post, index) => (
-            <div key={index} className="p-3">
-              <p className="text-sm">{post.text}</p>
-            </div>
+            <PublicationCard key={index} post={post} />
           ))
+        ) : isLoading ? (
+          <Loader className="w-10 h-10" />
         ) : (
           <p className="text-gray-400 flex justify-center w-full">
             Sem publicações
           </p>
         )}
-      </Card>
+      </div>
     </div>
   );
 }

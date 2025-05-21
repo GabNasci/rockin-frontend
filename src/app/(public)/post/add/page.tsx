@@ -26,8 +26,10 @@ import { SimpleProfile } from "@/models/profiles/types";
 import ProfileBadge from "../../../../components/shared/profileBadge";
 import { AddProfileDialog } from "./_components/addProfilesDialog";
 import { X } from "lucide-react";
+import { useProtectedRoute } from "@/hooks/useProtectedRoute";
 
 export default function AddPostPage() {
+  useProtectedRoute();
   const [files, setFiles] = useState<File[]>([]);
   const [taggedProfiles, setProfiles] = useState<SimpleProfile[]>([]);
   const { mutate: createPost } = useCreatePost();
@@ -56,11 +58,11 @@ export default function AddPostPage() {
   };
 
   const onSubmit = async (values: CreatePostData) => {
-    console.log({
+    createPost({
       ...values,
-      taggedProfiles: taggedProfiles.map((profile) => profile.id),
+      medias: files,
+      tagged_profiles: taggedProfiles.map((profile) => profile.id),
     });
-    createPost(values);
   };
 
   if (!user) return <Loading />;

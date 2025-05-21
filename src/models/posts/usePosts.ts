@@ -1,7 +1,7 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { Post } from "./types";
-import { createPost } from "./api";
+import { createPost, getPostsByProfileId } from "./api";
 import { toast } from "@/lib/toast";
 
 export function useCreatePost() {
@@ -12,5 +12,12 @@ export function useCreatePost() {
       toast.success("Post criado com sucesso!");
       router.push("/home");
     },
+  });
+}
+
+export function useGetPostsByProfileId(profileId: number | undefined) {
+  return useQuery({
+    queryKey: ["posts", profileId],
+    queryFn: () => getPostsByProfileId(profileId),
   });
 }

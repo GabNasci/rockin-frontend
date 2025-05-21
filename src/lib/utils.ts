@@ -64,3 +64,16 @@ export const getTitlePage = (pathname: string) => {
 export const haveTitle = (pathname: string) => {
   return !!pageTitles.find((title) => pathname.includes(title.path));
 };
+
+export const formatDateTime = (dateTime: string) => {
+  const date = new Date(dateTime);
+  const day = date.getDate();
+  const month = date.toLocaleString("default", { month: "long" });
+  const year = date.getFullYear();
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const ampm = hours >= 12 ? "PM" : "AM";
+  const formattedHours = hours % 12 || 12;
+  const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+  return `${day} de ${month} de ${year} às ${formattedHours}:${formattedMinutes} ${ampm}`;
+};

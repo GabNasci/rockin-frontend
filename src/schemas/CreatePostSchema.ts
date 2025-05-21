@@ -14,6 +14,7 @@ export const createPostSchema = z
       .or(z.literal("")),
     medias: z
       .array(z.instanceof(File))
+      .max(5, "Você pode enviar até 5 mídias")
       .refine(
         (files) => files.every((file) => file.type.startsWith("image/")),
         "Somente arquivos de imagem são permitidos",

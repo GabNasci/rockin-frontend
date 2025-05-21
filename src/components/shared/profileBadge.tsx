@@ -6,16 +6,20 @@ import { TrashIcon } from "lucide-react";
 type ProfileBadgeProps = {
   profile: SimpleProfile;
   handleRemove?: (id: number) => void;
+  className?: string;
 };
 
 export default function ProfileBadge({
   profile,
   handleRemove,
+  className,
 }: ProfileBadgeProps) {
   return (
-    <Badge className="flex items-center gap-2 px-1 py-1 rounded-full">
+    <Badge
+      className={`flex items-center gap-2 px-1 py-1 rounded-full text-sm ${className}`}
+    >
       <UserAvatar avatar={profile.avatar} className="w-6 h-6" />
-      <span className="text-sm">@{profile.handle}</span>
+      <span>@{profile.handle}</span>
       <div className="pe-1">
         {handleRemove && (
           <TrashIcon
