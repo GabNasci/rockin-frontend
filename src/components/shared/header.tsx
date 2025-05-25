@@ -7,8 +7,13 @@ import { useMemo, memo } from "react";
 import { UserIcon } from "../icons";
 import { useAuth } from "@/lib/contexts/auth-context";
 import { useRouter } from "next/navigation";
-import { mustHaveBackButton, navItems } from "@/lib/utils";
+import {
+  mustHaveBackButton,
+  navItems,
+  notShowMessagessButton,
+} from "@/lib/utils";
 import { MiddleHeader } from "./middle-header";
+import { MessageSquare } from "lucide-react";
 
 const Header = memo(function Header() {
   const router = useRouter();
@@ -20,13 +25,17 @@ const Header = memo(function Header() {
   }, [pathname]);
 
   const items = useMemo(() => {
-    return navItems(user?.handle).map(({ href, label, icon }) => ({
-      href,
-      label,
-      icon,
-      isActive: pathname === href,
-    }));
+    return navItems(user?.handle)
+      .filter((item) => item.showInNav)
+      .map(({ href, label, icon }) => ({
+        href,
+        label,
+        icon,
+        isActive: pathname === href,
+      }));
   }, [pathname, user?.handle]);
+
+  console.log(items);
 
   const goBack = () => {
     router.back();
@@ -59,15 +68,34 @@ const Header = memo(function Header() {
         ))}
       </div>
       <div className="hidden md:flex items-center justify-end flex-1/3">
-        <div className="w-14">
+        <div className="flex gap-3">
           <NavButton
             href="/profile"
             label="Perfil"
             icon={UserIcon}
             isActive={pathname === "/profile"}
+            className="px-2"
+          />
+          <NavButton
+            href="/messages"
+            label="Chat"
+            icon={MessageSquare}
+            className="px-2"
+            isActive={pathname === "/messages"}
           />
         </div>
       </div>
+      {notShowMessagessButton(pathname) && (
+        <div className="flex md:hidden absolute right-6 cursor-pointer">
+          <NavButton
+            href="/messages"
+            label="Chat"
+            icon={MessageSquare}
+            className="px-2"
+            isActive={pathname === "/messages"}
+          />
+        </div>
+      )}
     </header>
   );
 });

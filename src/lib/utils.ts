@@ -3,6 +3,7 @@ import { twMerge } from "tailwind-merge";
 import { Option } from "@/components/shared/multi-select";
 import { navRoutes, pageTitles, routesWithBackButton } from "./constants";
 import { FeedIcon, HomeIcon, SearchIcon, UserIcon } from "@/components/icons";
+import { MessageSquare } from "lucide-react";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -39,13 +40,20 @@ export function getHandleByPathhname(pathname: string) {
 }
 
 export const navItems = (handle?: string | undefined) => [
-  { href: "/home", label: "Home", icon: HomeIcon },
-  { href: "/feed", label: "Feed", icon: FeedIcon },
-  { href: "/search", label: "Buscar", icon: SearchIcon },
+  { href: "/home", label: "Home", icon: HomeIcon, showInNav: true },
+  { href: "/feed", label: "Feed", icon: FeedIcon, showInNav: true },
+  { href: "/search", label: "Buscar", icon: SearchIcon, showInNav: true },
   {
     href: handle ? `/profile/${handle}` : "/login",
     label: "Perfil",
     icon: UserIcon,
+    showInNav: true,
+  },
+  {
+    href: "/messages",
+    label: "Conversas",
+    icon: MessageSquare,
+    showInNav: false,
   },
 ];
 
@@ -63,6 +71,10 @@ export const getTitlePage = (pathname: string) => {
 
 export const haveTitle = (pathname: string) => {
   return !!pageTitles.find((title) => pathname.includes(title.path));
+};
+
+export const notShowMessagessButton = (pathname: string) => {
+  return !routesWithBackButton.some((route) => pathname.includes(route));
 };
 
 export const formatDateTime = (dateTime: string) => {

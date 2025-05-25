@@ -1,4 +1,4 @@
-export const routesWithBackButton = ["/profile", "/post"];
+export const routesWithBackButton = ["/profile", "/post", "/messages"];
 
 export const HANDLE_REGEX = /^[a-zA-Z0-9._]+$/;
 
@@ -15,8 +15,14 @@ export const pageTitles = [
     path: "/post",
     title: "Publicação",
   },
+  {
+    path: "/messages",
+    title: "Conversas",
+  },
 ];
 
 export const navRoutes = ["/home", "/feed", "/search", "/profile"];
 
 export const mustHideNavbarRoutes = ["/post", "/signup"];
+
+export const routesWithoutMessageButton = ["/messages", "/post/add"];
