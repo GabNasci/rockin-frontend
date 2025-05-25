@@ -1,16 +1,22 @@
-import { FeedIcon, HomeIcon, SearchIcon, UserIcon } from "@/components/icons";
-
-export const navItems = (handle: string | undefined) => [
-  { href: "/home", label: "Home", icon: HomeIcon },
-  { href: "/feed", label: "Feed", icon: FeedIcon },
-  { href: "/search", label: "Buscar", icon: SearchIcon },
-  {
-    href: handle ? `/profile/${handle}` : "/login",
-    label: "Perfil",
-    icon: UserIcon,
-  },
-];
+export const routesWithBackButton = ["/profile", "/post"];
 
 export const HANDLE_REGEX = /^[a-zA-Z0-9._]+$/;
 
 export const TOKEN_KEY = "äuth_token";
+
+export enum ProfileTypeID {
+  MUSICIAN = 1,
+  ESTABLISHMENT = 2,
+  BAND = 3,
+}
+
+export const pageTitles = [
+  {
+    path: "/post",
+    title: "Publicação",
+  },
+];
+
+export const navRoutes = ["/home", "/feed", "/search", "/profile"];
+
+export const mustHideNavbarRoutes = ["/post", "/signup"];

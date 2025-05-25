@@ -1,6 +1,8 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { Option } from "@/components/shared/multi-select";
+import { navRoutes, pageTitles, routesWithBackButton } from "./constants";
+import { FeedIcon, HomeIcon, SearchIcon, UserIcon } from "@/components/icons";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -35,3 +37,43 @@ export function getHandleByPathhname(pathname: string) {
   const handle = pathname.split("/").pop();
   return handle;
 }
+
+export const navItems = (handle?: string | undefined) => [
+  { href: "/home", label: "Home", icon: HomeIcon },
+  { href: "/feed", label: "Feed", icon: FeedIcon },
+  { href: "/search", label: "Buscar", icon: SearchIcon },
+  {
+    href: handle ? `/profile/${handle}` : "/login",
+    label: "Perfil",
+    icon: UserIcon,
+  },
+];
+
+export const pathIsInNavRoutes = (pathname: string) => {
+  return navRoutes.find((item) => pathname.includes(item));
+};
+
+export const mustHaveBackButton = (pathname: string) => {
+  return routesWithBackButton.some((route) => pathname.includes(route));
+};
+
+export const getTitlePage = (pathname: string) => {
+  return pageTitles.find((title) => pathname.includes(title.path))?.title;
+};
+
+export const haveTitle = (pathname: string) => {
+  return !!pageTitles.find((title) => pathname.includes(title.path));
+};
+
+export const formatDateTime = (dateTime: string) => {
+  const date = new Date(dateTime);
+  const day = date.getDate();
+  const month = date.toLocaleString("default", { month: "long" });
+  const year = date.getFullYear();
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  const ampm = hours >= 12 ? "PM" : "AM";
+  const formattedHours = hours % 12 || 12;
+  const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+  return `${day} de ${month} de ${year} às ${formattedHours}:${formattedMinutes} ${ampm}`;
+};

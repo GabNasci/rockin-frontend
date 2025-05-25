@@ -1,3 +1,4 @@
+import MakePostButton from "@/components/shared/make_post_button";
 import ProfileCard from "@/components/shared/profile_card";
 import { Button } from "@/components/ui/button";
 
@@ -14,6 +15,7 @@ export default function Home() {
           isSupporting: true,
         }}
       />
+      <MakePostButton />
     </div>
   );
 }

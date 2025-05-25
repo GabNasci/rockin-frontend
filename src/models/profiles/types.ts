@@ -1,3 +1,6 @@
+import { Genre } from "../genres/types";
+import { Speciality } from "../specialities/types";
+
 export type Profile = {
   email: string;
   name: string;
@@ -7,6 +10,16 @@ export type Profile = {
   specialities: number[];
   genres: number[];
   location: Location;
+};
+
+export type SimpleProfile = {
+  id: number;
+  handle: string;
+  name: string;
+  profile_type_id: number;
+  avatar: string | null;
+  specialities: Speciality[];
+  genres: Genre[];
 };
 
 export type Location = {

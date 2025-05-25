@@ -3,12 +3,12 @@
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { NavButton } from "./nav_button";
-import { navItems } from "@/lib/constants";
 import { useMemo, memo } from "react";
 import { UserIcon } from "../icons";
 import { useAuth } from "@/lib/contexts/auth-context";
 import { useRouter } from "next/navigation";
-import { getHandleByPathhname } from "@/lib/utils";
+import { mustHaveBackButton, navItems } from "@/lib/utils";
+import { MiddleHeader } from "./middle-header";
 
 const Header = memo(function Header() {
   const router = useRouter();
@@ -28,8 +28,6 @@ const Header = memo(function Header() {
     }));
   }, [pathname, user?.handle]);
 
-  const isProfilePage = pathname.includes("/profile");
-
   const goBack = () => {
     router.back();
   };
@@ -38,7 +36,7 @@ const Header = memo(function Header() {
 
   return (
     <header className="bg-white flex md:justify-between justify-center px-16 fixed top-0 left-0 right-0 z-50">
-      {isProfilePage && (
+      {mustHaveBackButton(pathname) && (
         <div
           onClick={() => goBack()}
           className="flex absolute left-6 top-1/4 cursor-pointer"
@@ -47,16 +45,7 @@ const Header = memo(function Header() {
         </div>
       )}
       <div className="flex items-center md:flex-1/3 py-4 md:py-0">
-        {isProfilePage ? (
-          <h1 className="font-bold">@{getHandleByPathhname(pathname)}</h1>
-        ) : (
-          <Image
-            src="/imgs/rockin-logo.svg"
-            alt="Logo"
-            width={150}
-            height={150}
-          />
-        )}
+        <MiddleHeader pathname={pathname} />
       </div>
       <div className="hidden md:flex items-center justify-center gap-8 flex-1/3">
         {items.slice(0, 3).map(({ href, label, icon }) => (

@@ -15,7 +15,6 @@ export function useLogin() {
       localStorage.setItem(TOKEN_KEY, data.token);
       await queryClient.invalidateQueries({ queryKey: ["me"] });
       await queryClient.refetchQueries({ queryKey: ["me"] });
-      console.log(data);
       toast.success("Login realizado com sucesso!");
       router.push("/home");
     },
@@ -29,6 +28,5 @@ export function useMe() {
     retry: 1,
     staleTime: 1000 * 60 * 5, // 5 minutos
     enabled: true,
-    //  typeof window !== "undefined" && !!localStorage.getItem("auth_token"),
   });
 }

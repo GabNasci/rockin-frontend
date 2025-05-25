@@ -3,8 +3,8 @@
 import { usePathname } from "next/navigation";
 import { NavButton } from "./nav_button";
 import { useMemo } from "react";
-import { navItems } from "@/lib/constants";
 import { useAuth } from "@/lib/contexts/auth-context";
+import { navItems, pathIsInNavRoutes } from "@/lib/utils";
 
 export default function MobileNav() {
   const pathname = usePathname();
@@ -15,6 +15,8 @@ export default function MobileNav() {
     : null;
 
   const showNav = useMemo(() => {
+    if (!pathIsInNavRoutes(pathname)) return false;
+
     if (pathname === "/login" || pathname === "/signup") return false;
 
     if (profileHandle && user?.handle && profileHandle !== user.handle) {

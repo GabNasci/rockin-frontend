@@ -7,11 +7,14 @@ import { GenresList } from "../_components/genres-list";
 import { BandsList } from "../_components/bands-list";
 import { Loading } from "@/components/shared/loading";
 import { PublicationsList } from "../_components/publications-list";
+import { useGetPostsByProfileId } from "@/models/posts/usePosts";
 
 export default function ProfilePage() {
   const { handle } = useParams() as { handle: string };
   const { data, isLoading, isError } = useGetProfileByHandle(handle);
-  // const { user } = useAuth();
+  const { data: posts, isLoading: isPostsLoading } = useGetPostsByProfileId(
+    data?.id,
+  );
 
   if (!data && !isError && isLoading) return <Loading />;
 
@@ -22,7 +25,7 @@ export default function ProfilePage() {
       <ProfileInfoCard user={data} />
       <GenresList genres={data.genres} />
       <BandsList bands={data.bands} />
-      <PublicationsList posts={data.posts} />
+      <PublicationsList posts={posts} isLoading={isPostsLoading} />
     </div>
   );
 }
