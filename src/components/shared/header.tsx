@@ -20,6 +20,8 @@ const Header = memo(function Header() {
   const { user } = useAuth();
   const pathname = usePathname();
 
+  const isMessagePage = pathname.includes("/messages");
+
   const showHeader = useMemo(() => {
     return pathname !== "/login" && pathname !== "/signup";
   }, [pathname]);
@@ -35,8 +37,6 @@ const Header = memo(function Header() {
       }));
   }, [pathname, user?.handle]);
 
-  console.log(items);
-
   const goBack = () => {
     router.back();
   };
@@ -44,7 +44,9 @@ const Header = memo(function Header() {
   if (!showHeader) return null;
 
   return (
-    <header className="bg-white flex md:justify-between justify-center px-16 fixed top-0 left-0 right-0 z-50">
+    <header
+      className={`bg-white flex md:justify-between ${isMessagePage ? "" : "justify-center"}  px-16 fixed top-0 left-0 right-0 z-50`}
+    >
       {mustHaveBackButton(pathname) && (
         <div
           onClick={() => goBack()}

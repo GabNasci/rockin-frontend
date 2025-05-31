@@ -23,6 +23,6 @@ export const pageTitles = [
 
 export const navRoutes = ["/home", "/feed", "/search", "/profile"];
 
-export const mustHideNavbarRoutes = ["/post", "/signup"];
+export const mustHideNavbarRoutes = ["/post", "/signup", "/messages"];
 
 export const routesWithoutMessageButton = ["/messages", "/post/add"];

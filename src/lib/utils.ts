@@ -35,7 +35,7 @@ export function getImageUrl(imageName: string | null | undefined) {
 }
 
 export function getHandleByPathhname(pathname: string) {
-  const handle = pathname.split("/").pop();
+  const handle = pathname.split("/").pop() || "";
   return handle;
 }
 
@@ -77,7 +77,10 @@ export const notShowMessagessButton = (pathname: string) => {
   return !routesWithBackButton.some((route) => pathname.includes(route));
 };
 
-export const formatDateTime = (dateTime: string) => {
+export const formatDateTime = (
+  dateTime: string | Date,
+  variation: "primary" | "secondary" | "time" = "primary",
+) => {
   const date = new Date(dateTime);
   const day = date.getDate();
   const month = date.toLocaleString("default", { month: "long" });
@@ -87,5 +90,17 @@ export const formatDateTime = (dateTime: string) => {
   const ampm = hours >= 12 ? "PM" : "AM";
   const formattedHours = hours % 12 || 12;
   const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+
+  if (variation === "secondary") {
+    const monthNumber = date.getMonth() + 1;
+    const formattedMonth = monthNumber < 10 ? `0${monthNumber}` : monthNumber;
+    const formattedDay = day < 10 ? `0${day}` : day;
+    return `${formattedDay}/${formattedMonth}/${year} ${formattedHours}:${formattedMinutes} ${ampm}`;
+  }
+
+  if (variation === "time") {
+    return `${formattedHours}:${formattedMinutes} ${ampm}`;
+  }
+
   return `${day} de ${month} de ${year} às ${formattedHours}:${formattedMinutes} ${ampm}`;
 };

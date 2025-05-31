@@ -20,10 +20,11 @@ export function useCreateProfile() {
   });
 }
 
-export function useGetProfileByHandle(handle: string) {
+export function useGetProfileByHandle(handle: string, enabled: boolean = true) {
   return useQuery({
     queryKey: ["profile", handle],
     queryFn: () => findProfileByHandle(handle),
+    enabled,
   });
 }
 
