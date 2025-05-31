@@ -4,7 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col items-center mt-24">
+    <div className="flex min-h-screen flex-col items-center mt-[56px]">
       <Tabs defaultValue="musicians" className="w-full">
         <Card className="w-full rounded-none shadow-none border-0 pb-0">
           <div className="px-4 flex flex-col gap-4">

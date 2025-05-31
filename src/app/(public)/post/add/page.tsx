@@ -70,7 +70,7 @@ export default function AddPostPage() {
   return (
     <div className=" mt-20 ">
       <Form {...form}>
-        <form onSubmit={handleSubmit(onSubmit, (err) => console.log(err))}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <Card className="w-full border-0 rounded-none shadow-none m-0 px-4">
             <div className="flex w-full">
               <UserAvatar avatar={user.avatar} className="w-10 h-10" />

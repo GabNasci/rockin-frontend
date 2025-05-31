@@ -17,7 +17,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMessages, useSendMessage } from "@/lib/firebase/hooks/useMessages";
 import { useEffect, useRef } from "react";
 import NoneMessages from "./_components/none-messages";
-import Loader from "@/components/shared/loader";
 
 export default function ConversationPage() {
   const endOfMessagesRef = useRef<HTMLDivElement | null>(null);
@@ -70,17 +69,17 @@ export default function ConversationPage() {
     });
     form.reset();
   };
+  console.log(messages);
+  console.log(conversationData);
+  console.log(isLoadingMessages);
 
   return (
-    <div className="flex min-h-screen flex-col gap-3 pt-[56px] mb-20">
+    <div className="flex h-full flex-col gap-3 mt-[56px] mb-20">
       <Form {...form}>
-        <form
-          onSubmit={handleSubmit(onSubmit, (e) => console.log(e))}
-          className="space-y-8"
-        >
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
           <div className="mt-4">
             {isLoadingMessages ? (
-              <Loader />
+              <Loading />
             ) : messages.length > 0 ? (
               messages.map((message, index) => (
                 <MessageText

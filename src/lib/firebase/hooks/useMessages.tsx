@@ -8,6 +8,8 @@ import {
   QuerySnapshot,
   DocumentData,
   addDoc,
+  limit,
+  getDocs,
 } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db } from "@/lib/firebase";
@@ -17,7 +19,7 @@ import { useEnsureConversation } from "@/models/conversations/useConversations";
 
 export function useMessages(conversationId?: number) {
   const [messages, setMessages] = useState<Message[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(!!conversationId);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     if (!conversationId) {
@@ -75,4 +77,28 @@ export function useSendMessage() {
       });
     },
   });
+}
+
+export async function getLastMessage(
+  conversationId: number,
+): Promise<Message | null> {
+  const q = query(
+    collection(db, "messages"),
+    where("conversationId", "==", conversationId),
+    orderBy("createdAt", "desc"),
+    limit(1),
+  );
+
+  const snapshot = await getDocs(q);
+  if (snapshot.empty) return null;
+
+  const doc = snapshot.docs[0];
+  const data = doc.data();
+
+  return {
+    text: data.text,
+    createdAt: data.createdAt?.toDate?.() ?? new Date(),
+    profileId: data.profileId,
+    conversationId: data.conversationId,
+  };
 }

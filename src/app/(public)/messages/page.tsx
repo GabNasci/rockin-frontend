@@ -12,6 +12,7 @@ export default function MessagesPage() {
         <ProfileConversationCard
           key={conversation.id}
           profile={conversation.profiles[0]}
+          conversationId={conversation.id}
         />
       ))}
     </div>
