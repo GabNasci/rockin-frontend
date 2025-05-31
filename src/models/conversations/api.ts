@@ -17,6 +17,6 @@ export async function getConversation(
 export async function createConversation(
   targetId: number,
 ): Promise<Conversation> {
-  const res = await api.post(`/conversations/${targetId}`);
+  const res = await api.post(`/conversations`, { targetId });
   return res.data;
 }
