@@ -41,7 +41,6 @@ export default function LocationStep() {
 
   const onSubmit = (values: LocationData) => {
     updateData({ location: values });
-    console.log(values);
     mutate({
       name: data.name,
       handle: data.handle,

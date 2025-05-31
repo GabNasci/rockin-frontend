@@ -24,7 +24,7 @@ export function ProfileConversationCard({
   return (
     <Card
       onClick={() => handleClick()}
-      className={`flex flex-row gap-2 px-3 py-3 w-full ${className}`}
+      className={`flex flex-row gap-2 px-3 py-3 w-full rounded-none cursor-pointer hover:bg-gray-100 ${className}`}
     >
       <Avatar className="w-[40px] h-[40px] flex items-center justify-center bg-gray-100">
         <AvatarImage src={getImageUrl(profile.avatar)} />

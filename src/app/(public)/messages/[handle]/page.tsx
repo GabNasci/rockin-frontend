@@ -4,50 +4,93 @@ import { useGetProfileByHandle } from "@/models/profiles/useProfiles";
 import { notFound, useParams } from "next/navigation";
 import { Loading } from "@/components/shared/loading";
 import { NavInput } from "./_components/nav-input";
-import { Message } from "@/models/messages/type";
 import MessageText from "./_components/message-text";
 import { useAuth } from "@/lib/contexts/auth-context";
-
-const messages: Message[] | undefined = [
-  {
-    id: 1,
-    text: "Aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-    profileId: 10,
-    createdAt: new Date(),
-  },
-  {
-    id: 2,
-    text: "Estou bem e você?",
-    profileId: 1,
-    createdAt: new Date(),
-  },
-];
+import { useGetConversation } from "@/models/conversations/useConversations";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import {
+  sendMessageSchema,
+  SendMessageSchema,
+} from "@/schemas/SendMessageSchema";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMessages, useSendMessage } from "@/lib/firebase/hooks/useMessages";
 
 export default function ConversationPage() {
   const { handle } = useParams() as { handle: string };
   const { user } = useAuth();
-  const { data, isLoading, isError } = useGetProfileByHandle(handle);
+  const {
+    data: profileData,
+    isLoading,
+    isError,
+  } = useGetProfileByHandle(handle);
+  const { data: conversationData } = useGetConversation(
+    profileData?.id,
+    !!profileData,
+  );
+  const { messages } = useMessages(conversationData?.id);
+  const { mutate } = useSendMessage();
+
+  const form = useForm<SendMessageSchema>({
+    resolver: zodResolver(sendMessageSchema),
+    defaultValues: {
+      text: "",
+    },
+    mode: "onSubmit",
+  });
+
+  const { control, handleSubmit } = form;
 
   if (!user) return <Loading />;
 
-  if (!data && !isError && isLoading) return <Loading />;
+  if (!profileData && !isError && isLoading) return <Loading />;
 
-  if (!data) return notFound();
+  if (!profileData) return notFound();
+
+  const onSubmit = (values: SendMessageSchema) => {
+    if (!profileData?.id) return;
+    mutate({
+      message: {
+        text: values.text,
+        profileId: user.id,
+        createdAt: new Date(),
+      },
+      targetId: profileData?.id,
+    });
+    form.reset();
+  };
 
   return (
     <div className="flex min-h-screen flex-col gap-3 pt-[56px]">
-      <div className="mt-4">
-        {messages &&
-          messages.length > 0 &&
-          messages.map((message) => (
-            <MessageText
-              key={message.id}
-              message={message}
-              isSender={user.id === message.profileId}
-            />
-          ))}
-      </div>
-      <NavInput />
+      <Form {...form}>
+        <form
+          onSubmit={handleSubmit(onSubmit, (e) => console.log(e))}
+          className="space-y-8"
+        >
+          <div className="mt-4">
+            {messages &&
+              messages.length > 0 &&
+              messages.map((message, index) => (
+                <MessageText
+                  key={index}
+                  message={message}
+                  isSender={user.id === message.profileId}
+                />
+              ))}
+          </div>
+          <FormField
+            control={control}
+            name="text"
+            render={({ field }) => (
+              <FormItem>
+                <FormControl>
+                  <NavInput {...field} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+        </form>
+      </Form>
     </div>
   );
 }

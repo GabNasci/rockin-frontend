@@ -1,6 +1,6 @@
 export type Message = {
-  id: number;
   text: string;
   profileId: number;
+  conversationId: number;
   createdAt: Date;
 };
