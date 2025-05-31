@@ -27,12 +27,14 @@ export default function MobileNav() {
   }, [pathname, user?.handle, profileHandle]);
 
   const items = useMemo(() => {
-    return navItems(user?.handle).map(({ href, label, icon }) => ({
-      href,
-      label,
-      icon,
-      isActive: pathname === href,
-    }));
+    return navItems(user?.handle)
+      .filter((item) => item.showInNav)
+      .map(({ href, label, icon }) => ({
+        href,
+        label,
+        icon,
+        isActive: pathname === href,
+      }));
   }, [pathname, user?.handle]);
 
   if (!showNav) return null;

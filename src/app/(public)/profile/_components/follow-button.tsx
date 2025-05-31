@@ -7,7 +7,6 @@ type FollowButtonProps = {
 
 export function FollowButton({ profileId }: FollowButtonProps) {
   const { user } = useAuth();
-  console.log(user?.following);
   const isFollowing = () => {
     return user?.following?.some(
       (recomendation) => recomendation.followingId === profileId,

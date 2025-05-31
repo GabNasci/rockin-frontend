@@ -31,4 +31,5 @@ export type ProfileResponse = {
   following: Recomendation[];
   bands: Band[];
   posts: { text: string }[];
+  locations: { city: string; state: string };
 };

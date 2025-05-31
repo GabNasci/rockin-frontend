@@ -12,6 +12,7 @@ interface NavButtonProps {
   label: string;
   icon: ComponentType<{ className?: string }>;
   isActive: boolean;
+  className?: string;
 }
 
 export function NavButton({
@@ -19,13 +20,14 @@ export function NavButton({
   label,
   icon: Icon,
   isActive,
+  className,
 }: NavButtonProps) {
   const router = useRouter();
   const { data: user } = useMe();
   const profileRedirect = (hrefProp: string) => {
-    if (hrefProp === "/profile") {
+    if (hrefProp.includes("/profile")) {
       if (user) {
-        router.push("/profile");
+        router.push(`/profile/${user.handle}`);
       } else {
         router.push("/login");
       }
@@ -42,7 +44,7 @@ export function NavButton({
         isActive
           ? "text-primary border-b-4 border-primary"
           : "text-muted-foreground"
-      }`}
+      } ${className}`}
       onClick={() => profileRedirect(href)}
     >
       {showImage ? (

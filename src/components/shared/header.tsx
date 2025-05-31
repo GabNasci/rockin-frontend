@@ -7,25 +7,34 @@ import { useMemo, memo } from "react";
 import { UserIcon } from "../icons";
 import { useAuth } from "@/lib/contexts/auth-context";
 import { useRouter } from "next/navigation";
-import { mustHaveBackButton, navItems } from "@/lib/utils";
+import {
+  mustHaveBackButton,
+  navItems,
+  notShowMessagessButton,
+} from "@/lib/utils";
 import { MiddleHeader } from "./middle-header";
+import { MessageSquare } from "lucide-react";
 
 const Header = memo(function Header() {
   const router = useRouter();
   const { user } = useAuth();
   const pathname = usePathname();
 
+  const isMessagePage = pathname.includes("/messages");
+
   const showHeader = useMemo(() => {
     return pathname !== "/login" && pathname !== "/signup";
   }, [pathname]);
 
   const items = useMemo(() => {
-    return navItems(user?.handle).map(({ href, label, icon }) => ({
-      href,
-      label,
-      icon,
-      isActive: pathname === href,
-    }));
+    return navItems(user?.handle)
+      .filter((item) => item.showInNav)
+      .map(({ href, label, icon }) => ({
+        href,
+        label,
+        icon,
+        isActive: pathname === href,
+      }));
   }, [pathname, user?.handle]);
 
   const goBack = () => {
@@ -35,7 +44,9 @@ const Header = memo(function Header() {
   if (!showHeader) return null;
 
   return (
-    <header className="bg-white flex md:justify-between justify-center px-16 fixed top-0 left-0 right-0 z-50">
+    <header
+      className={`bg-white flex md:justify-between ${isMessagePage ? "" : "justify-center"}  px-16 fixed top-0 left-0 right-0 z-50`}
+    >
       {mustHaveBackButton(pathname) && (
         <div
           onClick={() => goBack()}
@@ -59,15 +70,34 @@ const Header = memo(function Header() {
         ))}
       </div>
       <div className="hidden md:flex items-center justify-end flex-1/3">
-        <div className="w-14">
+        <div className="flex gap-3">
           <NavButton
             href="/profile"
             label="Perfil"
             icon={UserIcon}
             isActive={pathname === "/profile"}
+            className="px-2"
+          />
+          <NavButton
+            href="/messages"
+            label="Chat"
+            icon={MessageSquare}
+            className="px-2"
+            isActive={pathname === "/messages"}
           />
         </div>
       </div>
+      {notShowMessagessButton(pathname) && (
+        <div className="flex md:hidden absolute right-6 cursor-pointer">
+          <NavButton
+            href="/messages"
+            label="Chat"
+            icon={MessageSquare}
+            className="px-2"
+            isActive={pathname === "/messages"}
+          />
+        </div>
+      )}
     </header>
   );
 });
