@@ -15,8 +15,13 @@ import {
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMessages, useSendMessage } from "@/lib/firebase/hooks/useMessages";
+import { useEffect, useRef } from "react";
+import NoneMessages from "./_components/none-messages";
+import Loader from "@/components/shared/loader";
 
 export default function ConversationPage() {
+  const endOfMessagesRef = useRef<HTMLDivElement | null>(null);
+
   const { handle } = useParams() as { handle: string };
   const { user } = useAuth();
   const {
@@ -28,7 +33,9 @@ export default function ConversationPage() {
     profileData?.id,
     !!profileData,
   );
-  const { messages } = useMessages(conversationData?.id);
+  const { messages, isLoading: isLoadingMessages } = useMessages(
+    conversationData?.id,
+  );
   const { mutate } = useSendMessage();
 
   const form = useForm<SendMessageSchema>({
@@ -38,6 +45,10 @@ export default function ConversationPage() {
     },
     mode: "onSubmit",
   });
+
+  useEffect(() => {
+    endOfMessagesRef.current?.scrollIntoView({ behavior: "instant" });
+  }, [messages]);
 
   const { control, handleSubmit } = form;
 
@@ -61,22 +72,27 @@ export default function ConversationPage() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col gap-3 pt-[56px]">
+    <div className="flex min-h-screen flex-col gap-3 pt-[56px] mb-20">
       <Form {...form}>
         <form
           onSubmit={handleSubmit(onSubmit, (e) => console.log(e))}
           className="space-y-8"
         >
           <div className="mt-4">
-            {messages &&
-              messages.length > 0 &&
+            {isLoadingMessages ? (
+              <Loader />
+            ) : messages.length > 0 ? (
               messages.map((message, index) => (
                 <MessageText
                   key={index}
                   message={message}
                   isSender={user.id === message.profileId}
                 />
-              ))}
+              ))
+            ) : (
+              <NoneMessages />
+            )}
+            <div ref={endOfMessagesRef} />
           </div>
           <FormField
             control={control}

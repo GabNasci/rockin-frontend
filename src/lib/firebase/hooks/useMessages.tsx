@@ -17,9 +17,13 @@ import { useEnsureConversation } from "@/models/conversations/useConversations";
 
 export function useMessages(conversationId?: number) {
   const [messages, setMessages] = useState<Message[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(!!conversationId);
 
   useEffect(() => {
-    if (!conversationId) return;
+    if (!conversationId) {
+      setIsLoading(false);
+      return;
+    }
 
     const q = query(
       collection(db, "messages"),
@@ -40,14 +44,16 @@ export function useMessages(conversationId?: number) {
             createdAt: raw.createdAt?.toDate?.() ?? new Date(),
           };
         });
+
         setMessages(data);
+        setIsLoading(false);
       },
     );
 
     return () => unsubscribe();
   }, [conversationId]);
 
-  return { messages };
+  return { messages, isLoading };
 }
 
 export function useSendMessage() {
