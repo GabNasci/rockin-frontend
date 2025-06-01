@@ -78,16 +78,18 @@ const Header = memo(function Header() {
             isActive={pathname === "/profile"}
             className="px-2"
           />
-          <NavButton
-            href="/messages"
-            label="Chat"
-            icon={MessageSquare}
-            className="px-2"
-            isActive={pathname === "/messages"}
-          />
+          {notShowMessagessButton(pathname) && user && (
+            <NavButton
+              href="/messages"
+              label="Chat"
+              icon={MessageSquare}
+              className="px-2"
+              isActive={pathname === "/messages"}
+            />
+          )}
         </div>
       </div>
-      {notShowMessagessButton(pathname) && (
+      {notShowMessagessButton(pathname) && user && (
         <div className="flex md:hidden absolute right-6 cursor-pointer">
           <NavButton
             href="/messages"

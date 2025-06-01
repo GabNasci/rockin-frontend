@@ -4,6 +4,8 @@ export const HANDLE_REGEX = /^[a-zA-Z0-9._]+$/;
 
 export const TOKEN_KEY = "äuth_token";
 
+export const MAX_PROFILES = 1;
+
 export enum ProfileTypeID {
   MUSICIAN = 1,
   ESTABLISHMENT = 2,

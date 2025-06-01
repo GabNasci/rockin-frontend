@@ -28,5 +28,8 @@ export function useMe() {
     retry: 1,
     staleTime: 1000 * 60 * 5, // 5 minutos
     enabled: true,
+    meta: {
+      silent: true,
+    },
   });
 }

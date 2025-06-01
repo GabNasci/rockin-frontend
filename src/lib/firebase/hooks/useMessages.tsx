@@ -39,7 +39,6 @@ export function useMessages(conversationId?: number) {
         const data: Message[] = snapshot.docs.map((doc) => {
           const raw = doc.data();
           return {
-            id: doc.id,
             text: raw.text,
             profileId: raw.profileId,
             conversationId: raw.conversationId,

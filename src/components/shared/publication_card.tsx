@@ -4,11 +4,28 @@ import ProfileInfoHeader from "./profile_info_header";
 import { MediaCarousel } from "./carousel";
 import ProfileBadge from "./profileBadge";
 import { formatDateTime } from "@/lib/utils";
+import { useEffect, useState } from "react";
+import { useGetLinkPreview } from "@/models/posts/usePosts";
+import { Skeleton } from "../ui/skeleton";
+import LinkPreviewCard from "./link-preview-card";
+
 type PublicationCardProps = {
   post: PostResponse;
 };
 
 export default function PublicationCard({ post }: PublicationCardProps) {
+  const [linkPreview, setLinkPreview] = useState(null);
+  const { mutate: fetchPreview, isPending } = useGetLinkPreview();
+
+  useEffect(() => {
+    if (post.link) {
+      fetchPreview(post.link, {
+        onSuccess: (data) => setLinkPreview(data),
+        onError: () => setLinkPreview(null),
+      });
+    }
+  }, [post.link]);
+
   return (
     <Card className="relative rounded-none gap-4 shadow-none border-0 pb-0 py-3 px-4">
       <ProfileInfoHeader profile={post.profile} />
@@ -17,6 +34,8 @@ export default function PublicationCard({ post }: PublicationCardProps) {
         <div className="flex justify-center w-full">
           <MediaCarousel medias={post.medias} />
         </div>
+        {isPending && <Skeleton className="w-full h-16" />}
+        {linkPreview && <LinkPreviewCard linkPreview={linkPreview} />}
       </div>
       <CardFooter className="px-0 flex flex-col items-start gap-2">
         <div>

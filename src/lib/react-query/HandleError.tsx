@@ -25,18 +25,27 @@ function isBackendErrorResponse(
     typeof (error as any).response.data.statusCode === "number"
   );
 }
-
-function handleError(error: unknown) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function handleError(error: unknown, meta?: Record<string, any>) {
+  if (meta?.silent) {
+    return;
+  }
   const prefix = "Erro";
 
   if (isBackendErrorResponse(error)) {
     const backendError = error.response.data;
+
+    if (backendError.message.includes("Invalid token")) {
+      return;
+    }
     backendError.message.forEach((msg) =>
       toast.error(`${prefix} ${backendError.statusCode}: ${msg}`),
     );
   } else {
     const message =
       error instanceof Error ? error.message : "Erro desconhecido";
+
+    if (message.includes("Invalid token")) return;
 
     toast.error(`${prefix}: ${message}`);
   }
