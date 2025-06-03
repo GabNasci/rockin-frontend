@@ -24,7 +24,7 @@ import { useCreatePost, useGetLinkPreview } from "@/models/posts/usePosts";
 import { Input } from "@/components/ui/input";
 import { SimpleProfile } from "@/models/profiles/types";
 import ProfileBadge from "../../../../components/shared/profileBadge";
-import { AddProfileDialog } from "./_components/addProfilesDialog";
+import { AddProfileDialog } from "./_components/add-profile.dialog";
 import { X } from "lucide-react";
 import { useProtectedRoute } from "@/hooks/useProtectedRoute";
 import { Skeleton } from "@/components/ui/skeleton";
