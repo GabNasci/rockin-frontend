@@ -29,3 +29,15 @@ export type Location = {
   country: string;
   city: string;
 };
+
+export type SearchProfilesResponse = {
+  profiles: SimpleProfile[];
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+  isFirstPage: boolean;
+  isLastPage: boolean;
+  nextPage: number | null;
+  prevPage: number | null;
+};

@@ -4,10 +4,12 @@ import {
   findProfileByHandle,
   getProfiles,
   searchFollowings,
+  searchProfiles,
 } from "./api";
 import { Profile } from "./types";
 import { toast } from "@/lib/toast";
 import { useRouter } from "next/navigation";
+import { SearchProfilesData } from "@/schemas/SearchProfilesSchema";
 
 export function useCreateProfile() {
   const router = useRouter();
@@ -38,5 +40,11 @@ export function useGetProfiles() {
 export function useSearchFollowings() {
   return useMutation({
     mutationFn: (search: string) => searchFollowings(search),
+  });
+}
+
+export function useSearchProfiles() {
+  return useMutation({
+    mutationFn: (search: SearchProfilesData) => searchProfiles(search),
   });
 }

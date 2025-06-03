@@ -70,9 +70,6 @@ export default function ConversationPage() {
     });
     form.reset();
   };
-  console.log(messages);
-  console.log(conversationData);
-  console.log(isLoadingMessages);
 
   return (
     <div className="flex h-full flex-col gap-3 mt-[56px] mb-20">

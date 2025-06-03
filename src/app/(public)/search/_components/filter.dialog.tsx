@@ -26,15 +26,21 @@ import { SlidersHorizontalIcon } from "lucide-react";
 import { UseFormReturn } from "react-hook-form";
 
 type FilterDialogProps = {
+  tab: "musicians" | "establishments";
   form: UseFormReturn<SearchProfilesData>;
   handleSubmit: () => void;
+  defaultMusicianValues: SearchProfilesData;
+  defaultPlacesValues: SearchProfilesData;
 };
 
 export default function FilterDialog({
+  tab,
   form,
   handleSubmit,
+  defaultMusicianValues,
+  defaultPlacesValues,
 }: FilterDialogProps) {
-  const { control } = form;
+  const { control, reset } = form;
 
   const { data: genresData } = useGenres();
   const { data: specialitiesData } = useSpecialitiesByProfileType(1);
@@ -42,14 +48,22 @@ export default function FilterDialog({
   const genresOptions = mapToOptions(
     genresData,
     (g) => g.name,
-    (g) => g.id,
+    (g) => g.name,
   );
 
   const specialitiesOptions = mapToOptions(
     specialitiesData,
     (s) => s.name,
-    (s) => s.id,
+    (s) => s.name,
   );
+
+  const resetForm = () => {
+    if (tab === "musicians") {
+      reset(defaultMusicianValues);
+    } else {
+      reset(defaultPlacesValues);
+    }
+  };
 
   return (
     <Dialog>
@@ -152,7 +166,7 @@ export default function FilterDialog({
           <Button
             variant="outline"
             className="cursor-pointer"
-            onClick={() => form.reset()}
+            onClick={() => resetForm()}
             type="reset"
           >
             Limpar

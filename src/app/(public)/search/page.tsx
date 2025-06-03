@@ -17,6 +17,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useEffect, useState } from "react";
+import { useSearchProfiles } from "@/models/profiles/useProfiles";
+import ProfilesPaginationList from "./_components/profiles-pagination-list";
 
 const defaultMusicianValues: SearchProfilesData = {
   search: "",
@@ -24,7 +26,7 @@ const defaultMusicianValues: SearchProfilesData = {
   specialities: [],
   limit: 20,
   page: 1,
-  profileType: ["Músico(a)", "Banda"],
+  profileTypes: ["Músico(a)", "Banda"],
   includeBands: true,
 };
 
@@ -34,7 +36,7 @@ const defaultPlacesValues: SearchProfilesData = {
   specialities: [],
   limit: 20,
   page: 1,
-  profileType: ["Estabelecimento"],
+  profileTypes: ["Estabelecimento"],
   includeBands: false,
 };
 
@@ -50,6 +52,19 @@ export default function Home() {
 
   const { control, handleSubmit, reset } = form;
 
+  const { mutate, data, isPending } = useSearchProfiles();
+
+  useEffect(() => {
+    mutate({
+      search: form.getValues("search"),
+      genres: form.getValues("genres"),
+      specialities: form.getValues("specialities"),
+      limit: form.getValues("limit"),
+      page: form.getValues("page"),
+      profileTypes: form.getValues("profileTypes"),
+    });
+  }, []);
+
   useEffect(() => {
     if (tab === "musicians") {
       reset(defaultMusicianValues);
@@ -58,8 +73,18 @@ export default function Home() {
     }
   }, [tab, reset]);
 
+  console.log(data);
+
   const onSubmit = (values: SearchProfilesData) => {
     console.log(values);
+    mutate({
+      search: values.search,
+      genres: values.genres,
+      specialities: values.specialities,
+      limit: values.limit,
+      page: values.page,
+      profileTypes: values.profileTypes,
+    });
   };
 
   return (
@@ -97,12 +122,25 @@ export default function Home() {
                   <TabsTrigger value="establishments">Lugares</TabsTrigger>
                 </TabsList>
               </Card>
-              <TabsContent value="musicians" className="px-4 pt-2">
-                <div className="flex justify-between">
-                  <h3 className="font-bold">Sugestões:</h3>
+              <TabsContent value="musicians" className="pt-2">
+                <div className="flex justify-between px-4">
+                  <h3 className="font-bold flex items-end">Resultados:</h3>
                   <FilterDialog
+                    tab="musicians"
+                    defaultMusicianValues={defaultMusicianValues}
+                    defaultPlacesValues={defaultPlacesValues}
                     form={form}
                     handleSubmit={handleSubmit(onSubmit)}
+                  />
+                </div>
+                <div className="mt-4">
+                  <ProfilesPaginationList
+                    data={data}
+                    isLoading={isPending}
+                    onPageChange={(newPage) => {
+                      form.setValue("page", newPage);
+                      handleSubmit(onSubmit)();
+                    }}
                   />
                 </div>
               </TabsContent>

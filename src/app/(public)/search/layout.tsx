@@ -1,13 +1,7 @@
-import { FormProvider } from "@/lib/contexts/form.context";
-
-export default function HomeLayout({
+export default function SearchLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <div>
-      <FormProvider initialData={{}}>{children}</FormProvider>
-    </div>
-  );
+  return <div>{children}</div>;
 }
