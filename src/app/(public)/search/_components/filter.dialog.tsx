@@ -1,5 +1,6 @@
 import MultipleSelector from "@/components/shared/multi-select";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Dialog,
   DialogClose,
@@ -17,6 +18,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Slider } from "@/components/ui/slider";
 import { mapToOptions } from "@/lib/utils";
 import { useGenres } from "@/models/genres/useGenres";
 import { useSpecialitiesByProfileType } from "@/models/specialities/useSpecialities";
@@ -40,7 +42,9 @@ export default function FilterDialog({
   defaultMusicianValues,
   defaultPlacesValues,
 }: FilterDialogProps) {
-  const { control, reset } = form;
+  const { control, reset, watch, setValue } = form;
+
+  const searchByRadius = watch("searchByRadius");
 
   const { data: genresData } = useGenres();
   const { data: specialitiesData } = useSpecialitiesByProfileType(1);
@@ -83,7 +87,7 @@ export default function FilterDialog({
             Defina os filtros para buscar os perfis.
           </DialogDescription>
         </DialogHeader>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4 mb-8">
           <FormField
             control={control}
             name="search"
@@ -129,38 +133,86 @@ export default function FilterDialog({
               );
             }}
           />
+          {tab === "musicians" && (
+            <FormField
+              control={control}
+              name="specialities"
+              render={({ field }) => {
+                const selectedOptions = specialitiesOptions.filter((opt) =>
+                  field.value?.includes(opt.value),
+                );
+
+                return (
+                  <FormItem>
+                    <FormLabel>Especialidades:</FormLabel>
+                    <FormControl>
+                      <MultipleSelector
+                        value={selectedOptions}
+                        onChange={(newOptions) => {
+                          const newIds = newOptions.map((opt) => opt.value);
+                          field.onChange(newIds);
+                        }}
+                        defaultOptions={specialitiesOptions}
+                        placeholder="Selecione as especialidades..."
+                        emptyIndicator={
+                          <p className="text-center text-sm leading-1 text-muted-foreground">
+                            Nenhum resultado encontrado.
+                          </p>
+                        }
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            />
+          )}
           <FormField
             control={control}
-            name="specialities"
-            render={({ field }) => {
-              const selectedOptions = specialitiesOptions.filter((opt) =>
-                field.value?.includes(opt.value),
-              );
-
-              return (
-                <FormItem>
-                  <FormLabel>Especialidades:</FormLabel>
-                  <FormControl>
-                    <MultipleSelector
-                      value={selectedOptions}
-                      onChange={(newOptions) => {
-                        const newIds = newOptions.map((opt) => opt.value);
-                        field.onChange(newIds);
-                      }}
-                      defaultOptions={specialitiesOptions}
-                      placeholder="Selecione as especialidades..."
-                      emptyIndicator={
-                        <p className="text-center text-sm leading-1 text-muted-foreground">
-                          Nenhum resultado encontrado.
-                        </p>
+            name="searchByRadius"
+            render={({ field }) => (
+              <FormItem className="flex">
+                <FormLabel>Buscar por raio?</FormLabel>
+                <FormControl>
+                  <Checkbox
+                    className="cursor-pointer"
+                    checked={field.value}
+                    onCheckedChange={(checked) => {
+                      field.onChange(checked);
+                      if (!checked) {
+                        setValue("radius", undefined);
                       }
+                    }}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {searchByRadius && (
+            <FormField
+              control={control}
+              name="radius"
+              render={({ field }) => (
+                <FormItem>
+                  <div className="text-center text-sm text-muted-foreground mt-2">
+                    {field.value ?? 0} km
+                  </div>
+                  <FormControl>
+                    <Slider
+                      defaultValue={field.value ? [field.value] : [33]}
+                      value={field.value ? [field.value] : [33]}
+                      onValueChange={(val) => field.onChange(val[0])}
+                      min={0}
+                      max={100}
+                      step={1}
                     />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
-              );
-            }}
-          />
+              )}
+            />
+          )}
         </div>
         <DialogFooter className="flex flex-row justify-between">
           <Button

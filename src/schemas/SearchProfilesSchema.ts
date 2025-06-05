@@ -6,6 +6,7 @@ export const searchProfileSchema = z.object({
   genres: z.array(z.string()).optional(),
   specialities: z.array(z.string()).optional(),
   includeBands: z.boolean().optional(),
+  searchByRadius: z.boolean().optional(),
   radius: z.number().optional(),
   page: z.number().optional(),
   limit: z.number().optional(),

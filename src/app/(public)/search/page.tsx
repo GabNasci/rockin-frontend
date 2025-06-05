@@ -84,6 +84,7 @@ export default function Home() {
       limit: values.limit,
       page: values.page,
       profileTypes: values.profileTypes,
+      radius: values.radius,
     });
   };
 

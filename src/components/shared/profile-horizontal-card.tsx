@@ -1,5 +1,5 @@
 import { ProfileResponse } from "@/models/auth/types";
-import { Card, CardContent, CardTitle } from "../ui/card";
+import { Card, CardContent, CardDescription, CardTitle } from "../ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { getImageUrl } from "@/lib/utils";
 import { UserIcon } from "../icons";
@@ -37,6 +37,7 @@ export function ProfileHorizontalCard({
       </Avatar>
       <CardContent className="p-0 flex flex-col gap-1">
         <CardTitle>{profile.name}</CardTitle>
+        <CardDescription>@{profile.handle}</CardDescription>
         <div className="flex gap-2">
           {profile?.profile_type_id === ProfileTypeID.BAND
             ? profile?.genres?.map((genre) => (
@@ -47,7 +48,7 @@ export function ProfileHorizontalCard({
                   {genre.name}
                 </Badge>
               ))
-            : profile?.specialities?.join(", ")}
+            : profile?.specialities?.map((s) => s.name).join(", ")}
         </div>
       </CardContent>
     </Card>
