@@ -9,6 +9,7 @@ import { SimpleProfile } from "@/models/profiles/types";
 
 type ProfileHorizontalCardProps = {
   profile: ProfileResponse | SimpleProfile;
+  onClick?: () => void;
   onAdd?: (profile: SimpleProfile) => void;
   className?: string;
 };
@@ -16,11 +17,16 @@ type ProfileHorizontalCardProps = {
 export function ProfileHorizontalCard({
   profile,
   onAdd,
+  onClick,
   className,
 }: ProfileHorizontalCardProps) {
   const handleAdd = (profile: SimpleProfile | ProfileResponse) => {
     if (onAdd) {
       onAdd(profile);
+    } else {
+      if (onClick) {
+        onClick();
+      }
     }
   };
 
@@ -30,10 +36,13 @@ export function ProfileHorizontalCard({
       className={`flex flex-row gap-2 px-3 py-3 w-full ${className}`}
     >
       <Avatar className="w-[40px] h-[40px] flex items-center justify-center bg-gray-100">
-        <AvatarImage src={getImageUrl(profile.avatar)} />
-        <AvatarFallback>
-          <UserIcon className="text-gray-300" />
-        </AvatarFallback>
+        {profile.avatar ? (
+          <AvatarImage src={getImageUrl(profile.avatar)} />
+        ) : (
+          <AvatarFallback>
+            <UserIcon className="text-gray-300" />
+          </AvatarFallback>
+        )}
       </Avatar>
       <CardContent className="p-0 flex flex-col gap-1">
         <CardTitle>{profile.name}</CardTitle>

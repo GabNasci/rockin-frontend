@@ -33,3 +33,15 @@ export function useMe() {
     },
   });
 }
+
+export function useLogout() {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+  return () => {
+    localStorage.removeItem(TOKEN_KEY);
+    queryClient.setQueryData(["me"], null);
+    queryClient.clear();
+
+    router.push("/home");
+  };
+}

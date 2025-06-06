@@ -57,7 +57,7 @@ export function ProfileInfoCard({ user }: { user: ProfileResponse }) {
           <p className="text-sm">{user?.about}</p>
         </CardContent>
       )}
-      {user.locations.city && user.locations.state && (
+      {user.locations?.city && user.locations?.state && (
         <CardContent className="flex gap-2">
           <h2 className="font-bold">Região:</h2>
           <p className="text-sm">{`${user.locations.city} - ${user.locations.state}`}</p>

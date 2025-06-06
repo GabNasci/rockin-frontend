@@ -73,10 +73,7 @@ export default function Home() {
     }
   }, [tab, reset]);
 
-  console.log(data);
-
   const onSubmit = (values: SearchProfilesData) => {
-    console.log(values);
     mutate({
       search: values.search,
       genres: values.genres,
@@ -89,7 +86,7 @@ export default function Home() {
   };
 
   return (
-    <div>
+    <div className="mb-20">
       <Form {...form}>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
           <div className="flex min-h-screen flex-col items-center mt-[56px]">

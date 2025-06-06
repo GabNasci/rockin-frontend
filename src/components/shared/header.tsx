@@ -14,6 +14,7 @@ import {
 } from "@/lib/utils";
 import { MiddleHeader } from "./middle-header";
 import { MessageSquare } from "lucide-react";
+import { DropdownMenuAccount } from "./dropdown-menu-account";
 
 const Header = memo(function Header() {
   const router = useRouter();
@@ -21,6 +22,8 @@ const Header = memo(function Header() {
   const pathname = usePathname();
 
   const isMessagePage = pathname.includes("/messages");
+
+  const isProfilePage = pathname.includes("/profile");
 
   const showHeader = useMemo(() => {
     return pathname !== "/login" && pathname !== "/signup";
@@ -89,6 +92,11 @@ const Header = memo(function Header() {
           )}
         </div>
       </div>
+      {isProfilePage && (
+        <div className="flex md:hidden absolute right-3 cursor-pointer">
+          <DropdownMenuAccount />
+        </div>
+      )}
       {notShowMessagessButton(pathname) && user && (
         <div className="flex md:hidden absolute right-6 cursor-pointer">
           <NavButton

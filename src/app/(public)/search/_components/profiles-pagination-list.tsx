@@ -1,8 +1,10 @@
+"use client";
 import Loader from "@/components/shared/loader";
 import { ProfileHorizontalCard } from "@/components/shared/profile-horizontal-card";
-import { SearchProfilesResponse } from "@/models/profiles/types";
+import { SearchProfilesResponse, SimpleProfile } from "@/models/profiles/types";
 import PaginationControl from "./pagination-control";
 import NoProfilesFound from "./no-profiles-found";
+import { useRouter } from "next/navigation";
 
 export default function ProfilesPaginationList({
   data,
@@ -13,6 +15,7 @@ export default function ProfilesPaginationList({
   isLoading: boolean;
   onPageChange: (page: number) => void;
 }) {
+  const router = useRouter();
   if (isLoading) {
     return <Loader className="h-10 w-10 " />;
   }
@@ -25,12 +28,17 @@ export default function ProfilesPaginationList({
     return <NoProfilesFound />;
   }
 
+  const onOpenProfile = (profile: SimpleProfile) => {
+    router.push(`/profile/${profile.handle}`);
+  };
+
   return (
     <div>
       <div className="flex flex-col">
         {data?.profiles.map((profile) => (
           <ProfileHorizontalCard
-            className="w-full rounded-none py-6"
+            className="w-full rounded-none py-6 hover:bg-gray-50 cursor-pointer"
+            onClick={() => onOpenProfile(profile)}
             key={profile.id}
             profile={profile}
           />

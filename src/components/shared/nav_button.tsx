@@ -23,7 +23,7 @@ export function NavButton({
   className,
 }: NavButtonProps) {
   const router = useRouter();
-  const { user } = useAuth();
+  const { user, isLoggedIn } = useAuth();
   const profileRedirect = (hrefProp: string) => {
     if (hrefProp.includes("/profile")) {
       if (user) {
@@ -36,7 +36,8 @@ export function NavButton({
     }
   };
 
-  const showImage = user !== undefined && user?.avatar && label == "Perfil";
+  const showImage =
+    user !== undefined && isLoggedIn && user?.avatar && label == "Perfil";
 
   return (
     <button
