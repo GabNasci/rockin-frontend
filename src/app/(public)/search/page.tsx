@@ -73,6 +73,23 @@ export default function Home() {
     }
   }, [tab, reset]);
 
+  const onChangeTab = (tab: "musicians" | "establishments") => {
+    if (tab === "musicians") {
+      reset(defaultMusicianValues);
+    } else {
+      reset(defaultPlacesValues);
+    }
+    mutate({
+      search: form.getValues("search"),
+      genres: form.getValues("genres"),
+      specialities: form.getValues("specialities"),
+      limit: form.getValues("limit"),
+      page: form.getValues("page"),
+      profileTypes: form.getValues("profileTypes"),
+    });
+    setTab(tab);
+  };
+
   const onSubmit = (values: SearchProfilesData) => {
     mutate({
       search: values.search,
@@ -93,7 +110,7 @@ export default function Home() {
             <Tabs
               defaultValue="musicians"
               value={tab}
-              onValueChange={(val) => setTab(val as typeof tab)}
+              onValueChange={(val) => onChangeTab(val as typeof tab)}
               className="w-full"
             >
               <Card className="w-full rounded-none shadow-none border-0 pb-0">
@@ -142,9 +159,26 @@ export default function Home() {
                   />
                 </div>
               </TabsContent>
-              <TabsContent value="establishments" className="px-4 pt-2">
-                <div>
-                  <h3 className="font-bold">Sugestões:</h3>
+              <TabsContent value="establishments" className=" pt-2">
+                <div className="flex justify-between px-4">
+                  <h3 className="font-bold flex items-end">Resultados:</h3>
+                  <FilterDialog
+                    tab="establishments"
+                    defaultMusicianValues={defaultMusicianValues}
+                    defaultPlacesValues={defaultPlacesValues}
+                    form={form}
+                    handleSubmit={handleSubmit(onSubmit)}
+                  />
+                </div>
+                <div className="mt-4">
+                  <ProfilesPaginationList
+                    data={data}
+                    isLoading={isPending}
+                    onPageChange={(newPage) => {
+                      form.setValue("page", newPage);
+                      handleSubmit(onSubmit)();
+                    }}
+                  />
                 </div>
               </TabsContent>
             </Tabs>

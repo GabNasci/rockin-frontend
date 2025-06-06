@@ -19,6 +19,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
+import { ProfileTypeID } from "@/lib/constants";
+import { useAuth } from "@/lib/contexts/auth-context";
 import { mapToOptions } from "@/lib/utils";
 import { useGenres } from "@/models/genres/useGenres";
 import { useSpecialitiesByProfileType } from "@/models/specialities/useSpecialities";
@@ -44,10 +46,14 @@ export default function FilterDialog({
 }: FilterDialogProps) {
   const { control, reset, watch, setValue } = form;
 
+  const { isLoggedIn } = useAuth();
+
   const searchByRadius = watch("searchByRadius");
 
   const { data: genresData } = useGenres();
-  const { data: specialitiesData } = useSpecialitiesByProfileType(1);
+  const { data: specialitiesData } = useSpecialitiesByProfileType(
+    tab === "musicians" ? ProfileTypeID.MUSICIAN : ProfileTypeID.ESTABLISHMENT,
+  );
 
   const genresOptions = mapToOptions(
     genresData,
@@ -133,40 +139,39 @@ export default function FilterDialog({
               );
             }}
           />
-          {tab === "musicians" && (
-            <FormField
-              control={control}
-              name="specialities"
-              render={({ field }) => {
-                const selectedOptions = specialitiesOptions.filter((opt) =>
-                  field.value?.includes(opt.value),
-                );
+          <FormField
+            control={control}
+            name="specialities"
+            render={({ field }) => {
+              const selectedOptions = specialitiesOptions.filter((opt) =>
+                field.value?.includes(opt.value),
+              );
 
-                return (
-                  <FormItem>
-                    <FormLabel>Especialidades:</FormLabel>
-                    <FormControl>
-                      <MultipleSelector
-                        value={selectedOptions}
-                        onChange={(newOptions) => {
-                          const newIds = newOptions.map((opt) => opt.value);
-                          field.onChange(newIds);
-                        }}
-                        defaultOptions={specialitiesOptions}
-                        placeholder="Selecione as especialidades..."
-                        emptyIndicator={
-                          <p className="text-center text-sm leading-1 text-muted-foreground">
-                            Nenhum resultado encontrado.
-                          </p>
-                        }
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                );
-              }}
-            />
-          )}
+              return (
+                <FormItem>
+                  <FormLabel>Especialidades:</FormLabel>
+                  <FormControl>
+                    <MultipleSelector
+                      value={selectedOptions}
+                      onChange={(newOptions) => {
+                        const newIds = newOptions.map((opt) => opt.value);
+                        field.onChange(newIds);
+                      }}
+                      defaultOptions={specialitiesOptions}
+                      placeholder="Selecione as especialidades..."
+                      emptyIndicator={
+                        <p className="text-center text-sm leading-1 text-muted-foreground">
+                          Nenhum resultado encontrado.
+                        </p>
+                      }
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          />
+
           <FormField
             control={control}
             name="searchByRadius"
@@ -189,7 +194,7 @@ export default function FilterDialog({
               </FormItem>
             )}
           />
-          {searchByRadius && (
+          {searchByRadius && isLoggedIn && (
             <FormField
               control={control}
               name="radius"
