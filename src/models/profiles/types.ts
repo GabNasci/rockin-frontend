@@ -19,6 +19,9 @@ export type SimpleProfile = {
   profile_type_id: number;
   avatar: string | null;
   specialities: Speciality[];
+  band?: {
+    members: Omit<SimpleProfile, "members">[];
+  } | null;
   genres: Genre[];
 };
 

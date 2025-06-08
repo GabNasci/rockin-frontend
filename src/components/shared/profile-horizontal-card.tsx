@@ -6,6 +6,7 @@ import { UserIcon } from "../icons";
 import { Badge } from "../ui/badge";
 import { ProfileTypeID } from "@/lib/constants";
 import { SimpleProfile } from "@/models/profiles/types";
+import ListProfilesAvatar from "./list-profiles-avatar";
 
 type ProfileHorizontalCardProps = {
   profile: ProfileResponse | SimpleProfile;
@@ -30,6 +31,8 @@ export function ProfileHorizontalCard({
     }
   };
 
+  console.log(profile.band?.members);
+
   return (
     <Card
       onClick={() => handleAdd(profile)}
@@ -44,21 +47,26 @@ export function ProfileHorizontalCard({
           </AvatarFallback>
         )}
       </Avatar>
-      <CardContent className="p-0 flex flex-col gap-1">
-        <CardTitle>{profile.name}</CardTitle>
-        <CardDescription>@{profile.handle}</CardDescription>
-        <div className="flex gap-2">
-          {profile?.profile_type_id === ProfileTypeID.BAND
-            ? profile?.genres?.map((genre) => (
-                <Badge
-                  key={genre.id}
-                  className="bg-primary text-white font-bold text-xs rounded-full"
-                >
-                  {genre.name}
-                </Badge>
-              ))
-            : profile?.specialities?.map((s) => s.name).join(", ")}
+      <CardContent className="p-0 flex flex-row justify-between w-full">
+        <div className="p-0 flex flex-col w-full">
+          <CardTitle>{profile.name}</CardTitle>
+          <CardDescription>@{profile.handle}</CardDescription>
+          <div className="flex gap-2">
+            {profile?.profile_type_id === ProfileTypeID.BAND
+              ? profile?.genres?.map((genre) => (
+                  <Badge
+                    key={genre.id}
+                    className="bg-primary text-white font-bold text-xs rounded-full"
+                  >
+                    {genre.name}
+                  </Badge>
+                ))
+              : profile?.specialities?.map((s) => s.name).join(", ")}
+          </div>
         </div>
+        {profile?.profile_type_id === ProfileTypeID.BAND && (
+          <ListProfilesAvatar profiles={profile?.band?.members} />
+        )}
       </CardContent>
     </Card>
   );
