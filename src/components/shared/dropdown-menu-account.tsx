@@ -24,7 +24,7 @@ export function DropdownMenuAccount() {
             variant="ghost"
             className="text-primary h-14 w-14 p-0 cursor-pointer"
           >
-            <CircleEllipsisIcon className="size-8" />
+            <CircleEllipsisIcon className="size-6" />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-56" align="start">

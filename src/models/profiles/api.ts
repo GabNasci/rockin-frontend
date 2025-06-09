@@ -33,3 +33,13 @@ export async function searchProfiles(
   const res = await api.post(`/profiles/search`, search);
   return res.data;
 }
+
+export async function followProfile(profileId: number) {
+  const res = await api.post(`/profiles/${profileId}/follow`);
+  return res.data;
+}
+
+export async function unfollowProfile(profileId: number) {
+  const res = await api.delete(`/profiles/${profileId}/follow`);
+  return res.data;
+}

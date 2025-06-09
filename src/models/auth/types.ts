@@ -36,4 +36,10 @@ export type ProfileResponse = {
     members: Omit<SimpleProfile, "members">[];
   } | null;
   locations: { city: string; state: string };
+  followersCount: number;
+  followingCount: number;
+  postsCount: number;
+  bandsCount: number;
+  isFollowing: boolean;
+  isFollowingBack: boolean;
 };

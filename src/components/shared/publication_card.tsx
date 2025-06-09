@@ -9,6 +9,7 @@ import { useGetLinkPreview } from "@/models/posts/usePosts";
 import { Skeleton } from "../ui/skeleton";
 import LinkPreviewCard from "./link-preview-card";
 import LikePost from "./like-post";
+import { useRouter } from "next/navigation";
 
 type PublicationCardProps = {
   post: PostResponse;
@@ -17,6 +18,11 @@ type PublicationCardProps = {
 export default function PublicationCard({ post }: PublicationCardProps) {
   const [linkPreview, setLinkPreview] = useState(null);
   const { mutate: fetchPreview, isPending } = useGetLinkPreview();
+  const router = useRouter();
+
+  const handleClickProfile = (handle: string) => {
+    router.push(`/profile/${handle}`);
+  };
 
   useEffect(() => {
     if (post.link) {
@@ -44,9 +50,10 @@ export default function PublicationCard({ post }: PublicationCardProps) {
             post.tagged_profiles.length > 0 &&
             post.tagged_profiles.map((profile) => (
               <ProfileBadge
+                onClick={() => handleClickProfile(profile.handle)}
                 key={profile.id}
                 profile={profile}
-                className="text-xs"
+                className="text-xs cursor-pointer"
               />
             ))}
         </div>

@@ -46,7 +46,11 @@ export function ProfileInfoCard({ user }: { user: ProfileResponse }) {
             <h2 className="font-bold text-primary">{user.followers.length}</h2>
             <h3 className="">Apoiadores</h3>
             {authUser && authUser.id !== user.id && (
-              <FollowButton profileId={user.id} />
+              <FollowButton
+                profileId={user.id}
+                handle={user.handle}
+                isFollowing={user.isFollowing}
+              />
             )}
           </div>
         </div>

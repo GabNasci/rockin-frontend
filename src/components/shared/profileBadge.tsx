@@ -7,15 +7,18 @@ type ProfileBadgeProps = {
   profile: SimpleProfile;
   handleRemove?: (id: number) => void;
   className?: string;
+  onClick?: () => void;
 };
 
 export default function ProfileBadge({
   profile,
   handleRemove,
   className,
+  onClick,
 }: ProfileBadgeProps) {
   return (
     <Badge
+      onClick={() => onClick && onClick()}
       className={`flex items-center gap-2 px-1 py-1 rounded-full text-sm ${className}`}
     >
       <UserAvatar avatar={profile.avatar} className="w-6 h-6" />
