@@ -13,8 +13,9 @@ import { useSearchFollowings } from "@/models/profiles/useProfiles";
 import { PlusIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import ProfileBadge from "@/components/shared/profileBadge";
-import { ProfileHorizontalCard } from "@/components/shared/profile-horizontal-card";
 import { DialogDescription } from "@radix-ui/react-dialog";
+import { ProfileMentionCard } from "@/components/shared/profile-mention-card";
+import { MAX_PROFILES } from "@/lib/constants";
 
 type AddProfileDialogProps = {
   taggedProfiles: SimpleProfile[];
@@ -27,26 +28,29 @@ export function AddProfileDialog({
 }: AddProfileDialogProps) {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState<SimpleProfile[]>([]);
+  const [allProfiles, setAllProfiles] = useState<SimpleProfile[]>([]);
   const [selected, setSelected] = useState<SimpleProfile[]>(taggedProfiles);
   const [open, setOpen] = useState(false);
 
   const { mutate: searchFollowings } = useSearchFollowings();
 
-  const fetchProfiles = (search: string) => {
-    searchFollowings(search, {
+  const fetchAllProfiles = () => {
+    searchFollowings("", {
       onSuccess: (data) => {
-        setResults(data);
+        setAllProfiles(data);
+        setResults(data); // mostra todos inicialmente
       },
     });
   };
 
   useEffect(() => {
     if (open) {
-      fetchProfiles("");
+      fetchAllProfiles();
     }
   }, [open]);
 
   const handleAdd = (profile: SimpleProfile) => {
+    if (selected.length >= MAX_PROFILES) return;
     if (!selected.find((p) => p.id === profile.id)) {
       setSelected((prev) => [...prev, profile]);
     }
@@ -56,12 +60,32 @@ export function AddProfileDialog({
     setSelected((prev) => prev.filter((p) => p.id !== id));
   };
 
+  const handleSearchChange = (value: string) => {
+    setQuery(value);
+    const filtered = allProfiles.filter((profile) => {
+      const search = value.toLowerCase();
+      return (
+        profile.name.toLowerCase().includes(search) ||
+        profile.handle.toLowerCase().includes(search)
+      );
+    });
+    setResults(filtered);
+  };
+
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog
+      open={open}
+      onOpenChange={(isOpen) => {
+        setOpen(isOpen);
+        if (!isOpen) {
+          setProfiles(selected);
+        }
+      }}
+    >
       <DialogTrigger asChild>
         <Button
           type="button"
-          className="bg-transparent hover:bg-transparent hover:text-primary cursor-pointer text-gray-400 shadow-none "
+          className="bg-transparent hover:bg-transparent hover:text-primary cursor-pointer text-gray-400 shadow-none"
         >
           <PlusIcon size={16} />
           <span className="font-bold">Menções</span>
@@ -71,33 +95,43 @@ export function AddProfileDialog({
         <DialogHeader>
           <DialogTitle>Menções</DialogTitle>
           <DialogDescription className="text-sm text-gray-600">
-            Selecione os perfis que deseja mencionar.(Você só pode mencionar
-            perfis que esta apoiando)
+            Selecione os perfis que deseja mencionar. (Você só pode mencionar
+            perfis que está apoiando)
           </DialogDescription>
         </DialogHeader>
+
         <SearchInput
           value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          onSearch={() => fetchProfiles(query)}
+          onChange={(e) => handleSearchChange(e.target.value)}
         />
-        <div className="flex flex-wrap gap-2">
+
+        <div className="flex flex-wrap gap-2 gap-y-2">
           {selected.map((p) => (
             <ProfileBadge key={p.id} profile={p} handleRemove={handleRemove} />
           ))}
         </div>
+
+        {selected.length >= MAX_PROFILES && (
+          <p className="text-sm text-red-500 mt-1">
+            Você só pode mencionar até {MAX_PROFILES} perfis.
+          </p>
+        )}
+
         <div>
           <div className="flex w-full">
             <h2 className="font-bold text-gray-400">Resultados</h2>
           </div>
-          <div className=" flex flex-col gap-2 max-h-60 overflow-y-auto">
+          <div className="flex flex-col gap-2 max-h-60 overflow-y-auto">
             {results.length > 0 ? (
               results.map((profile) => (
                 <div key={profile.id}>
                   <div className="h-0.5 w-full bg-gray-300"></div>
-                  <ProfileHorizontalCard
+                  <ProfileMentionCard
                     profile={profile}
                     className="py-6 cursor-pointer bg-transparent border-0 hover:bg-gray-200 rounded-none"
                     onAdd={handleAdd}
+                    disabled={selected.length >= MAX_PROFILES}
+                    selected={selected.some((p) => p.id === profile.id)}
                   />
                 </div>
               ))

@@ -1,10 +1,12 @@
-import { Button } from "@/components/ui/button";
+"use client";
+import { useGetAllPosts } from "@/models/posts/usePosts";
+import { PublicationsList } from "./_components/publications-list";
 
-export default function Home() {
+export default function Feed() {
+  const { data } = useGetAllPosts();
   return (
-    <div className="flex min-h-screen flex-col items-center p-24">
-      <h1 className="">Feed Page</h1>
-      <Button>Click me</Button>
+    <div className="flex min-h-screen flex-col items-center mt-[56px] pt-8">
+      <PublicationsList posts={data} />
     </div>
   );
 }

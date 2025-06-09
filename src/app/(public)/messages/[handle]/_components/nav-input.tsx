@@ -20,7 +20,7 @@ export function NavInput({
         {...props}
       />
       <Button type="submit" className="cursor-pointer">
-        <NavigationIcon className="textwhite" fill="white" />
+        <NavigationIcon className="text-white" fill="white" />
       </Button>
     </Card>
   );

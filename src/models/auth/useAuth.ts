@@ -28,5 +28,20 @@ export function useMe() {
     retry: 1,
     staleTime: 1000 * 60 * 5, // 5 minutos
     enabled: true,
+    meta: {
+      silent: true,
+    },
   });
+}
+
+export function useLogout() {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+  return () => {
+    localStorage.removeItem(TOKEN_KEY);
+    queryClient.setQueryData(["me"], null);
+    queryClient.clear();
+
+    router.push("/home");
+  };
 }

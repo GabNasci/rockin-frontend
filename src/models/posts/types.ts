@@ -17,7 +17,16 @@ export type PostResponse = {
   text?: string;
   link?: string;
   medias?: Media[];
+  liked: boolean;
+  likesCount: number;
   tagged_profiles?: SimpleProfile[];
   profile: SimpleProfile;
   created_at: string;
 };
+
+export type LinkPreview = {
+  title?: string;
+  description?: string;
+  image?: string;
+  url?: string;
+} | null;

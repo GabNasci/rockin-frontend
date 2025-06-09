@@ -19,6 +19,9 @@ export type SimpleProfile = {
   profile_type_id: number;
   avatar: string | null;
   specialities: Speciality[];
+  band?: {
+    members: Omit<SimpleProfile, "members">[];
+  } | null;
   genres: Genre[];
 };
 
@@ -28,4 +31,16 @@ export type Location = {
   state: string;
   country: string;
   city: string;
+};
+
+export type SearchProfilesResponse = {
+  profiles: SimpleProfile[];
+  page: number;
+  limit: number;
+  total: number;
+  totalPages: number;
+  isFirstPage: boolean;
+  isLastPage: boolean;
+  nextPage: number | null;
+  prevPage: number | null;
 };

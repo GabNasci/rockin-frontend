@@ -46,7 +46,11 @@ export function ProfileInfoCard({ user }: { user: ProfileResponse }) {
             <h2 className="font-bold text-primary">{user.followers.length}</h2>
             <h3 className="">Apoiadores</h3>
             {authUser && authUser.id !== user.id && (
-              <FollowButton profileId={user.id} />
+              <FollowButton
+                profileId={user.id}
+                handle={user.handle}
+                isFollowing={user.isFollowing}
+              />
             )}
           </div>
         </div>
@@ -57,7 +61,7 @@ export function ProfileInfoCard({ user }: { user: ProfileResponse }) {
           <p className="text-sm">{user?.about}</p>
         </CardContent>
       )}
-      {user.locations.city && user.locations.state && (
+      {user.locations?.city && user.locations?.state && (
         <CardContent className="flex gap-2">
           <h2 className="font-bold">Região:</h2>
           <p className="text-sm">{`${user.locations.city} - ${user.locations.state}`}</p>

@@ -14,10 +14,11 @@ export function QueryProvider({ children }: { children: ReactNode }) {
     () =>
       new QueryClient({
         queryCache: new QueryCache({
-          onError: (error) => handleError(error),
+          onError: (error, query) => handleError(error, query?.meta),
         }),
         mutationCache: new MutationCache({
-          onError: (error) => handleError(error),
+          onError: (error, v, ctx, mutation) =>
+            handleError(error, mutation?.meta),
         }),
         defaultOptions: {
           queries: {

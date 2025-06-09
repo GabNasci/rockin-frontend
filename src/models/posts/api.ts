@@ -33,3 +33,23 @@ export async function getPostsByProfileId(
   const res = await api.get(`/posts/profile/${profileId}`);
   return res.data;
 }
+
+export async function getAllPosts(): Promise<PostResponse[]> {
+  const res = await api.get("/posts");
+  return res.data;
+}
+
+export async function likePost(postId: number) {
+  const res = await api.post(`/posts/${postId}/like`);
+  return res.data;
+}
+
+export async function unlikePost(postId: number) {
+  const res = await api.delete(`/posts/${postId}/like`);
+  return res.data;
+}
+
+export async function getLinkPreviewew(link: string) {
+  const res = await api.post(`/posts/link-preview`, { link });
+  return res.data;
+}

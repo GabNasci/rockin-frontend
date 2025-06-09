@@ -1,11 +1,11 @@
 "use client";
 
 import { getImageUrl } from "@/lib/utils";
-import { useMe } from "@/models/auth/useAuth";
 import { useRouter } from "next/navigation";
 import { ComponentType } from "react";
 import { UserIcon } from "../icons";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { useAuth } from "@/lib/contexts/auth-context";
 
 interface NavButtonProps {
   href: string;
@@ -23,7 +23,7 @@ export function NavButton({
   className,
 }: NavButtonProps) {
   const router = useRouter();
-  const { data: user } = useMe();
+  const { user, isLoggedIn } = useAuth();
   const profileRedirect = (hrefProp: string) => {
     if (hrefProp.includes("/profile")) {
       if (user) {
@@ -36,7 +36,8 @@ export function NavButton({
     }
   };
 
-  const showImage = user !== undefined && user.avatar && label == "Perfil";
+  const showImage =
+    user !== undefined && isLoggedIn && user?.avatar && label == "Perfil";
 
   return (
     <button

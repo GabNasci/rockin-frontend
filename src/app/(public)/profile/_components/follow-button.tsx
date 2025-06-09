@@ -1,25 +1,37 @@
 import { Button } from "@/components/ui/button";
-import { useAuth } from "@/lib/contexts/auth-context";
+import {
+  useFollowProfile,
+  useUnFollowProfile,
+} from "@/models/profiles/useProfiles";
 
 type FollowButtonProps = {
   profileId: number;
+  handle: string;
+  isFollowing: boolean;
 };
 
-export function FollowButton({ profileId }: FollowButtonProps) {
-  const { user } = useAuth();
-  const isFollowing = () => {
-    return user?.following?.some(
-      (recomendation) => recomendation.followingId === profileId,
-    );
+export function FollowButton({
+  profileId,
+  handle,
+  isFollowing,
+}: FollowButtonProps) {
+  const { mutate: follow } = useFollowProfile(handle);
+  const { mutate: unfollow } = useUnFollowProfile(handle);
+  const handleFollow = () => {
+    if (isFollowing) {
+      unfollow(profileId);
+    } else {
+      follow(profileId);
+    }
   };
 
   return (
     <Button
-      variant={isFollowing() ? "outline" : "default"}
+      variant={isFollowing ? "outline" : "default"}
       className="w-full md:w-auto font-bold cursor-pointer"
-      onClick={() => {}}
+      onClick={() => handleFollow()}
     >
-      {isFollowing() ? "Deixar de apoiar" : "Apoiar"}
+      {isFollowing ? "Deixar de apoiar" : "Apoiar"}
     </Button>
   );
 }

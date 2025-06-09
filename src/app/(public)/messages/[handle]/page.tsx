@@ -1,5 +1,4 @@
 "use client";
-// import { useAuth } from "@/lib/contexts/auth-context";
 import { useGetProfileByHandle } from "@/models/profiles/useProfiles";
 import { notFound, useParams } from "next/navigation";
 import { Loading } from "@/components/shared/loading";
@@ -17,8 +16,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMessages, useSendMessage } from "@/lib/firebase/hooks/useMessages";
 import { useEffect, useRef } from "react";
 import NoneMessages from "./_components/none-messages";
+import { useProtectedRoute } from "@/hooks/useProtectedRoute";
 
 export default function ConversationPage() {
+  useProtectedRoute();
   const endOfMessagesRef = useRef<HTMLDivElement | null>(null);
 
   const { handle } = useParams() as { handle: string };
@@ -69,9 +70,6 @@ export default function ConversationPage() {
     });
     form.reset();
   };
-  console.log(messages);
-  console.log(conversationData);
-  console.log(isLoadingMessages);
 
   return (
     <div className="flex h-full flex-col gap-3 mt-[56px] mb-20">

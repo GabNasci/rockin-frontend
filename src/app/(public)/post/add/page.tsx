@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import {
@@ -20,18 +20,29 @@ import UserAvatar from "@/components/shared/user_avatar";
 import { useAuth } from "@/lib/contexts/auth-context";
 import { Loading } from "@/components/shared/loading";
 import { CustomFileInput } from "@/components/shared/custom_file_input";
-import { useCreatePost } from "@/models/posts/usePosts";
+import { useCreatePost, useGetLinkPreview } from "@/models/posts/usePosts";
 import { Input } from "@/components/ui/input";
 import { SimpleProfile } from "@/models/profiles/types";
 import ProfileBadge from "../../../../components/shared/profileBadge";
-import { AddProfileDialog } from "./_components/addProfilesDialog";
+import { AddProfileDialog } from "./_components/add-profile.dialog";
 import { X } from "lucide-react";
 import { useProtectedRoute } from "@/hooks/useProtectedRoute";
+import { Skeleton } from "@/components/ui/skeleton";
+import LinkPreviewCard from "@/components/shared/link-preview-card";
 
 export default function AddPostPage() {
   useProtectedRoute();
   const [files, setFiles] = useState<File[]>([]);
+  const [linkValue, setLinkValue] = useState<string>("");
   const [taggedProfiles, setProfiles] = useState<SimpleProfile[]>([]);
+  const [linkPreview, setLinkPreview] = useState<{
+    title?: string;
+    description?: string;
+    image?: string;
+    url?: string;
+  } | null>(null);
+
+  const { mutate: fetchLinkPreview } = useGetLinkPreview();
   const { mutate: createPost } = useCreatePost();
   const { user } = useAuth();
   const form = useForm<CreatePostData>({
@@ -39,10 +50,32 @@ export default function AddPostPage() {
     defaultValues: {
       text: "",
       medias: [],
+      link: "",
     },
   });
 
   const { control, handleSubmit } = form;
+
+  const watchedLink = form.watch("link");
+
+  const linkIsloading = linkValue.length > 0 && !linkPreview;
+
+  useEffect(() => {
+    const delayDebounce = setTimeout(() => {
+      if (watchedLink && watchedLink.startsWith("http")) {
+        fetchLinkPreview(watchedLink, {
+          onSuccess: (data) => {
+            setLinkPreview(data);
+          },
+          onError: () => setLinkPreview(null),
+        });
+      } else {
+        setLinkPreview(null);
+      }
+    }, 500);
+
+    return () => clearTimeout(delayDebounce);
+  }, [watchedLink]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selected = Array.from(e.target.files || []);
@@ -111,7 +144,7 @@ export default function AddPostPage() {
                         onClick={() => handleRemoveFile(index)}
                         className="absolute top-1 right-1 bg-white rounded-full p-1 shadow hover:text-red-600 transition"
                       >
-                        <X size={16} />
+                        <X size={16} className="hover:cursor-pointer" />
                       </button>
                     </div>
                   ))}
@@ -142,15 +175,29 @@ export default function AddPostPage() {
                 <FormItem>
                   <FormLabel>Link:</FormLabel>
                   <FormControl>
-                    <Input placeholder="Digite um link..." {...field} />
+                    <Input
+                      {...field}
+                      value={linkValue}
+                      onChange={(e) => {
+                        field.onChange(e);
+                        setLinkValue(e.target.value);
+                      }}
+                      placeholder="Digite um link..."
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+            {linkIsloading && <Skeleton className="w-full h-16" />}
+            {linkPreview && <LinkPreviewCard linkPreview={linkPreview} />}
           </Card>
           <div className="mt-4 flex justify-end px-3">
-            <Button className="cursor-pointer text-lg font-bold" type="submit">
+            <Button
+              disabled={linkIsloading}
+              className="cursor-pointer text-lg font-bold"
+              type="submit"
+            >
               Publicar
             </Button>
           </div>
