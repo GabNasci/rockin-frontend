@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import { useGetLinkPreview } from "@/models/posts/usePosts";
 import { Skeleton } from "../ui/skeleton";
 import LinkPreviewCard from "./link-preview-card";
+import LikePost from "./like-post";
 
 type PublicationCardProps = {
   post: PostResponse;
@@ -48,6 +49,9 @@ export default function PublicationCard({ post }: PublicationCardProps) {
                 className="text-xs"
               />
             ))}
+        </div>
+        <div className="flex justify-end w-full">
+          <LikePost postId={post.id} liked={post.liked} />
         </div>
         <div className="flex justify-start w-full">
           <span className="text-xs text-gray-400">
