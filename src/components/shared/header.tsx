@@ -25,6 +25,8 @@ const Header = memo(function Header() {
 
   const isProfilePage = pathname.includes("/profile");
 
+  const isUserProfilePage = pathname === `/profile/${user?.handle}`;
+
   const showHeader = useMemo(() => {
     return pathname !== "/login" && pathname !== "/signup";
   }, [pathname]);
@@ -92,7 +94,7 @@ const Header = memo(function Header() {
           )}
         </div>
       </div>
-      {isProfilePage && (
+      {isProfilePage && isUserProfilePage && (
         <div className="flex md:hidden absolute right-3 cursor-pointer">
           <DropdownMenuAccount />
         </div>

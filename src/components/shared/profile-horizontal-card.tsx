@@ -31,8 +31,6 @@ export function ProfileHorizontalCard({
     }
   };
 
-  console.log(profile.band?.members);
-
   return (
     <Card
       onClick={() => handleAdd(profile)}
