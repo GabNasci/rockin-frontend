@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getSpecialitiesByProfileType } from "./api";
 
 export function useSpecialitiesByProfileType(
-  profileTypeId: number,
+  profileTypeId: number | undefined,
   enabled = true,
 ) {
   return useQuery({

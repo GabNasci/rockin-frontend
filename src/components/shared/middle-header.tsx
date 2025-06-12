@@ -11,7 +11,7 @@ export function MiddleHeader({ pathname }: { pathname: string }) {
     getHandleByPathhname(pathname),
     isMessagePage,
   );
-  const isProfilePage = pathname.includes("/profile");
+  const isProfilePage = pathname.includes("/profile/");
 
   if (!profile && isMessagePage) return <Loading />;
 

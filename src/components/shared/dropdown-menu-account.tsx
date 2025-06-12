@@ -11,10 +11,13 @@ import {
 import { CircleEllipsisIcon } from "lucide-react";
 import LogoutDialog from "./logout-dialog";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export function DropdownMenuAccount() {
   const [openDropdown, setOpenDropdown] = useState(false);
   const [openLogout, setOpenLogout] = useState(false);
+
+  const router = useRouter();
 
   return (
     <>
@@ -30,8 +33,11 @@ export function DropdownMenuAccount() {
         <DropdownMenuContent className="w-56" align="start">
           <DropdownMenuLabel>Minha conta</DropdownMenuLabel>
           <DropdownMenuGroup>
-            <DropdownMenuItem disabled>Editar perfil</DropdownMenuItem>
-            <DropdownMenuItem disabled>Editar foto de perfil</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => router.push("/edit/profile")}>
+              Editar perfil
+            </DropdownMenuItem>
+            <DropdownMenuItem disabled>Editar foto de perfi1l</DropdownMenuItem>
+            <DropdownMenuItem disabled>Editar localização</DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>

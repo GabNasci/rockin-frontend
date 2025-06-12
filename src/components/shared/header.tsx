@@ -23,7 +23,7 @@ const Header = memo(function Header() {
 
   const isMessagePage = pathname.includes("/messages");
 
-  const isProfilePage = pathname.includes("/profile");
+  const isProfilePage = pathname.includes("/profile/");
 
   const isUserProfilePage = pathname === `/profile/${user?.handle}`;
 
