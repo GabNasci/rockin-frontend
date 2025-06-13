@@ -1,5 +1,5 @@
 import { api } from "@/api/axios";
-import { Profile, SearchProfilesResponse, SimpleProfile } from "./types";
+import { Profile, SearchProfilesResponse } from "./types";
 import { ProfileResponse } from "../auth/types";
 import { SearchProfilesData } from "@/schemas/SearchProfilesSchema";
 
@@ -15,7 +15,7 @@ export async function findProfileByHandle(
   return res.data;
 }
 
-export async function getProfiles(): Promise<SimpleProfile[]> {
+export async function getProfiles(): Promise<ProfileResponse[]> {
   const res = await api.get("/profiles");
   return res.data;
 }

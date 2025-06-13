@@ -6,6 +6,7 @@ import { QueryProvider } from "@/lib/react-query/QueryProvider";
 import { Toaster } from "sonner";
 import Script from "next/script";
 import { AuthProvider } from "@/lib/contexts/auth-context";
+import { SearchProvider } from "@/lib/contexts/search-context";
 
 // // Import the functions you need from the SDKs you need
 // import { initializeApp } from "firebase/app";
@@ -44,16 +45,18 @@ export default function RootLayout({
       <body className="font-sans bg-gray-50">
         <QueryProvider>
           <AuthProvider>
-            <Header />
-            {children}
-            <MobileNav />
-            <Toaster position="top-center" />
-            <Script
-              src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}
-              strategy="beforeInteractive"
-              async
-              defer
-            />
+            <SearchProvider>
+              <Header />
+              {children}
+              <MobileNav />
+              <Toaster position="top-center" />
+              <Script
+                src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}
+                strategy="beforeInteractive"
+                async
+                defer
+              />
+            </SearchProvider>
           </AuthProvider>
         </QueryProvider>
       </body>
