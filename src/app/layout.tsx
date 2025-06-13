@@ -8,6 +8,7 @@ import Script from "next/script";
 import { AuthProvider } from "@/lib/contexts/auth.context";
 import { SearchProvider } from "@/lib/contexts/search.context";
 import { AuthDialogProvider } from "@/lib/contexts/auth-dialog.context";
+import { AuthDialog } from "@/components/shared/dialog/auth.dialog";
 
 const montserrat = Montserrat({ variable: "--font-sans", subsets: ["latin"] });
 
@@ -37,6 +38,7 @@ export default function RootLayout({
                   defer
                 />
               </SearchProvider>
+              <AuthDialog />
             </AuthDialogProvider>
           </AuthProvider>
         </QueryProvider>

@@ -15,7 +15,7 @@ export default function Home() {
     <div className="flex min-h-screen flex-col items-center pt-24">
       <HomeBanner />
       <ListProfiles profiles={profiles || []} />
-      <ListPublications posts={posts} />
+      <ListPublications posts={posts} isLoading={isLoadingPosts} />
       <MakePostButton />
     </div>
   );

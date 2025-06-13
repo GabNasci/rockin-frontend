@@ -171,29 +171,30 @@ export default function FilterDialog({
               );
             }}
           />
-
-          <FormField
-            control={control}
-            name="searchByRadius"
-            render={({ field }) => (
-              <FormItem className="flex">
-                <FormLabel>Buscar por raio?</FormLabel>
-                <FormControl>
-                  <Checkbox
-                    className="cursor-pointer"
-                    checked={field.value}
-                    onCheckedChange={(checked) => {
-                      field.onChange(checked);
-                      if (!checked) {
-                        setValue("radius", undefined);
-                      }
-                    }}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          {isLoggedIn && (
+            <FormField
+              control={control}
+              name="searchByRadius"
+              render={({ field }) => (
+                <FormItem className="flex">
+                  <FormLabel>Buscar por raio?</FormLabel>
+                  <FormControl>
+                    <Checkbox
+                      className="cursor-pointer"
+                      checked={field.value}
+                      onCheckedChange={(checked) => {
+                        field.onChange(checked);
+                        if (!checked) {
+                          setValue("radius", undefined);
+                        }
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
           {searchByRadius && isLoggedIn && (
             <FormField
               control={control}

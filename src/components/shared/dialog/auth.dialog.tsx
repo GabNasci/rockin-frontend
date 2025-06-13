@@ -22,7 +22,7 @@ export function AuthDialog() {
 
   const handleRegister = () => {
     closeDialog();
-    router.push("/register");
+    router.push("/signup");
   };
 
   return (

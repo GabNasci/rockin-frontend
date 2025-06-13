@@ -27,7 +27,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/app/(public)/messages/[handle]"
+    "src/app/(public)/messages/[handle]",
+    "src/lib/firebase/hooks/useRequireAuthActiontsx"
   ],
   "exclude": ["node_modules"]
 }
