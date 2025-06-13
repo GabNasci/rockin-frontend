@@ -5,8 +5,9 @@ import MobileNav from "@/components/shared/mobile_nav";
 import { QueryProvider } from "@/lib/react-query/QueryProvider";
 import { Toaster } from "sonner";
 import Script from "next/script";
-import { AuthProvider } from "@/lib/contexts/auth-context";
-import { SearchProvider } from "@/lib/contexts/search-context";
+import { AuthProvider } from "@/lib/contexts/auth.context";
+import { SearchProvider } from "@/lib/contexts/search.context";
+import { AuthDialogProvider } from "@/lib/contexts/auth-dialog.context";
 
 const montserrat = Montserrat({ variable: "--font-sans", subsets: ["latin"] });
 
@@ -23,18 +24,20 @@ export default function RootLayout({
       <body className="font-sans bg-gray-50">
         <QueryProvider>
           <AuthProvider>
-            <SearchProvider>
-              <Header />
-              {children}
-              <MobileNav />
-              <Toaster position="top-center" />
-              <Script
-                src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}
-                strategy="beforeInteractive"
-                async
-                defer
-              />
-            </SearchProvider>
+            <AuthDialogProvider>
+              <SearchProvider>
+                <Header />
+                {children}
+                <MobileNav />
+                <Toaster position="top-center" />
+                <Script
+                  src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}
+                  strategy="beforeInteractive"
+                  async
+                  defer
+                />
+              </SearchProvider>
+            </AuthDialogProvider>
           </AuthProvider>
         </QueryProvider>
       </body>

@@ -7,7 +7,7 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { useSearchContext } from "@/lib/contexts/search-context";
+import { useSearchContext } from "@/lib/contexts/search.context";
 import { SearchProfilesData } from "@/schemas/SearchProfilesSchema";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";

@@ -1,5 +1,5 @@
 "use client";
-import { useAuth } from "@/lib/contexts/auth-context";
+import { useAuth } from "@/lib/contexts/auth.context";
 import { PencilIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 

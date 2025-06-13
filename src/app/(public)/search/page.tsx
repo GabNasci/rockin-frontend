@@ -21,7 +21,7 @@ import {
 import { useEffect, useState } from "react";
 import { useSearchProfiles } from "@/models/profiles/useProfiles";
 import ProfilesPaginationList from "./_components/profiles-pagination-list";
-import { useSearchContext } from "@/lib/contexts/search-context";
+import { useSearchContext } from "@/lib/contexts/search.context";
 
 export default function SearchPage() {
   const [tab, setTab] = useState<"musicians" | "establishments">("musicians");

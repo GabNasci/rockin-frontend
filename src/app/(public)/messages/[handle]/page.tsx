@@ -4,7 +4,7 @@ import { notFound, useParams } from "next/navigation";
 import { Loading } from "@/components/shared/loading";
 import { NavInput } from "./_components/nav-input";
 import MessageText from "./_components/message-text";
-import { useAuth } from "@/lib/contexts/auth-context";
+import { useAuth } from "@/lib/contexts/auth.context";
 import { useGetConversation } from "@/models/conversations/useConversations";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import {

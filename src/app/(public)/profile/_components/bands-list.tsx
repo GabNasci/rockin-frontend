@@ -3,7 +3,7 @@
 import { ProfileHorizontalCard } from "@/components/shared/profile-horizontal-card";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { useAuth } from "@/lib/contexts/auth-context";
+import { useAuth } from "@/lib/contexts/auth.context";
 import { Band } from "@/models/bands/types";
 import { usePathname, useRouter } from "next/navigation";
 

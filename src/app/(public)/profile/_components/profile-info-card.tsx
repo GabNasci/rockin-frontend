@@ -11,7 +11,7 @@ import { getImageUrl } from "@/lib/utils";
 import { ProfileResponse } from "@/models/auth/types";
 import { AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { FollowButton } from "./follow-button";
-import { useAuth } from "@/lib/contexts/auth-context";
+import { useAuth } from "@/lib/contexts/auth.context";
 
 export function ProfileInfoCard({ user }: { user: ProfileResponse }) {
   const { user: authUser } = useAuth();

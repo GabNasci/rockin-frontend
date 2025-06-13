@@ -17,7 +17,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import UserAvatar from "@/components/shared/user_avatar";
-import { useAuth } from "@/lib/contexts/auth-context";
+import { useAuth } from "@/lib/contexts/auth.context";
 import { Loading } from "@/components/shared/loading";
 import { CustomFileInput } from "@/components/shared/custom_file_input";
 import { useCreatePost, useGetLinkPreview } from "@/models/posts/usePosts";
