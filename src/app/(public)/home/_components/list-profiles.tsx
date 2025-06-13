@@ -14,7 +14,7 @@ type ListProfilesProps = {
 
 export default function ListProfiles({ profiles }: ListProfilesProps) {
   return (
-    <div className="flex flex-col gap-2 w-full px-8 pt-8">
+    <div className="flex flex-col gap-2 w-full px-8 pt-8 mb-12">
       <div>
         <h3 className=" font-bold">Sugestões:</h3>
       </div>
