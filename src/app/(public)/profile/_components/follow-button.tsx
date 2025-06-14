@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useRequireAuthAction } from "@/lib/firebase/hooks/useRequireAuthAction";
+import { cn } from "@/lib/utils";
 import {
   useFollowProfile,
   useUnFollowProfile,
@@ -30,7 +31,12 @@ export function FollowButton({
   return (
     <Button
       variant={isFollowing ? "outline" : "default"}
-      className="w-full md:w-auto font-bold cursor-pointer break-words whitespace-normal"
+      className={cn(
+        "w-full md:w-auto font-bold cursor-pointer break-words whitespace-normal",
+        {
+          "text-xs": isFollowing,
+        },
+      )}
       onClick={() => handleFollow()}
     >
       {isFollowing ? "Deixar de apoiar" : "Apoiar"}
