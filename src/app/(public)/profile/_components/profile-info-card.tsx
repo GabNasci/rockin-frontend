@@ -12,9 +12,17 @@ import { ProfileResponse } from "@/models/auth/types";
 import { AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { FollowButton } from "./follow-button";
 import { useAuth } from "@/lib/contexts/auth.context";
+import { Button } from "@/components/ui/button";
+import { NavigationIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export function ProfileInfoCard({ user }: { user: ProfileResponse }) {
   const { user: authUser } = useAuth();
+  const router = useRouter();
+
+  const goToMessages = () => {
+    router.push(`/messages/${user.handle}`);
+  };
 
   return (
     <Card className="w-full rounded-none mt-3 border-0 shadow-none">
@@ -65,6 +73,14 @@ export function ProfileInfoCard({ user }: { user: ProfileResponse }) {
         <CardContent className="flex gap-2">
           <h2 className="font-bold">Região:</h2>
           <p className="text-sm">{`${user.locations.city} - ${user.locations.state}`}</p>
+        </CardContent>
+      )}
+      {authUser && authUser.id !== user.id && (
+        <CardContent>
+          <Button onClick={goToMessages} className="w-full mt-2">
+            Enviar Mensagem{""}
+            <NavigationIcon className="ml-2" />
+          </Button>
         </CardContent>
       )}
     </Card>
