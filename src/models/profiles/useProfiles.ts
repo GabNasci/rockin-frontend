@@ -182,5 +182,8 @@ export function useUnFollowProfile(handle: string) {
 export function useCheckHandle() {
   return useMutation({
     mutationFn: (handle: string) => checkHandle(handle),
+    meta: {
+      silent: true,
+    },
   });
 }
