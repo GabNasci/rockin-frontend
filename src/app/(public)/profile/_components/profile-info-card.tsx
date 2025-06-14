@@ -45,7 +45,7 @@ export function ProfileInfoCard({ user }: { user: ProfileResponse }) {
           <div className="flex flex-col justify-center gap-1 items-center text-center h-ful w-1/3">
             <h2 className="font-bold text-primary">{user.followers.length}</h2>
             <h3 className="">Apoiadores</h3>
-            {authUser && authUser.id !== user.id && (
+            {authUser?.id !== user.id && (
               <FollowButton
                 profileId={user.id}
                 handle={user.handle}
