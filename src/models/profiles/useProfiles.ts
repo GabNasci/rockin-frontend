@@ -59,14 +59,20 @@ export function useFollowProfile(handle: string) {
     mutationFn: (profileId: number) => followProfile(profileId),
 
     onMutate: async () => {
-      const queryKey = ["profile", handle];
+      const profileKey = ["profile", handle];
+      const profilesKey = ["profiles"];
 
-      await queryClient.cancelQueries({ queryKey });
+      await Promise.all([
+        queryClient.cancelQueries({ queryKey: profileKey }),
+        queryClient.cancelQueries({ queryKey: profilesKey }),
+      ]);
 
       const previousProfile =
-        queryClient.getQueryData<ProfileResponse>(queryKey);
+        queryClient.getQueryData<ProfileResponse>(profileKey);
+      const previousProfiles =
+        queryClient.getQueryData<ProfileResponse[]>(profilesKey);
 
-      queryClient.setQueryData<ProfileResponse>(queryKey, (old) =>
+      queryClient.setQueryData<ProfileResponse>(profileKey, (old) =>
         old
           ? {
               ...old,
@@ -76,17 +82,35 @@ export function useFollowProfile(handle: string) {
           : old,
       );
 
-      return { previousProfile };
+      queryClient.setQueryData<ProfileResponse[]>(profilesKey, (old) =>
+        old
+          ? old.map((profile) =>
+              profile.handle === handle
+                ? {
+                    ...profile,
+                    followersCount: profile.followersCount + 1,
+                    isFollowing: true,
+                  }
+                : profile,
+            )
+          : old,
+      );
+
+      return { previousProfile, previousProfiles };
     },
 
     onError: (_err, _profileId, context) => {
       if (context?.previousProfile) {
         queryClient.setQueryData(["profile", handle], context.previousProfile);
       }
+      if (context?.previousProfiles) {
+        queryClient.setQueryData(["profiles"], context.previousProfiles);
+      }
     },
 
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["profile", handle] });
+      queryClient.invalidateQueries({ queryKey: ["profiles"] });
     },
   });
 }
@@ -98,14 +122,20 @@ export function useUnFollowProfile(handle: string) {
     mutationFn: (profileId: number) => unfollowProfile(profileId),
 
     onMutate: async () => {
-      const queryKey = ["profile", handle];
+      const profileKey = ["profile", handle];
+      const profilesKey = ["profiles"];
 
-      await queryClient.cancelQueries({ queryKey });
+      await Promise.all([
+        queryClient.cancelQueries({ queryKey: profileKey }),
+        queryClient.cancelQueries({ queryKey: profilesKey }),
+      ]);
 
       const previousProfile =
-        queryClient.getQueryData<ProfileResponse>(queryKey);
+        queryClient.getQueryData<ProfileResponse>(profileKey);
+      const previousProfiles =
+        queryClient.getQueryData<ProfileResponse[]>(profilesKey);
 
-      queryClient.setQueryData<ProfileResponse>(queryKey, (old) =>
+      queryClient.setQueryData<ProfileResponse>(profileKey, (old) =>
         old
           ? {
               ...old,
@@ -115,17 +145,35 @@ export function useUnFollowProfile(handle: string) {
           : old,
       );
 
-      return { previousProfile };
+      queryClient.setQueryData<ProfileResponse[]>(profilesKey, (old) =>
+        old
+          ? old.map((profile) =>
+              profile.handle === handle
+                ? {
+                    ...profile,
+                    followersCount: Math.max(0, profile.followersCount - 1),
+                    isFollowing: false,
+                  }
+                : profile,
+            )
+          : old,
+      );
+
+      return { previousProfile, previousProfiles };
     },
 
     onError: (_err, _profileId, context) => {
       if (context?.previousProfile) {
         queryClient.setQueryData(["profile", handle], context.previousProfile);
       }
+      if (context?.previousProfiles) {
+        queryClient.setQueryData(["profiles"], context.previousProfiles);
+      }
     },
 
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["profile", handle] });
+      queryClient.invalidateQueries({ queryKey: ["profiles"] });
     },
   });
 }

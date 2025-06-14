@@ -1,6 +1,5 @@
 import { ProfileResponse } from "@/models/auth/types";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { Button } from "../ui/button";
 import {
   Card,
   CardContent,
@@ -10,6 +9,7 @@ import {
   CardTitle,
 } from "../ui/card";
 import { getImageUrl } from "@/lib/utils";
+import { FollowButton } from "@/app/(public)/profile/_components/follow-button";
 
 type Props = {
   profile: ProfileResponse;
@@ -42,14 +42,11 @@ export default function ProfileCard({ profile }: Props) {
         </CardDescription>
       </CardContent>
       <CardFooter className="flex justify-center w-full p-0">
-        <Button
-          variant={profile?.isFollowing ? "outline" : "default"}
-          className={`w-full cursor-pointer font-bold border-primary ${
-            profile?.isFollowing ? "text-primary" : null
-          }`}
-        >
-          {profile?.isFollowing ? "Apoiando" : "Apoiar"}
-        </Button>
+        <FollowButton
+          handle={profile.handle}
+          isFollowing={profile.isFollowing}
+          profileId={profile.id}
+        />
       </CardFooter>
     </Card>
   );
