@@ -43,3 +43,10 @@ export async function unfollowProfile(profileId: number) {
   const res = await api.delete(`/profiles/${profileId}/follow`);
   return res.data;
 }
+
+export async function checkHandle(
+  handle: string,
+): Promise<{ exists: boolean }> {
+  const res = await api.get(`/profiles/handle/exists/${handle}`);
+  return res.data;
+}

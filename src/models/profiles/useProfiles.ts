@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
+  checkHandle,
   createProfile,
   findProfileByHandle,
   followProfile,
@@ -175,5 +176,11 @@ export function useUnFollowProfile(handle: string) {
       queryClient.invalidateQueries({ queryKey: ["profile", handle] });
       queryClient.invalidateQueries({ queryKey: ["profiles"] });
     },
+  });
+}
+
+export function useCheckHandle() {
+  return useMutation({
+    mutationFn: (handle: string) => checkHandle(handle),
   });
 }
