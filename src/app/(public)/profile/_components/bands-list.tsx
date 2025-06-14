@@ -16,6 +16,10 @@ export function BandsList({ bands }: BandsListProps) {
   const pathname = usePathname();
   const router = useRouter();
 
+  const goToCreateBand = () => {
+    router.push("/create/band");
+  };
+
   const isUserProfilePage = pathname === `/profile/${user?.handle}`;
 
   return (
@@ -37,9 +41,10 @@ export function BandsList({ bands }: BandsListProps) {
         {isUserProfilePage && (
           <Button
             variant="outline"
+            onClick={goToCreateBand}
             className="border-primary text-primary font-bold bg-white"
           >
-            Criar banda
+            Criar perfil de banda
           </Button>
         )}
       </CardContent>

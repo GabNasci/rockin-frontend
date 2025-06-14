@@ -1,4 +1,10 @@
-export const routesWithBackButton = ["/profile", "/post", "/messages"];
+export const routesWithBackButton = [
+  "/profile",
+  "/post",
+  "/messages",
+  "/create",
+  "/edit",
+];
 
 export const NAME_REGEX = /^[a-zA-ZÀ-ÖØ-öø-ÿ\s]+$/;
 
