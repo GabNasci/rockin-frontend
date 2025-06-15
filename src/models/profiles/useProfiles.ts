@@ -1,11 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
+  changeProfile,
   checkEmail,
   checkHandle,
   createProfile,
   findProfileByHandle,
   followProfile,
   getProfiles,
+  getProfilesFromUser,
   searchFollowings,
   searchProfiles,
   unfollowProfile,
@@ -15,6 +17,8 @@ import { toast } from "@/lib/toast";
 import { useRouter } from "next/navigation";
 import { SearchProfilesData } from "@/schemas/SearchProfilesSchema";
 import { ProfileResponse } from "../auth/types";
+import { useAuth } from "@/lib/contexts/auth.context";
+import { TOKEN_KEY } from "@/lib/constants";
 
 export function useCreateProfile() {
   const router = useRouter();
@@ -194,6 +198,31 @@ export function useCheckEmail() {
     mutationFn: (email: string) => checkEmail(email),
     meta: {
       silent: true,
+    },
+  });
+}
+
+export function useGetProfilesFromUser() {
+  const { user } = useAuth();
+  return useQuery({
+    queryKey: ["profiles", user?.user_id],
+    queryFn: () => getProfilesFromUser(),
+    enabled: !!user,
+  });
+}
+
+export function useChangeProfile() {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (profileId: number) => changeProfile(profileId),
+    onSuccess: async (data) => {
+      localStorage.setItem(TOKEN_KEY, data.token);
+      await queryClient.invalidateQueries({ queryKey: ["me"] });
+      await queryClient.refetchQueries({ queryKey: ["me"] });
+      toast.success("Troca de perfil realizada com sucesso!");
+      router.push(`/profile/${data.profile.handle}`);
     },
   });
 }

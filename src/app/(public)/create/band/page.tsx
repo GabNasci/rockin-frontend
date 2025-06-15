@@ -21,6 +21,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { useProtectedRoute } from "@/hooks/useProtectedRoute";
 import { useAuth } from "@/lib/contexts/auth.context";
 import { useCreateBand } from "@/models/bands/useBands";
+import { useCheckHandle } from "@/models/profiles/useProfiles";
 import { CreateBandData, createBandSchema } from "@/schemas/CreateBandSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -29,6 +30,7 @@ export default function CreateBandPage() {
   useProtectedRoute();
   const { user } = useAuth();
   const { mutate: createBand, isPending } = useCreateBand(user?.handle);
+  const { mutate: checkHandle, isPending: isChecking } = useCheckHandle();
 
   const form = useForm<CreateBandData>({
     resolver: zodResolver(createBandSchema),
@@ -41,8 +43,17 @@ export default function CreateBandPage() {
   const { control, handleSubmit } = form;
 
   const onSubmit = (values: CreateBandData) => {
-    createBand(values);
-    console.log(values);
+    checkHandle(values.handle, {
+      onSuccess: () => {
+        createBand(values);
+      },
+      onError: () => {
+        form.setError("handle", {
+          type: "manual",
+          message: "Esse nome de usuário já está em uso.",
+        });
+      },
+    });
   };
 
   return (
@@ -86,7 +97,7 @@ export default function CreateBandPage() {
             </CardContent>
             <CardFooter className="flex justify-between">
               <Button type="submit" className="w-full">
-                {isPending ? (
+                {isPending || isChecking ? (
                   <Spinner size={"small"} className="mr-2 text-white" />
                 ) : (
                   "Criar"

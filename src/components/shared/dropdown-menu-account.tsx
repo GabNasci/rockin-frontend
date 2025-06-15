@@ -41,7 +41,9 @@ export function DropdownMenuAccount() {
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem disabled>Trocar perfil</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => router.push("/profile/change")}>
+              Trocar perfil
+            </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuItem

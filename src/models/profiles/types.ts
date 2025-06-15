@@ -44,3 +44,8 @@ export type SearchProfilesResponse = {
   nextPage: number | null;
   prevPage: number | null;
 };
+
+export type ChangeProfileResponse = {
+  token: string;
+  profile: SimpleProfile;
+};
