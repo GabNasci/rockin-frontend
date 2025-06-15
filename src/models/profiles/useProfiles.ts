@@ -1,5 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
+  checkEmail,
   checkHandle,
   createProfile,
   findProfileByHandle,
@@ -182,6 +183,15 @@ export function useUnFollowProfile(handle: string) {
 export function useCheckHandle() {
   return useMutation({
     mutationFn: (handle: string) => checkHandle(handle),
+    meta: {
+      silent: true,
+    },
+  });
+}
+
+export function useCheckEmail() {
+  return useMutation({
+    mutationFn: (email: string) => checkEmail(email),
     meta: {
       silent: true,
     },

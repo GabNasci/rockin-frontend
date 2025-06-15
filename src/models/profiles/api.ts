@@ -44,9 +44,12 @@ export async function unfollowProfile(profileId: number) {
   return res.data;
 }
 
-export async function checkHandle(
-  handle: string,
-): Promise<{ exists: boolean }> {
+export async function checkHandle(handle: string) {
   const res = await api.get(`/profiles/handle/exists/${handle}`);
+  return res.data;
+}
+
+export async function checkEmail(email: string) {
+  const res = await api.get(`/profiles/email/exists/${email}`);
   return res.data;
 }
