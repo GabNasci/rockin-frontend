@@ -4,14 +4,16 @@ import { useGetProfileByHandle } from "@/models/profiles/useProfiles";
 import Image from "next/image";
 import { Loading } from "./loading";
 import UserAvatar from "./user_avatar";
+import { useAuth } from "@/lib/contexts/auth.context";
 
 export function MiddleHeader({ pathname }: { pathname: string }) {
+  const { user } = useAuth();
   const isMessagePage = pathname.includes("/messages/");
   const { data: profile } = useGetProfileByHandle(
     getHandleByPathhname(pathname),
     isMessagePage,
   );
-  const isProfilePage = pathname.includes("/profile/");
+  const isProfilePage = pathname.includes(`/profile/${user?.handle}`);
 
   if (!profile && isMessagePage) return <Loading />;
 

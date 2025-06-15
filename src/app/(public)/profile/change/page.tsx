@@ -10,11 +10,12 @@ import {
 import { Loading } from "@/components/shared/loading";
 import { useState } from "react";
 import { useAuth } from "@/lib/contexts/auth.context";
+import { Spinner } from "@/components/ui/spinner";
 
 export default function ChangeProfilePage() {
   useProtectedRoute();
 
-  const { user } = useAuth(); // Perfil atual do usuário logado
+  const { user } = useAuth();
   const { data: profiles, isLoading } = useGetProfilesFromUser();
   const [selectedProfileId, setSelectedProfileId] = useState(user?.id);
 
@@ -44,7 +45,11 @@ export default function ChangeProfilePage() {
         disabled={isButtonDisabled || isChanging}
         onClick={handleChangeProfile}
       >
-        {isChanging ? "Trocando..." : "Trocar Perfil"}
+        {isChanging ? (
+          <Spinner size={"small"} className="mr-2 text-white" />
+        ) : (
+          "Trocar perfil"
+        )}
       </Button>
     </div>
   );
