@@ -20,6 +20,7 @@ import {
 import { Spinner } from "@/components/ui/spinner";
 import { useMultiStepForm } from "@/lib/contexts/multi-step-form.context";
 import { isEmptyObject } from "@/lib/utils";
+import { useCheckHandle } from "@/models/profiles/useProfiles";
 import { useProfileTypes } from "@/models/profileTypes/useProfileTypes";
 import {
   profileInfoSchema,
@@ -31,6 +32,7 @@ import { useForm } from "react-hook-form";
 export default function ProfileInfoStep() {
   const { nextStep, updateData, data } = useMultiStepForm<ProfileInfoData>();
   const { data: profileTypesData } = useProfileTypes();
+  const { mutate: checkHandle, isPending } = useCheckHandle();
 
   const form = useForm<ProfileInfoData>({
     resolver: zodResolver(profileInfoSchema),
@@ -46,7 +48,15 @@ export default function ProfileInfoStep() {
 
   const onSubmit = (values: ProfileInfoData) => {
     updateData(values);
-    nextStep();
+    checkHandle(values.handle, {
+      onSuccess: () => nextStep(),
+      onError: () => {
+        form.setError("handle", {
+          type: "manual",
+          message: "Este nome de usuário já está em uso.",
+        });
+      },
+    });
   };
   if (!profileTypesData)
     return <Spinner size={"medium"} className="text-primary" />;
@@ -116,7 +126,11 @@ export default function ProfileInfoStep() {
               )}
             />
             <Button className="w-full cursor-pointer" type="submit">
-              Avançar
+              {isPending ? (
+                <Spinner size={"small"} className="mr-2 text-white" />
+              ) : (
+                "Avançar"
+              )}
             </Button>
           </form>
         </Form>

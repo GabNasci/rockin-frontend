@@ -1,5 +1,5 @@
 "use client";
-import { useAuth } from "@/lib/contexts/auth-context";
+import { useAuth } from "@/lib/contexts/auth.context";
 import { PencilIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -14,7 +14,7 @@ export default function MakePostButton() {
   return (
     <div
       onClick={onClick}
-      className=" absolute bottom-26 flex justify-center items-center rounded-full right-6 bg-primary cursor-pointer w-12 h-12"
+      className=" fixed bottom-26 flex justify-center items-center rounded-full right-6 bg-primary cursor-pointer w-12 h-12"
     >
       <PencilIcon color="white" />
     </div>

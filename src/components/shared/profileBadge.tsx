@@ -22,7 +22,7 @@ export default function ProfileBadge({
       className={`flex items-center gap-2 px-1 py-1 rounded-full text-sm ${className}`}
     >
       <UserAvatar avatar={profile.avatar} className="w-6 h-6" />
-      <span>@{profile.handle}</span>
+      <span className="hover:underline">@{profile.handle}</span>
       <div className="pe-1">
         {handleRemove && (
           <TrashIcon

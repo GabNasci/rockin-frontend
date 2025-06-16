@@ -8,6 +8,7 @@ import { BandsList } from "../_components/bands-list";
 import { Loading } from "@/components/shared/loading";
 import { PublicationsList } from "../_components/publications-list";
 import { useGetPostsByProfileId } from "@/models/posts/usePosts";
+import { ProfileTypeID } from "@/lib/constants";
 
 export default function ProfilePage() {
   const { handle } = useParams() as { handle: string };
@@ -24,7 +25,9 @@ export default function ProfilePage() {
     <div className="flex min-h-screen flex-col gap-3 pt-[56px]">
       <ProfileInfoCard user={data} />
       <GenresList genres={data.genres} />
-      <BandsList bands={data.bands} />
+      {data.profile_type_id === ProfileTypeID.MUSICIAN && (
+        <BandsList bands={data.bands} />
+      )}
       <PublicationsList posts={posts} isLoading={isPostsLoading} />
     </div>
   );

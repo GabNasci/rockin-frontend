@@ -1,4 +1,4 @@
-import { HANDLE_REGEX } from "@/lib/constants";
+import { HANDLE_REGEX, NAME_REGEX } from "@/lib/constants";
 import { z } from "zod";
 
 export const credentialsSchema = z
@@ -61,9 +61,11 @@ export const profileSchema = z
       .min(6, { message: "A senha deve ter no mínimo 6 caracteres" }),
     name: z
       .string()
+      .regex(NAME_REGEX, { message: "Nome inválido" })
       .min(3, { message: "Nome deve ter no mínimo 3 caracteres" }),
     handle: z
       .string()
+      .regex(HANDLE_REGEX, { message: "Nome de usuário inválido" })
       .min(3, { message: "Nome de usuário deve ter no mínimo 3 caracteres" }),
     profileType: z.coerce.number().min(1, "Selecione um tipo de perfil"),
     genres: z.array(z.string()).min(1, "Selecione pelo menos um gênero"),

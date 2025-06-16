@@ -10,8 +10,10 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Spinner } from "@/components/ui/spinner";
 import { useMultiStepForm } from "@/lib/contexts/multi-step-form.context";
 import { isEmptyObject } from "@/lib/utils";
+import { useCheckEmail } from "@/models/profiles/useProfiles";
 import {
   CredentialsData,
   credentialsSchema,
@@ -21,6 +23,7 @@ import { useForm } from "react-hook-form";
 
 export default function CredentialsStep() {
   const { nextStep, data, updateData } = useMultiStepForm<CredentialsData>();
+  const { mutate: checkEmail, isPending } = useCheckEmail();
 
   const form = useForm<CredentialsData>({
     resolver: zodResolver(credentialsSchema),
@@ -38,7 +41,15 @@ export default function CredentialsStep() {
 
   const onSubmit = (values: CredentialsData) => {
     updateData(values);
-    nextStep();
+    checkEmail(values.email, {
+      onSuccess: () => nextStep(),
+      onError: () => {
+        form.setError("email", {
+          type: "manual",
+          message: "E-mail já cadastrado.",
+        });
+      },
+    });
   };
   return (
     <div>
@@ -96,7 +107,11 @@ export default function CredentialsStep() {
               )}
             />
             <Button className="w-full cursor-pointer" type="submit">
-              Avançar
+              {isPending ? (
+                <Spinner size={"small"} className="mr-2 text-white" />
+              ) : (
+                "Avançar"
+              )}
             </Button>
           </form>
         </Form>

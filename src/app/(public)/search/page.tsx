@@ -6,6 +6,8 @@ import FilterDialog from "./_components/filter.dialog";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
+  defaultMusicianValues,
+  defaultPlacesValues,
   searchProfileSchema,
   SearchProfilesData,
 } from "@/schemas/SearchProfilesSchema";
@@ -19,30 +21,11 @@ import {
 import { useEffect, useState } from "react";
 import { useSearchProfiles } from "@/models/profiles/useProfiles";
 import ProfilesPaginationList from "./_components/profiles-pagination-list";
+import { useSearchContext } from "@/lib/contexts/search.context";
 
-const defaultMusicianValues: SearchProfilesData = {
-  search: "",
-  genres: [],
-  specialities: [],
-  limit: 20,
-  page: 1,
-  profileTypes: ["Músico(a)", "Banda"],
-  includeBands: true,
-};
-
-const defaultPlacesValues: SearchProfilesData = {
-  search: "",
-  genres: [],
-  specialities: [],
-  limit: 20,
-  page: 1,
-  profileTypes: ["Estabelecimento"],
-  includeBands: false,
-};
-
-export default function Home() {
+export default function SearchPage() {
   const [tab, setTab] = useState<"musicians" | "establishments">("musicians");
-
+  const { filters } = useSearchContext();
   const form = useForm<SearchProfilesData>({
     resolver: zodResolver(searchProfileSchema),
     defaultValues: {
@@ -66,10 +49,17 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    const search = filters.search ?? "";
     if (tab === "musicians") {
-      reset(defaultMusicianValues);
+      reset({
+        ...defaultMusicianValues,
+        search,
+      });
     } else {
-      reset(defaultPlacesValues);
+      reset({
+        ...defaultPlacesValues,
+        search,
+      });
     }
   }, [tab, reset]);
 

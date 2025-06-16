@@ -1,5 +1,5 @@
+import { ProfileResponse } from "@/models/auth/types";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { Button } from "../ui/button";
 import {
   Card,
   CardContent,
@@ -8,24 +8,24 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
+import { getImageUrl } from "@/lib/utils";
+import { FollowButton } from "@/app/(public)/profile/_components/follow-button";
 
 type Props = {
-  user?: {
-    name?: string;
-    specialities?: string[];
-    image?: string;
-    isSupporting?: boolean;
-  };
+  profile: ProfileResponse;
 };
 
-export default function ProfileCard({ user }: Props) {
+export default function ProfileCard({ profile }: Props) {
   return (
-    <Card className="w-[128px] p-2 rounded-md shadow-md gap-2">
+    <Card className="w-[128px] h-[190px] p-2 rounded-md shadow-md gap-2 flex flex-col justify-between">
       <CardHeader className="flex justify-center">
         <Avatar className="w-20 h-20">
-          <AvatarImage src={user?.image} alt={`Imagem de ${user?.name}`} />
+          <AvatarImage
+            src={getImageUrl(profile?.avatar)}
+            alt={`Imagem de ${profile?.name}`}
+          />
           <AvatarFallback>
-            {user?.name
+            {profile?.name
               ?.split(" ")
               .map((n) => n[0])
               .slice(0, 2)
@@ -35,21 +35,18 @@ export default function ProfileCard({ user }: Props) {
       </CardHeader>
       <CardContent className="p-0 flex flex-col gap-1 justify-center">
         <CardTitle className="truncate text-center w-full">
-          {user?.name}
+          {profile?.name}
         </CardTitle>
         <CardDescription className="truncate text-center w-full">
-          {user?.specialities?.join(", ")}
+          {profile?.specialities?.map((s) => s.name).join(", ")}
         </CardDescription>
       </CardContent>
       <CardFooter className="flex justify-center w-full p-0">
-        <Button
-          variant={user?.isSupporting ? "outline" : "default"}
-          className={`w-full cursor-pointer font-bold border-primary ${
-            user?.isSupporting ? "text-primary" : null
-          }`}
-        >
-          {user?.isSupporting ? "Apoiando" : "Apoiar"}
-        </Button>
+        <FollowButton
+          handle={profile.handle}
+          isFollowing={profile.isFollowing}
+          profileId={profile.id}
+        />
       </CardFooter>
     </Card>
   );

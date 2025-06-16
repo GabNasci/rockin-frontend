@@ -5,29 +5,10 @@ import MobileNav from "@/components/shared/mobile_nav";
 import { QueryProvider } from "@/lib/react-query/QueryProvider";
 import { Toaster } from "sonner";
 import Script from "next/script";
-import { AuthProvider } from "@/lib/contexts/auth-context";
-
-// // Import the functions you need from the SDKs you need
-// import { initializeApp } from "firebase/app";
-// import { getAnalytics } from "firebase/analytics";
-// // TODO: Add SDKs for Firebase products that you want to use
-// // https://firebase.google.com/docs/web/setup#available-libraries
-
-// // Your web app's Firebase configuration
-// // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-// const firebaseConfig = {
-//   apiKey: process.env.NEXT_PUBLIC_API_KEY,
-//   authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN,
-//   projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
-//   storageBucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET,
-//   messagingSenderId: process.env.NEXT_PUBLIC_MESSAGING_SENDER_ID,
-//   appId: process.env.NEXT_PUBLIC_APP_ID,
-//   measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID,
-// };
-
-// // Initialize Firebase
-// const app = initializeApp(firebaseConfig);
-// const analytics = getAnalytics(app);
+import { AuthProvider } from "@/lib/contexts/auth.context";
+import { SearchProvider } from "@/lib/contexts/search.context";
+import { AuthDialogProvider } from "@/lib/contexts/auth-dialog.context";
+import { AuthDialog } from "@/components/shared/dialog/auth.dialog";
 
 const montserrat = Montserrat({ variable: "--font-sans", subsets: ["latin"] });
 
@@ -44,16 +25,21 @@ export default function RootLayout({
       <body className="font-sans bg-gray-50">
         <QueryProvider>
           <AuthProvider>
-            <Header />
-            {children}
-            <MobileNav />
-            <Toaster position="top-center" />
-            <Script
-              src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}
-              strategy="beforeInteractive"
-              async
-              defer
-            />
+            <AuthDialogProvider>
+              <SearchProvider>
+                <Header />
+                {children}
+                <MobileNav />
+                <Toaster position="top-center" />
+                <Script
+                  src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places`}
+                  strategy="beforeInteractive"
+                  async
+                  defer
+                />
+              </SearchProvider>
+              <AuthDialog />
+            </AuthDialogProvider>
           </AuthProvider>
         </QueryProvider>
       </body>

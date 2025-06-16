@@ -1,3 +1,4 @@
+import { useRequireAuthAction } from "@/lib/firebase/hooks/useRequireAuthAction";
 import { cn } from "@/lib/utils";
 import { useLikePost, useUnlikePost } from "@/models/posts/usePosts";
 import { ThumbsUpIcon } from "lucide-react";
@@ -10,14 +11,15 @@ type LikePostProps = {
 export default function LikePost({ postId, liked }: LikePostProps) {
   const { mutate: like } = useLikePost();
   const { mutate: unlike } = useUnlikePost();
+  const requireAuth = useRequireAuthAction();
 
-  const handleLike = () => {
+  const handleLike = requireAuth(() => {
     if (liked) {
       unlike(postId);
     } else {
       like(postId);
     }
-  };
+  });
   return (
     <ThumbsUpIcon
       onClick={handleLike}

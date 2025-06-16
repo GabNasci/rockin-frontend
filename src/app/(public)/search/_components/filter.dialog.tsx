@@ -20,7 +20,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { ProfileTypeID } from "@/lib/constants";
-import { useAuth } from "@/lib/contexts/auth-context";
+import { useAuth } from "@/lib/contexts/auth.context";
 import { mapToOptions } from "@/lib/utils";
 import { useGenres } from "@/models/genres/useGenres";
 import { useSpecialitiesByProfileType } from "@/models/specialities/useSpecialities";
@@ -171,29 +171,30 @@ export default function FilterDialog({
               );
             }}
           />
-
-          <FormField
-            control={control}
-            name="searchByRadius"
-            render={({ field }) => (
-              <FormItem className="flex">
-                <FormLabel>Buscar por raio?</FormLabel>
-                <FormControl>
-                  <Checkbox
-                    className="cursor-pointer"
-                    checked={field.value}
-                    onCheckedChange={(checked) => {
-                      field.onChange(checked);
-                      if (!checked) {
-                        setValue("radius", undefined);
-                      }
-                    }}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          {isLoggedIn && (
+            <FormField
+              control={control}
+              name="searchByRadius"
+              render={({ field }) => (
+                <FormItem className="flex">
+                  <FormLabel>Buscar por raio?</FormLabel>
+                  <FormControl>
+                    <Checkbox
+                      className="cursor-pointer"
+                      checked={field.value}
+                      onCheckedChange={(checked) => {
+                        field.onChange(checked);
+                        if (!checked) {
+                          setValue("radius", undefined);
+                        }
+                      }}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
           {searchByRadius && isLoggedIn && (
             <FormField
               control={control}

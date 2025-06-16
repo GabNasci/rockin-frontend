@@ -3,7 +3,7 @@
 import { ProfileHorizontalCard } from "@/components/shared/profile-horizontal-card";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { useAuth } from "@/lib/contexts/auth-context";
+import { useAuth } from "@/lib/contexts/auth.context";
 import { Band } from "@/models/bands/types";
 import { usePathname, useRouter } from "next/navigation";
 
@@ -15,6 +15,10 @@ export function BandsList({ bands }: BandsListProps) {
   const { user } = useAuth();
   const pathname = usePathname();
   const router = useRouter();
+
+  const goToCreateBand = () => {
+    router.push("/create/band");
+  };
 
   const isUserProfilePage = pathname === `/profile/${user?.handle}`;
 
@@ -37,9 +41,10 @@ export function BandsList({ bands }: BandsListProps) {
         {isUserProfilePage && (
           <Button
             variant="outline"
+            onClick={goToCreateBand}
             className="border-primary text-primary font-bold bg-white"
           >
-            Criar banda
+            Criar perfil de banda
           </Button>
         )}
       </CardContent>

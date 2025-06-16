@@ -13,3 +13,23 @@ export const searchProfileSchema = z.object({
 });
 
 export type SearchProfilesData = z.infer<typeof searchProfileSchema>;
+
+export const defaultMusicianValues: SearchProfilesData = {
+  search: "",
+  genres: [],
+  specialities: [],
+  limit: 20,
+  page: 1,
+  profileTypes: ["Músico(a)", "Banda"],
+  includeBands: true,
+};
+
+export const defaultPlacesValues: SearchProfilesData = {
+  search: "",
+  genres: [],
+  specialities: [],
+  limit: 20,
+  page: 1,
+  profileTypes: ["Estabelecimento"],
+  includeBands: false,
+};

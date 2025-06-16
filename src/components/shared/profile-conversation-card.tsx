@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { getLastMessage } from "@/lib/firebase/hooks/useMessages";
 import { Message } from "@/models/messages/type";
-import { useAuth } from "@/lib/contexts/auth-context";
+import { useAuth } from "@/lib/contexts/auth.context";
 
 type ProfileHorizontalCardProps = {
   profile: ProfileResponse | SimpleProfile;

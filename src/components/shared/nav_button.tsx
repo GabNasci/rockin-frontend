@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { ComponentType } from "react";
 import { UserIcon } from "../icons";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import { useAuth } from "@/lib/contexts/auth-context";
+import { useAuth } from "@/lib/contexts/auth.context";
 
 interface NavButtonProps {
   href: string;

@@ -1,3 +1,4 @@
+"use client";
 import { TOKEN_KEY } from "@/lib/constants";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
