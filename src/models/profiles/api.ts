@@ -69,3 +69,8 @@ export async function checkEmail(email: string) {
   const res = await api.get(`/profiles/email/exists/${email}`);
   return res.data;
 }
+
+export async function deleteProfile(profileId: number) {
+  const res = await api.delete(`/profiles/${profileId}/delete`);
+  return res.data;
+}
