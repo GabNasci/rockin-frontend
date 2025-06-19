@@ -2,6 +2,6 @@ import { ProfileResponse } from "../auth/types";
 
 export type Band = {
   id: number;
-  ownerId: number;
+  owner_id: number;
   profile: ProfileResponse;
 };

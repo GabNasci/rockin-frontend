@@ -1,5 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { addMemberToBand, createBand, getBandMembers } from "./api";
+import {
+  addMemberToBand,
+  createBand,
+  getBandByProfileId,
+  getBandMembers,
+} from "./api";
 import { CreateBandData } from "@/schemas/CreateBandSchema";
 import { useRouter } from "next/navigation";
 import { toast } from "@/lib/toast";
@@ -39,5 +44,16 @@ export function useAddMemberToBand() {
       toast.success("Membro adicionado com sucesso!");
       queryClient.invalidateQueries({ queryKey: ["members"] });
     },
+  });
+}
+
+export function useGetBandByProfileId(
+  profileId: number | undefined,
+  enabled = true,
+) {
+  return useQuery({
+    queryKey: ["band"],
+    queryFn: () => getBandByProfileId(profileId),
+    enabled,
   });
 }
