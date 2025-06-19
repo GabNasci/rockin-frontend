@@ -23,10 +23,14 @@ export function useCreatePost() {
   });
 }
 
-export function useGetPostsByProfileId(profileId: number | undefined) {
+export function useGetPostsByProfileId(
+  profileId: number | undefined,
+  enabled = true,
+) {
   return useQuery({
     queryKey: ["posts", profileId],
     queryFn: () => getPostsByProfileId(profileId),
+    enabled,
   });
 }
 
