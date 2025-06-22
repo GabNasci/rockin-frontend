@@ -27,7 +27,6 @@ export default function ProfilePage() {
       !!data?.id && data.profile_type_id === ProfileTypeID.BAND.valueOf(),
     );
   const [open, setOpen] = useState(false);
-  console.log(open);
   if (!data && !isError && isLoading) return <Loading />;
 
   if (!data) return notFound();

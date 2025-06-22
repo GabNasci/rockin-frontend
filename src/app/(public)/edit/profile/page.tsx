@@ -89,7 +89,6 @@ export default function EditProfilePage() {
   const { control, handleSubmit } = form;
 
   const onSubmit = (values: EditProfileData) => {
-    console.log(values);
     checkHandle(values.handle, {
       onSuccess: () => {
         editProfile({

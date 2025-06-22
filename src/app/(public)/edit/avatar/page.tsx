@@ -81,10 +81,7 @@ export default function EditAvatarPage() {
     <div className="flex min-h-screen flex-col items-center mt-[56px] pt-20 px-4">
       <Card className="w-full max-w-md">
         <Form {...form}>
-          <form
-            onSubmit={handleSubmit(onSubmit, (e) => console.log(e))}
-            className="space-y-8"
-          >
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
             <CardHeader>
               <CardTitle>Editar Foto de Perfil</CardTitle>
               <CardDescription>Edite a sua imagem de perfil.</CardDescription>
