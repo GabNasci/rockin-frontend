@@ -53,3 +53,8 @@ export async function getLinkPreviewew(link: string) {
   const res = await api.post(`/posts/link-preview`, { link });
   return res.data;
 }
+
+export async function deletePost(postId: number) {
+  const res = await api.delete(`/posts/${postId}`);
+  return res.data;
+}

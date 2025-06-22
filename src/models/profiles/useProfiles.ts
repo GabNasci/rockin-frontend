@@ -4,6 +4,7 @@ import {
   checkEmail,
   checkHandle,
   createProfile,
+  deleteProfile,
   findProfileByHandle,
   followProfile,
   getProfiles,
@@ -223,6 +224,23 @@ export function useChangeProfile() {
       await queryClient.refetchQueries({ queryKey: ["me"] });
       toast.success("Troca de perfil realizada com sucesso!");
       router.push(`/profile/${data.profile.handle}`);
+    },
+  });
+}
+
+export function useDeleteProfile() {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (profileId: number) => deleteProfile(profileId),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["me"] });
+      await queryClient.refetchQueries({ queryKey: ["me"] });
+      await queryClient.setQueryData(["me"], null);
+      queryClient.clear();
+      localStorage.removeItem(TOKEN_KEY);
+      toast.success("Perfil deletado com sucesso!");
+      router.push("/login");
     },
   });
 }

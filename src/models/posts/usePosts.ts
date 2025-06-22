@@ -3,6 +3,7 @@ import { useRouter } from "next/navigation";
 import { Post, PostResponse } from "./types";
 import {
   createPost,
+  deletePost,
   getAllPosts,
   getLinkPreviewew,
   getPostsByProfileId,
@@ -22,10 +23,14 @@ export function useCreatePost() {
   });
 }
 
-export function useGetPostsByProfileId(profileId: number | undefined) {
+export function useGetPostsByProfileId(
+  profileId: number | undefined,
+  enabled = true,
+) {
   return useQuery({
     queryKey: ["posts", profileId],
     queryFn: () => getPostsByProfileId(profileId),
+    enabled,
   });
 }
 
@@ -117,6 +122,19 @@ export function useGetLinkPreview() {
     mutationFn: (url: string) => getLinkPreviewew(url),
     meta: {
       silent: true,
+    },
+  });
+}
+
+export function useDeletePost() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (postId: number) => deletePost(postId),
+    onSuccess: () => {
+      toast.success("Post deletado com sucesso!");
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
+      queryClient.invalidateQueries({ queryKey: ["profile"] });
+      queryClient.invalidateQueries({ queryKey: ["profile", "posts"] });
     },
   });
 }

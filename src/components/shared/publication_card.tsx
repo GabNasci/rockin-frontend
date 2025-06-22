@@ -10,6 +10,8 @@ import { Skeleton } from "../ui/skeleton";
 import LinkPreviewCard from "./link-preview-card";
 import LikePost from "./like-post";
 import { useRouter } from "next/navigation";
+import { DropdownMenuPost } from "./dropdown-menu-post";
+import { useAuth } from "@/lib/contexts/auth.context";
 
 type PublicationCardProps = {
   post: PostResponse;
@@ -19,6 +21,9 @@ export default function PublicationCard({ post }: PublicationCardProps) {
   const [linkPreview, setLinkPreview] = useState(null);
   const { mutate: fetchPreview, isPending } = useGetLinkPreview();
   const router = useRouter();
+  const { user } = useAuth();
+
+  const userIsAuthor = user?.id === post.profile.id;
 
   const handleClickProfile = (handle: string) => {
     router.push(`/profile/${handle}`);
@@ -35,7 +40,12 @@ export default function PublicationCard({ post }: PublicationCardProps) {
 
   return (
     <Card className="relative rounded-none gap-4 shadow-none border-0 pb-0 py-3 px-4">
-      <ProfileInfoHeader profile={post.profile} />
+      <div className="flex justify-between">
+        <ProfileInfoHeader profile={post.profile} />
+        <div className="text-primary">
+          {userIsAuthor && <DropdownMenuPost post={post} />}
+        </div>
+      </div>
       <div className="p-2 flex flex-col justify-center gap-2">
         <p className="text-black text-sm">{post.text}</p>
         <div className="flex justify-center w-full">

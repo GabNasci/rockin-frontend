@@ -20,10 +20,12 @@ export type SimpleProfile = {
   avatar: string | null;
   specialities: Speciality[];
   band?: {
-    members: Omit<SimpleProfile, "members">[];
+    members: Member[];
   } | null;
   genres: Genre[];
 };
+
+export type Member = Omit<SimpleProfile, "members">;
 
 export type Location = {
   latitude: string;

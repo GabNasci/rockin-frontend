@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -12,12 +13,16 @@ import { CircleEllipsisIcon } from "lucide-react";
 import LogoutDialog from "./logout-dialog";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { DeleteProfileDialog } from "./dialog/delete-profile.dialog";
+import { useAuth } from "@/lib/contexts/auth.context";
 
 export function DropdownMenuAccount() {
   const [openDropdown, setOpenDropdown] = useState(false);
   const [openLogout, setOpenLogout] = useState(false);
-
+  const [openDeleteProfile, setOpenDeleteProfile] = useState(false);
+  const { user } = useAuth();
   const router = useRouter();
+  if (!user) return null;
 
   return (
     <>
@@ -44,6 +49,14 @@ export function DropdownMenuAccount() {
             <DropdownMenuItem onClick={() => router.push("/profile/change")}>
               Trocar perfil
             </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={() => {
+                setOpenDeleteProfile(true);
+                setOpenDropdown(false);
+              }}
+            >
+              Excluir perfil
+            </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuItem
@@ -57,6 +70,11 @@ export function DropdownMenuAccount() {
         </DropdownMenuContent>
       </DropdownMenu>
       <LogoutDialog open={openLogout} onOpenChange={setOpenLogout} />
+      <DeleteProfileDialog
+        open={openDeleteProfile}
+        setOpen={setOpenDeleteProfile}
+        profile={user}
+      />
     </>
   );
 }
