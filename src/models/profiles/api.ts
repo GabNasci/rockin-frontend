@@ -3,10 +3,12 @@ import {
   ChangeProfileResponse,
   Profile,
   SearchProfilesResponse,
+  UpdateProfileBody,
 } from "./types";
 import { ProfileResponse } from "../auth/types";
 import { SearchProfilesData } from "@/schemas/SearchProfilesSchema";
 import { UpdateProfileAvatarData } from "@/schemas/UpdateProfileAvatarSchema";
+import { LocationData } from "@/schemas/CreateProfileSchema";
 
 export async function createProfile(data: Profile) {
   const res = await api.post("/profiles", data);
@@ -89,5 +91,17 @@ export async function editAvatar(
 
 export async function deleteProfileAvatar() {
   const res = await api.delete(`/profiles/avatar/remove`);
+  return res.data;
+}
+
+export async function editProfile(
+  data: UpdateProfileBody,
+): Promise<ProfileResponse> {
+  const res = await api.put(`/profiles`, data);
+  return res.data;
+}
+
+export async function editLocation(data: LocationData) {
+  const res = await api.put(`/profiles/location`, data);
   return res.data;
 }

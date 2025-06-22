@@ -7,6 +7,8 @@ import {
   deleteProfile,
   deleteProfileAvatar,
   editAvatar,
+  editLocation,
+  editProfile,
   findProfileByHandle,
   followProfile,
   getProfiles,
@@ -15,7 +17,7 @@ import {
   searchProfiles,
   unfollowProfile,
 } from "./api";
-import { Profile } from "./types";
+import { Profile, UpdateProfileBody } from "./types";
 import { toast } from "@/lib/toast";
 import { useRouter } from "next/navigation";
 import { SearchProfilesData } from "@/schemas/SearchProfilesSchema";
@@ -23,6 +25,7 @@ import { ProfileResponse } from "../auth/types";
 import { useAuth } from "@/lib/contexts/auth.context";
 import { TOKEN_KEY } from "@/lib/constants";
 import { UpdateProfileAvatarData } from "@/schemas/UpdateProfileAvatarSchema";
+import { LocationData } from "@/schemas/CreateProfileSchema";
 
 export function useCreateProfile() {
   const router = useRouter();
@@ -248,17 +251,23 @@ export function useDeleteProfile() {
   });
 }
 
-// export function useUpdateProfile() {
-//   const queryClient = useQueryClient();
-//   return useMutation({
-//     mutationFn: (data: UpdateProfileData) => updateProfile(data),
-//     onSuccess: async () => {
-//       await queryClient.invalidateQueries({ queryKey: ["me"] });
-//       await queryClient.refetchQueries({ queryKey: ["me"] });
-//       toast.success("Perfil atualizado com sucesso!");
-//     },
-//   });
-// }
+export function useUpdateProfile() {
+  const queryClient = useQueryClient();
+  const router = useRouter();
+  return useMutation({
+    mutationFn: (data: UpdateProfileBody) => editProfile(data),
+    onSuccess: async (data: ProfileResponse) => {
+      await queryClient.invalidateQueries({ queryKey: ["me"] });
+      await queryClient.refetchQueries({ queryKey: ["me"] });
+      toast.success("Perfil atualizado com sucesso!");
+      if (data.handle) {
+        router.push(`/profile/${data.handle}`);
+      } else {
+        router.push("/home");
+      }
+    },
+  });
+}
 
 export function useEditAvatar() {
   const queryClient = useQueryClient();
@@ -270,7 +279,7 @@ export function useEditAvatar() {
       await queryClient.invalidateQueries({ queryKey: ["me"] });
       await queryClient.refetchQueries({ queryKey: ["me"] });
       toast.success("Avatar atualizado com sucesso!");
-      if (user?.avatar) {
+      if (user?.handle) {
         router.push(`/profile/${user?.handle}`);
       } else {
         router.back();
@@ -289,7 +298,26 @@ export function useDeleteProfileAvatar() {
       await queryClient.invalidateQueries({ queryKey: ["me"] });
       await queryClient.refetchQueries({ queryKey: ["me"] });
       toast.success("Avatar deletado com sucesso!");
-      if (user?.avatar) {
+      if (user?.handle) {
+        router.push(`/profile/${user?.handle}`);
+      } else {
+        router.back();
+      }
+    },
+  });
+}
+
+export function useEditLocation() {
+  const queryClient = useQueryClient();
+  const router = useRouter();
+  const { user } = useAuth();
+  return useMutation({
+    mutationFn: (location: LocationData) => editLocation(location),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["me"] });
+      await queryClient.refetchQueries({ queryKey: ["me"] });
+      toast.success("Localização atualizada com sucesso!");
+      if (user?.handle) {
         router.push(`/profile/${user?.handle}`);
       } else {
         router.back();

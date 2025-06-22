@@ -25,12 +25,14 @@ import { LocationAutocomplete } from "../../signup/_components/form/locationAuto
 import { LocationData, locationSchema } from "@/schemas/CreateProfileSchema";
 import { useAuth } from "@/lib/contexts/auth.context";
 import { LocationCard } from "./_components/location.card";
+import { useEditLocation } from "@/models/profiles/useProfiles";
+import { Spinner } from "@/components/ui/spinner";
 
 export default function EditLocationPage() {
   useProtectedRoute();
   const { user } = useAuth();
   const currentLocation: LocationData | undefined = user?.locations;
-  console.log(user);
+  const { mutate: editLocation, isPending } = useEditLocation();
   const form = useForm<LocationData>({
     resolver: zodResolver(locationSchema),
     defaultValues: {
@@ -59,7 +61,7 @@ export default function EditLocationPage() {
   }, [currentLocation, reset]);
 
   const onSubmit = (values: LocationData) => {
-    console.log(values);
+    editLocation(values);
   };
 
   return (
@@ -110,8 +112,12 @@ export default function EditLocationPage() {
             </CardContent>
 
             <CardFooter className="flex justify-between">
-              <Button type="submit" className="w-full">
-                Salvar
+              <Button type="submit" disabled={isPending} className="w-full">
+                {isPending ? (
+                  <Spinner size={"small"} className="mr-2 text-white" />
+                ) : (
+                  "Salvar"
+                )}
               </Button>
             </CardFooter>
           </form>

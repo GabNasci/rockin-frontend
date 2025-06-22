@@ -19,11 +19,16 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
 import { useProtectedRoute } from "@/hooks/useProtectedRoute";
 import { useAuth } from "@/lib/contexts/auth.context";
 import { mapToOptions } from "@/lib/utils";
 import { useGenres } from "@/models/genres/useGenres";
+import {
+  useCheckHandle,
+  useUpdateProfile,
+} from "@/models/profiles/useProfiles";
 import { useSpecialitiesByProfileType } from "@/models/specialities/useSpecialities";
 import {
   EditProfileData,
@@ -41,6 +46,8 @@ export default function EditProfilePage() {
     user?.profile_type_id,
     !!user?.profile_type_id,
   );
+  const { mutate: checkHandle, isPending: isChecking } = useCheckHandle();
+  const { mutate: editProfile, isPending } = useUpdateProfile();
   const form = useForm<EditProfileData>({
     resolver: zodResolver(editProfileSchema),
     defaultValues: {
@@ -83,6 +90,21 @@ export default function EditProfilePage() {
 
   const onSubmit = (values: EditProfileData) => {
     console.log(values);
+    checkHandle(values.handle, {
+      onSuccess: () => {
+        editProfile({
+          ...values,
+          genres: values.genres.map((g) => Number(g)),
+          specialities: values.specialities.map((s) => Number(s)),
+        });
+      },
+      onError: () => {
+        form.setError("handle", {
+          type: "manual",
+          message: "Esse nome de usuário já está em uso.",
+        });
+      },
+    });
   };
 
   return (
@@ -207,11 +229,14 @@ export default function EditProfilePage() {
                 }}
               />
             </CardContent>
-            <CardFooter className="flex justify-between">
-              <Button variant="outline" type="reset">
-                Limpar
+            <CardFooter className="flex justify-end">
+              <Button type="submit" disabled={isPending || isChecking}>
+                {isPending ? (
+                  <Spinner size={"small"} className="mr-2 text-white" />
+                ) : (
+                  "Salvar"
+                )}
               </Button>
-              <Button type="submit">Salvar</Button>
             </CardFooter>
           </form>
         </Form>

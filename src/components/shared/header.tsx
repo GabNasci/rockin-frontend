@@ -95,7 +95,7 @@ const Header = memo(function Header() {
         </div>
       </div>
       {isProfilePage && isUserProfilePage && (
-        <div className="flex md:hidden absolute right-3 cursor-pointer">
+        <div className="flex absolute right-3 cursor-pointer">
           <DropdownMenuAccount />
         </div>
       )}
