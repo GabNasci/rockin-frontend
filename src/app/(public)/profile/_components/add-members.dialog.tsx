@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 import ProfileBadge from "@/components/shared/profileBadge";
 import { DialogDescription } from "@radix-ui/react-dialog";
 import { ProfileMentionCard } from "@/components/shared/profile-mention-card";
-import { MAX_PROFILES } from "@/lib/constants";
+import { MAX_PROFILES, ProfileTypeID } from "@/lib/constants";
 import {
   useAddMemberToBand,
   useGetBandByProfileId,
@@ -41,7 +41,7 @@ export function AddMembersDialog({
   const { user } = useAuth();
   const { data: band, isLoading: isLoadingBand } = useGetBandByProfileId(
     user?.id,
-    !!user?.id,
+    !!user?.id && user.profile_type_id === ProfileTypeID.BAND.valueOf(),
   );
   const { mutate: searchFollowings, isPending: isLoadingFollowings } =
     useSearchFollowings();

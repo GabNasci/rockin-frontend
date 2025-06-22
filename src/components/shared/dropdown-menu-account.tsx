@@ -44,7 +44,9 @@ export function DropdownMenuAccount() {
             <DropdownMenuItem onClick={() => router.push("/edit/avatar")}>
               Editar foto de perfil
             </DropdownMenuItem>
-            <DropdownMenuItem disabled>Editar localização</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => router.push("/edit/location")}>
+              Editar localização
+            </DropdownMenuItem>
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>

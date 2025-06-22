@@ -22,7 +22,10 @@ export default function ProfilePage() {
     !!data?.id,
   );
   const { data: members, isLoading: isMembersLoading } =
-    useGetMembersByBandProfileId(data?.id, !!data?.id);
+    useGetMembersByBandProfileId(
+      data?.id,
+      !!data?.id && data.profile_type_id === ProfileTypeID.BAND.valueOf(),
+    );
   const [open, setOpen] = useState(false);
   console.log(open);
   if (!data && !isError && isLoading) return <Loading />;
