@@ -8,7 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { CircleEllipsisIcon } from "lucide-react";
+import { CircleEllipsisIcon, Trash2Icon } from "lucide-react";
 import { useState } from "react";
 import DeletePostDialog from "./dialog/delete-post.dialog";
 import { PostResponse } from "@/models/posts/types";
@@ -38,10 +38,10 @@ export function DropdownMenuPost({ post }: { post: PostResponse }) {
                 setOpenDropdown(false);
               }}
             >
+              <Trash2Icon className="h-4 w-4" />
               Excluir post
             </DropdownMenuItem>
           </DropdownMenuGroup>
-          <DropdownMenuSeparator />
         </DropdownMenuContent>
       </DropdownMenu>
       <DeletePostDialog open={openPost} setOpen={setOpenPost} post={post} />
