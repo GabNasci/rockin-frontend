@@ -6,6 +6,7 @@ import {
 } from "./types";
 import { ProfileResponse } from "../auth/types";
 import { SearchProfilesData } from "@/schemas/SearchProfilesSchema";
+import { UpdateProfileAvatarData } from "@/schemas/UpdateProfileAvatarSchema";
 
 export async function createProfile(data: Profile) {
   const res = await api.post("/profiles", data);
@@ -72,5 +73,21 @@ export async function checkEmail(email: string) {
 
 export async function deleteProfile(profileId: number) {
   const res = await api.delete(`/profiles/${profileId}/delete`);
+  return res.data;
+}
+
+export async function editAvatar(
+  data: UpdateProfileAvatarData,
+): Promise<ProfileResponse> {
+  const formData = new FormData();
+  if (data.avatar) {
+    formData.append("avatar", data.avatar);
+  }
+  const res = await api.put(`/profiles/avatar/add`, formData);
+  return res.data;
+}
+
+export async function deleteProfileAvatar() {
+  const res = await api.delete(`/profiles/avatar/remove`);
   return res.data;
 }

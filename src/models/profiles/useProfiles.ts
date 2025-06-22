@@ -5,6 +5,8 @@ import {
   checkHandle,
   createProfile,
   deleteProfile,
+  deleteProfileAvatar,
+  editAvatar,
   findProfileByHandle,
   followProfile,
   getProfiles,
@@ -20,6 +22,7 @@ import { SearchProfilesData } from "@/schemas/SearchProfilesSchema";
 import { ProfileResponse } from "../auth/types";
 import { useAuth } from "@/lib/contexts/auth.context";
 import { TOKEN_KEY } from "@/lib/constants";
+import { UpdateProfileAvatarData } from "@/schemas/UpdateProfileAvatarSchema";
 
 export function useCreateProfile() {
   const router = useRouter();
@@ -241,6 +244,56 @@ export function useDeleteProfile() {
       localStorage.removeItem(TOKEN_KEY);
       toast.success("Perfil deletado com sucesso!");
       router.push("/login");
+    },
+  });
+}
+
+// export function useUpdateProfile() {
+//   const queryClient = useQueryClient();
+//   return useMutation({
+//     mutationFn: (data: UpdateProfileData) => updateProfile(data),
+//     onSuccess: async () => {
+//       await queryClient.invalidateQueries({ queryKey: ["me"] });
+//       await queryClient.refetchQueries({ queryKey: ["me"] });
+//       toast.success("Perfil atualizado com sucesso!");
+//     },
+//   });
+// }
+
+export function useEditAvatar() {
+  const queryClient = useQueryClient();
+  const router = useRouter();
+  const { user } = useAuth();
+  return useMutation({
+    mutationFn: (data: UpdateProfileAvatarData) => editAvatar(data),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["me"] });
+      await queryClient.refetchQueries({ queryKey: ["me"] });
+      toast.success("Avatar atualizado com sucesso!");
+      if (user?.avatar) {
+        router.push(`/profile/${user?.handle}`);
+      } else {
+        router.back();
+      }
+    },
+  });
+}
+
+export function useDeleteProfileAvatar() {
+  const queryClient = useQueryClient();
+  const router = useRouter();
+  const { user } = useAuth();
+  return useMutation({
+    mutationFn: () => deleteProfileAvatar(),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["me"] });
+      await queryClient.refetchQueries({ queryKey: ["me"] });
+      toast.success("Avatar deletado com sucesso!");
+      if (user?.avatar) {
+        router.push(`/profile/${user?.handle}`);
+      } else {
+        router.back();
+      }
     },
   });
 }
