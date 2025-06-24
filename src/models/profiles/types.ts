@@ -51,3 +51,11 @@ export type ChangeProfileResponse = {
   token: string;
   profile: SimpleProfile;
 };
+
+export type UpdateProfileBody = {
+  genres: number[];
+  specialities: number[];
+  name: string;
+  handle: string;
+  about: string;
+};

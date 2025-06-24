@@ -1,3 +1,4 @@
+import { LocationData } from "@/schemas/CreateProfileSchema";
 import { Band } from "../bands/types";
 import { Genre } from "../genres/types";
 import { Member } from "../profiles/types";
@@ -35,7 +36,7 @@ export type ProfileResponse = {
   band?: {
     members: Member[];
   } | null;
-  locations: { city: string; state: string };
+  locations: LocationData;
   followersCount: number;
   followingCount: number;
   postsCount: number;

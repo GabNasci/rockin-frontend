@@ -202,7 +202,7 @@ export default function FilterDialog({
               render={({ field }) => (
                 <FormItem>
                   <div className="text-center text-sm text-muted-foreground mt-2">
-                    {field.value ?? 0} km
+                    {field.value ?? 33} km
                   </div>
                   <FormControl>
                     <Slider

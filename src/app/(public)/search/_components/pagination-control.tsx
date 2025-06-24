@@ -1,5 +1,3 @@
-// components/shared/pagination-control.tsx
-
 "use client";
 import {
   Pagination,
