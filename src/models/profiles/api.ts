@@ -39,8 +39,8 @@ export async function changeProfile(
   return res.data;
 }
 
-export async function searchFollowings(search: string) {
-  const res = await api.get(`/profiles/followings`, {
+export async function searchFollowings(search: string, noBands: boolean) {
+  const res = await api.get(`/profiles/followings?noBands=${noBands}`, {
     params: { q: search },
   });
   return res.data;

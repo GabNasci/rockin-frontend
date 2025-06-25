@@ -53,9 +53,13 @@ export function useGetProfiles() {
   });
 }
 
-export function useSearchFollowings() {
+export function useSearchFollowings({
+  noBands = false,
+}: {
+  noBands?: boolean;
+} = {}) {
   return useMutation({
-    mutationFn: (search: string) => searchFollowings(search),
+    mutationFn: (search: string) => searchFollowings(search, noBands),
   });
 }
 

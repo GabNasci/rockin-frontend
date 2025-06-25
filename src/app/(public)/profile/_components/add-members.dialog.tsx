@@ -44,7 +44,7 @@ export function AddMembersDialog({
     !!user?.id && user.profile_type_id === ProfileTypeID.BAND.valueOf(),
   );
   const { mutate: searchFollowings, isPending: isLoadingFollowings } =
-    useSearchFollowings();
+    useSearchFollowings({ noBands: true });
 
   useEffect(() => {
     if (members) {
@@ -185,7 +185,7 @@ export function AddMembersDialog({
             {isPending ? (
               <Spinner size={"small"} className="mr-2 text-white" />
             ) : (
-              "Adicionar"
+              "Salvar"
             )}
           </Button>
         </DialogFooter>
