@@ -9,7 +9,7 @@ export default function MessagesPage() {
   const { data: conversations } = useConversations();
   if (conversations === undefined) return <Loading />;
   return (
-    <div className="flex min-h-screen flex-col items-center py-20">
+    <div className="flex min-h-screen flex-col items-center py-20 w-full md:px-40">
       {conversations.map((conversation) => (
         <ProfileConversationCard
           key={conversation.id}

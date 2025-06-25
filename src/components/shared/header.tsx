@@ -80,7 +80,7 @@ const Header = memo(function Header() {
             href="/profile"
             label="Perfil"
             icon={UserIcon}
-            isActive={pathname === "/profile"}
+            isActive={pathname === `/profile/${user?.handle}`}
             className="px-2"
           />
           {notShowMessagessButton(pathname) && user && (

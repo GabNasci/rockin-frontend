@@ -72,7 +72,7 @@ export default function ConversationPage() {
   };
 
   return (
-    <div className="flex h-full flex-col gap-3 mt-[56px] mb-20">
+    <div className="flex h-full flex-col gap-3 mt-[56px] mb-20 ">
       <Form {...form}>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
           <div className="mt-4">

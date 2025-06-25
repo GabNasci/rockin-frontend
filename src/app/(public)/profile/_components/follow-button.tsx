@@ -32,7 +32,7 @@ export function FollowButton({
     <Button
       variant={isFollowing ? "outline" : "default"}
       className={cn(
-        "w-full md:w-auto font-bold cursor-pointer break-words whitespace-normal",
+        "w-full font-bold cursor-pointer break-words whitespace-normal",
         {
           "text-xs": isFollowing,
         },

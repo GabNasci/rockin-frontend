@@ -93,7 +93,7 @@ export default function SearchPage() {
   };
 
   return (
-    <div className="mb-20">
+    <div className="mb-20 w-full md:px-40">
       <Form {...form}>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
           <div className="flex min-h-screen flex-col items-center mt-[56px]">

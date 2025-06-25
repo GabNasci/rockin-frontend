@@ -107,7 +107,7 @@ export default function EditProfilePage() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center mt-[56px] pt-20 px-4">
+    <div className="flex min-h-screen flex-col items-center mt-[56px] pt-20 px-4 md:px-40">
       <Card className="w-full">
         <Form {...form}>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
