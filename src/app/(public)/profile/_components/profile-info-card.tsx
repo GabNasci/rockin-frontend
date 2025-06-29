@@ -25,7 +25,7 @@ export function ProfileInfoCard({ user }: { user: ProfileResponse }) {
   return (
     <Card className="w-full rounded-none mt-3 border-0 shadow-none">
       <CardHeader>
-        <div className="flex justify-between">
+        <div className="flex justify-between gap-2">
           <div className="flex gap-2 items-center w-2/3">
             <UserAvatar
               avatar={getImageUrl(user.avatar)}

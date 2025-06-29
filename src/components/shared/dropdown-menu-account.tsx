@@ -15,6 +15,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { DeleteProfileDialog } from "./dialog/delete-profile.dialog";
 import { useAuth } from "@/lib/contexts/auth.context";
+import { ProfileTypeID } from "@/lib/constants";
 
 export function DropdownMenuAccount() {
   const [openDropdown, setOpenDropdown] = useState(false);
@@ -22,6 +23,9 @@ export function DropdownMenuAccount() {
   const [openDeleteProfile, setOpenDeleteProfile] = useState(false);
   const { user } = useAuth();
   const router = useRouter();
+  const userIsEstablishment =
+    user?.profile_type_id !== ProfileTypeID.MUSICIAN &&
+    user?.profile_type_id !== ProfileTypeID.BAND;
   if (!user) return null;
 
   return (
@@ -50,9 +54,11 @@ export function DropdownMenuAccount() {
           </DropdownMenuGroup>
           <DropdownMenuSeparator />
           <DropdownMenuGroup>
-            <DropdownMenuItem onClick={() => router.push("/profile/change")}>
-              Trocar perfil
-            </DropdownMenuItem>
+            {!userIsEstablishment && (
+              <DropdownMenuItem onClick={() => router.push("/change/profile")}>
+                Trocar perfil
+              </DropdownMenuItem>
+            )}
             <DropdownMenuItem
               onClick={() => {
                 setOpenDeleteProfile(true);

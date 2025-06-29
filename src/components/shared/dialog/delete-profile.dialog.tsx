@@ -2,6 +2,7 @@
 
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
   DialogFooter,
@@ -72,7 +73,9 @@ export function DeleteProfileDialog({
           </p>
         </div>
         <DialogFooter>
-          <Button variant="outline">Cancelar</Button>
+          <DialogClose asChild>
+            <Button variant="outline">Cancelar</Button>
+          </DialogClose>
           <Button onClick={handleDeleteProfile}>
             {isPending ? (
               <Spinner size={"small"} className="mr-2 text-white" />
