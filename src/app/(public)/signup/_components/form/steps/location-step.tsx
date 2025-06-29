@@ -57,9 +57,13 @@ export default function LocationStep() {
 
   return (
     <div>
-      <CardDescription className="flex justify-center text-center">
+      <CardDescription className="flex justify-center text-center flex-col gap-2">
         Informe seu endereço. Para que possamos te indicar perfis mais próximos
-        a você. (Você pode informar apenas a cidade.)
+        a você.
+        <span>
+          Você pode informar apenas a cidade. Porém quanto mais específico
+          melhor a eficiência das indicações.
+        </span>
       </CardDescription>
       <div className="pt-4">
         <Form {...form}>

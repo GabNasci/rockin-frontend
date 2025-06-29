@@ -130,7 +130,7 @@ export default function AddPostPage() {
               <div className="space-y-2 my-3">
                 <div className="grid grid-cols-3 gap-4">
                   {files.map((file, index) => (
-                    <div key={index} className="relative group">
+                    <div key={index} className="relative group w-28">
                       <Image
                         key={index}
                         width={100}
