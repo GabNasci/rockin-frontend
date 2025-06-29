@@ -28,7 +28,7 @@ export default function ProfileInfoHeader({ profile }: ProfileInfoHeaderProps) {
           <UserIcon className="text-gray-300" />
         </AvatarFallback>
       </Avatar>
-      <div className="flex flex-col">
+      <div className="flex flex-col w-full">
         <CardTitle className="hover:underline">{profile.name}</CardTitle>
         <CardDescription className="w-2/3 overflow-hidden text-ellipsis whitespace-nowrap">
           {profile.specialities.map((speciality, index) => (

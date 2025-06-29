@@ -10,16 +10,21 @@ import {
 } from "../ui/card";
 import { getImageUrl } from "@/lib/utils";
 import { FollowButton } from "@/app/(public)/profile/_components/follow-button";
+import { useRouter } from "next/navigation";
 
 type Props = {
   profile: ProfileResponse;
 };
 
 export default function ProfileCard({ profile }: Props) {
+  const router = useRouter();
+  const handleClick = () => {
+    router.push(`/profile/${profile.handle}`);
+  };
   return (
     <Card className="w-[128px] h-[190px] p-2 rounded-md shadow-md gap-2 flex flex-col justify-between">
       <CardHeader className="flex justify-center">
-        <Avatar className="w-20 h-20">
+        <Avatar onClick={handleClick} className="w-20 h-20 cursor-pointer">
           <AvatarImage
             src={getImageUrl(profile?.avatar)}
             alt={`Imagem de ${profile?.name}`}
@@ -34,7 +39,10 @@ export default function ProfileCard({ profile }: Props) {
         </Avatar>
       </CardHeader>
       <CardContent className="p-0 flex flex-col gap-1 justify-center">
-        <CardTitle className="truncate text-center w-full">
+        <CardTitle
+          onClick={handleClick}
+          className="truncate hover:underline cursor-pointer text-center w-full"
+        >
           {profile?.name}
         </CardTitle>
         <CardDescription className="truncate text-center w-full">

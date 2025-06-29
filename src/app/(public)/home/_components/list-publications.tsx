@@ -30,7 +30,7 @@ export function ListPublications({ posts, isLoading }: ListPublicationsProps) {
         {posts && posts.length > 0 ? (
           posts
             .slice(0, 3)
-            .map((post, index) => <PublicationCard key={index} post={post} />)
+            .map((post) => <PublicationCard key={post.id} post={post} />)
         ) : isLoading ? (
           <Loader className="w-10 h-10" />
         ) : (
