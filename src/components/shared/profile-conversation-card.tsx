@@ -54,9 +54,9 @@ export function ProfileConversationCard({
           <UserIcon className="text-gray-300" />
         </AvatarFallback>
       </Avatar>
-      <CardContent className="p-0 flex flex-col gap-1">
+      <CardContent className="p-0 flex flex-col gap-1 w-full pr-16">
         <CardTitle>{profile.name}</CardTitle>
-        <div className="flex gap-1">
+        <div className="flex gap-1 w-full">
           {isFromUser && (
             <span className="text-sm font-bold text-muted-foreground">
               Você:
@@ -67,7 +67,7 @@ export function ProfileConversationCard({
               Carregando...
             </span>
           ) : lastMessage ? (
-            <span className="text-sm text-muted-foreground truncate">
+            <span className="text-sm w-full text-muted-foreground truncate overflow-hidden text-ellipsis whitespace-nowrap">
               {lastMessage.text}
             </span>
           ) : (
