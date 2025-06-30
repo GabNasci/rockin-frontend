@@ -54,7 +54,7 @@ export default function AddPostPage() {
     },
   });
 
-  const { control, handleSubmit } = form;
+  const { control, handleSubmit, setValue } = form;
 
   const watchedLink = form.watch("link");
 
@@ -82,12 +82,19 @@ export default function AddPostPage() {
     const onlyImages = selected.filter((file) =>
       file.type.startsWith("image/"),
     );
-    setFiles((prev) => [...prev, ...onlyImages]);
+
+    const updatedFiles = [...files, ...onlyImages];
+    if (updatedFiles.length > 5) return;
+
+    setFiles(updatedFiles);
+    setValue("medias", updatedFiles); // sincroniza com o form
     e.target.value = "";
   };
 
   const handleRemoveFile = (index: number) => {
-    setFiles((prev) => prev.filter((_, i) => i !== index));
+    const updated = files.filter((_, i) => i !== index);
+    setFiles(updated);
+    setValue("medias", updated); // sincroniza com o form
   };
 
   const onSubmit = async (values: CreatePostData) => {
