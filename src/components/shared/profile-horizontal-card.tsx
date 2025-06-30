@@ -1,12 +1,11 @@
 import { ProfileResponse } from "@/models/auth/types";
 import { Card, CardContent, CardDescription, CardTitle } from "../ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { getImageUrl } from "@/lib/utils";
-import { UserIcon } from "../icons";
 import { Badge } from "../ui/badge";
 import { ProfileTypeID } from "@/lib/constants";
 import { SimpleProfile } from "@/models/profiles/types";
 import ListProfilesAvatar from "./list-profiles-avatar";
+import UserAvatar from "./user_avatar";
 
 type ProfileHorizontalCardProps = {
   profile: ProfileResponse | SimpleProfile;
@@ -36,15 +35,11 @@ export function ProfileHorizontalCard({
       onClick={() => handleAdd(profile)}
       className={`flex flex-row gap-2 px-3 py-3 w-full ${className}`}
     >
-      <Avatar className="w-[40px] h-[40px] flex items-center justify-center bg-gray-100">
-        {profile.avatar ? (
-          <AvatarImage src={getImageUrl(profile.avatar)} />
-        ) : (
-          <AvatarFallback>
-            <UserIcon className="text-gray-300" />
-          </AvatarFallback>
-        )}
-      </Avatar>
+      <UserAvatar
+        className="w-[40px] h-[40px] flex items-center justify-center bg-gray-100"
+        avatar={getImageUrl(profile.avatar)}
+        alreadyHaveUrl
+      />
       <CardContent className="p-0 flex flex-row justify-between w-full">
         <div className="p-0 flex flex-col w-full">
           <CardTitle>{profile.name}</CardTitle>
