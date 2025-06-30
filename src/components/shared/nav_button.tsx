@@ -3,9 +3,8 @@
 import { getImageUrl } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { ComponentType } from "react";
-import { UserIcon } from "../icons";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { useAuth } from "@/lib/contexts/auth.context";
+import UserAvatar from "./user_avatar";
 
 interface NavButtonProps {
   href: string;
@@ -49,12 +48,7 @@ export function NavButton({
       onClick={() => profileRedirect(href)}
     >
       {showImage ? (
-        <Avatar className="w-6 h-6 flex items-center justify-center bg-gray-100">
-          <AvatarImage src={getImageUrl(user.avatar)} />
-          <AvatarFallback>
-            <UserIcon className="text-gray-300" />
-          </AvatarFallback>
-        </Avatar>
+        <UserAvatar avatar={getImageUrl(user.avatar)} alreadyHaveUrl />
       ) : (
         <Icon className={`w-6 h-6`} />
       )}

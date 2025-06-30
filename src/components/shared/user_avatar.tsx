@@ -16,6 +16,7 @@ export default function UserAvatar({
       className={`w-6 h-6 flex items-center justify-center bg-gray-100 ${className || ""}`}
     >
       <AvatarImage
+        className="w-full object-cover"
         src={alreadyHaveUrl ? (avatar ?? "") : getImageUrl(avatar)}
       />
       <AvatarFallback>

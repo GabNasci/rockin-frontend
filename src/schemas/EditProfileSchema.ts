@@ -12,11 +12,8 @@ export const editProfileSchema = z.object({
     .min(3, { message: "Nome de usuário deve ter no mínimo 3 caracteres" }),
   about: z
     .string()
-    .min(3, { message: "Sobre deve ter no mínimo 3 caracteres" })
     .max(255, { message: "Sobre deve ter no máximo 255 caracteres" }),
-  genres: z.array(z.string()).min(1, "Selecione pelo menos um gênero"),
-  specialities: z
-    .array(z.string())
-    .min(1, "Selecione pelo menos uma especialidade"),
+  genres: z.array(z.string()),
+  specialities: z.array(z.string()),
 });
 export type EditProfileData = z.infer<typeof editProfileSchema>;

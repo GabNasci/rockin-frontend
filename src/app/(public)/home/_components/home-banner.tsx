@@ -30,7 +30,7 @@ export default function HomeBanner() {
   };
 
   return (
-    <div className="flex flex-col items-center gap-2 w-full px-8">
+    <div className="flex flex-col items-center gap-2 w-full px-8 md:px-40 lg:px-80">
       <div className="flex flex-col items-center gap-1 font-bold">
         <h3>O que você procura?</h3>
         <h3>Músicos, bandas ou lugares...</h3>

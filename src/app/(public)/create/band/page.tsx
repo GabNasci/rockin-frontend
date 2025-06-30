@@ -1,4 +1,5 @@
 "use client";
+import { Loading } from "@/components/shared/loading";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -19,6 +20,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { useProtectedRoute } from "@/hooks/useProtectedRoute";
+import { ProfileTypeID } from "@/lib/constants";
 import { useAuth } from "@/lib/contexts/auth.context";
 import { useCreateBand } from "@/models/bands/useBands";
 import { useCheckHandle } from "@/models/profiles/useProfiles";
@@ -27,7 +29,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
 export default function CreateBandPage() {
-  useProtectedRoute();
+  const { isVerifying } = useProtectedRoute({
+    profileTypePermited: [ProfileTypeID.MUSICIAN],
+  });
   const { user } = useAuth();
   const { mutate: createBand, isPending } = useCreateBand(user?.handle);
   const { mutate: checkHandle, isPending: isChecking } = useCheckHandle();
@@ -55,6 +59,8 @@ export default function CreateBandPage() {
       },
     });
   };
+
+  if (isVerifying) return <Loading />;
 
   return (
     <div className="flex min-h-screen flex-col items-center mt-[56px] pt-20 px-4">

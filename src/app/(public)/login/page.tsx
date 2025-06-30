@@ -5,7 +5,7 @@ import LoginStep from "./_components/form/steps/login-step";
 
 export default function Login() {
   return (
-    <div className="flex min-h-screen flex-col items-center">
+    <div className="flex min-h-screen flex-col items-center ">
       <FormLogo />
       <LoginCard>
         <LoginStep />

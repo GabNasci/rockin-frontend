@@ -15,7 +15,7 @@ type ListProfilesProps = {
 export default function ListProfiles({ profiles }: ListProfilesProps) {
   if (profiles.length === 0) return null;
   return (
-    <div className="flex flex-col gap-2 w-full px-8 pt-8 mb-12">
+    <div className="flex flex-col gap-2 w-full px-8 pt-8 mb-12 md:px-40 lg:px-80">
       <div>
         <h3 className=" font-bold">Sugestões:</h3>
       </div>

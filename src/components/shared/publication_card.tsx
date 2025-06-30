@@ -31,10 +31,13 @@ export default function PublicationCard({ post }: PublicationCardProps) {
 
   useEffect(() => {
     if (post.link) {
+      setLinkPreview(null);
       fetchPreview(post.link, {
         onSuccess: (data) => setLinkPreview(data),
         onError: () => setLinkPreview(null),
       });
+    } else {
+      setLinkPreview(null);
     }
   }, [post.link]);
 
@@ -52,10 +55,10 @@ export default function PublicationCard({ post }: PublicationCardProps) {
           <MediaCarousel medias={post.medias} />
         </div>
         {isPending && <Skeleton className="w-full h-16" />}
-        {linkPreview && <LinkPreviewCard linkPreview={linkPreview} />}
+        {linkPreview != null && <LinkPreviewCard linkPreview={linkPreview} />}
       </div>
       <CardFooter className="px-0 flex flex-col items-start gap-2">
-        <div>
+        <div className="flex flex-wrap gap-2">
           {post.tagged_profiles &&
             post.tagged_profiles.length > 0 &&
             post.tagged_profiles.map((profile) => (

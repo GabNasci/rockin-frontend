@@ -11,16 +11,19 @@ import { Loading } from "@/components/shared/loading";
 import { useState } from "react";
 import { useAuth } from "@/lib/contexts/auth.context";
 import { Spinner } from "@/components/ui/spinner";
+import { ProfileTypeID } from "@/lib/constants";
 
 export default function ChangeProfilePage() {
-  useProtectedRoute();
+  const { isVerifying } = useProtectedRoute({
+    profileTypePermited: [ProfileTypeID.BAND, ProfileTypeID.MUSICIAN],
+  });
 
   const { user } = useAuth();
   const { data: profiles, isLoading } = useGetProfilesFromUser();
   const [selectedProfileId, setSelectedProfileId] = useState(user?.id);
 
   const { mutate: changeProfile, isPending: isChanging } = useChangeProfile();
-
+  if (isVerifying) return <Loading />;
   if (isLoading) return <Loading />;
   if (!profiles) return <Loading />;
 

@@ -1,5 +1,3 @@
-import { UserIcon } from "@/components/icons";
-import { Avatar } from "@/components/ui/avatar";
 import {
   Card,
   CardContent,
@@ -9,12 +7,12 @@ import {
 } from "@/components/ui/card";
 import { getImageUrl } from "@/lib/utils";
 import { ProfileResponse } from "@/models/auth/types";
-import { AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { FollowButton } from "./follow-button";
 import { useAuth } from "@/lib/contexts/auth.context";
 import { Button } from "@/components/ui/button";
 import { NavigationIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
+import UserAvatar from "@/components/shared/user_avatar";
 
 export function ProfileInfoCard({ user }: { user: ProfileResponse }) {
   const { user: authUser } = useAuth();
@@ -27,17 +25,16 @@ export function ProfileInfoCard({ user }: { user: ProfileResponse }) {
   return (
     <Card className="w-full rounded-none mt-3 border-0 shadow-none">
       <CardHeader>
-        <div className="flex justify-between">
+        <div className="flex justify-between gap-2">
           <div className="flex gap-2 items-center w-2/3">
-            <Avatar className="w-[56px] h-[56px] flex items-center justify-center bg-gray-100">
-              <AvatarImage src={getImageUrl(user.avatar)} />
-              <AvatarFallback>
-                <UserIcon className="text-gray-300" />
-              </AvatarFallback>
-            </Avatar>
-            <div className="flex flex-col">
+            <UserAvatar
+              avatar={getImageUrl(user.avatar)}
+              alreadyHaveUrl
+              className="w-[56px] h-[56px]"
+            />
+            <div className="flex flex-col w-full">
               <CardTitle>{user.name}</CardTitle>
-              <CardDescription className="w-2/3">
+              <CardDescription className="w-3/4">
                 {user.specialities.map((speciality, index) => (
                   <span key={speciality.id}>
                     {speciality.name}

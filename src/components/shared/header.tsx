@@ -50,7 +50,7 @@ const Header = memo(function Header() {
 
   return (
     <header
-      className={`bg-white flex md:justify-between ${isMessagePage ? "" : "justify-center"}  px-16 fixed top-0 left-0 right-0 z-50`}
+      className={`bg-white flex md:justify-between ${isMessagePage ? "" : "justify-center"}  px-16 fixed -top-0.5 left-0 right-0 z-50`}
     >
       {mustHaveBackButton(pathname) && (
         <div
@@ -80,7 +80,7 @@ const Header = memo(function Header() {
             href="/profile"
             label="Perfil"
             icon={UserIcon}
-            isActive={pathname === "/profile"}
+            isActive={pathname === `/profile/${user?.handle}`}
             className="px-2"
           />
           {notShowMessagessButton(pathname) && user && (

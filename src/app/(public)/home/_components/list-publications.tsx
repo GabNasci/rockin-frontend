@@ -20,7 +20,7 @@ export function ListPublications({ posts, isLoading }: ListPublicationsProps) {
   if (!posts) return null;
 
   return (
-    <div className="pb-50 flex flex-col gap-2">
+    <div className="pb-50 flex flex-col gap-2 w-full md:px-40 lg:px-80">
       <Card className="rounded-none shadow-none border-0 pt-0 bg-transparent">
         <CardHeader className="pt-3 bg-white font-bold text-center text-primary text-xl border-b-3 border-primary">
           Últimas publicações
@@ -30,7 +30,7 @@ export function ListPublications({ posts, isLoading }: ListPublicationsProps) {
         {posts && posts.length > 0 ? (
           posts
             .slice(0, 3)
-            .map((post, index) => <PublicationCard key={index} post={post} />)
+            .map((post) => <PublicationCard key={post.id} post={post} />)
         ) : isLoading ? (
           <Loader className="w-10 h-10" />
         ) : (

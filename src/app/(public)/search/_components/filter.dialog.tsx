@@ -46,8 +46,9 @@ export default function FilterDialog({
 }: FilterDialogProps) {
   const { control, reset, watch, setValue } = form;
 
-  const { isLoggedIn } = useAuth();
-
+  const { isLoggedIn, user } = useAuth();
+  const userHaveLocation =
+    user?.locations?.latitude && user?.locations?.longitude;
   const searchByRadius = watch("searchByRadius");
 
   const { data: genresData } = useGenres();
@@ -171,7 +172,7 @@ export default function FilterDialog({
               );
             }}
           />
-          {isLoggedIn && (
+          {isLoggedIn && userHaveLocation && (
             <FormField
               control={control}
               name="searchByRadius"
@@ -184,7 +185,9 @@ export default function FilterDialog({
                       checked={field.value}
                       onCheckedChange={(checked) => {
                         field.onChange(checked);
-                        if (!checked) {
+                        if (checked) {
+                          setValue("radius", 33);
+                        } else {
                           setValue("radius", undefined);
                         }
                       }}
@@ -195,14 +198,14 @@ export default function FilterDialog({
               )}
             />
           )}
-          {searchByRadius && isLoggedIn && (
+          {searchByRadius && isLoggedIn && userHaveLocation && (
             <FormField
               control={control}
               name="radius"
               render={({ field }) => (
                 <FormItem>
                   <div className="text-center text-sm text-muted-foreground mt-2">
-                    {field.value ?? 33} km
+                    ~{field.value} km
                   </div>
                   <FormControl>
                     <Slider
@@ -210,7 +213,7 @@ export default function FilterDialog({
                       value={field.value ? [field.value] : [33]}
                       onValueChange={(val) => field.onChange(val[0])}
                       min={0}
-                      max={100}
+                      max={500}
                       step={1}
                     />
                   </FormControl>

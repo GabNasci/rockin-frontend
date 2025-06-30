@@ -32,7 +32,7 @@ export default function ProfilePage() {
   if (!data) return notFound();
 
   return (
-    <div className="flex min-h-screen flex-col gap-3 pt-[56px]">
+    <div className="flex min-h-screen flex-col gap-3 pt-[56px] md:px-40 lg:px-80">
       <ProfileInfoCard user={data} />
       <GenresList genres={data.genres} />
       {data.profile_type_id === ProfileTypeID.MUSICIAN && (

@@ -22,6 +22,7 @@ import { Input } from "@/components/ui/input";
 import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
 import { useProtectedRoute } from "@/hooks/useProtectedRoute";
+import { ProfileTypeID } from "@/lib/constants";
 import { useAuth } from "@/lib/contexts/auth.context";
 import { mapToOptions } from "@/lib/utils";
 import { useGenres } from "@/models/genres/useGenres";
@@ -58,6 +59,8 @@ export default function EditProfilePage() {
       name: "",
     },
   });
+
+  const userIsBand = user?.profile_type_id === ProfileTypeID.BAND;
 
   useEffect(() => {
     if (!user) return;
@@ -107,7 +110,7 @@ export default function EditProfilePage() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col items-center mt-[56px] pt-20 px-4">
+    <div className="flex min-h-screen flex-col items-center mt-[56px] pt-20 px-4 md:px-40 lg:px-80">
       <Card className="w-full">
         <Form {...form}>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
@@ -194,39 +197,41 @@ export default function EditProfilePage() {
                   );
                 }}
               />
-              <FormField
-                control={control}
-                name="specialities"
-                render={({ field }) => {
-                  const selectedOptions = specialitiesOptions.filter((opt) =>
-                    field.value?.includes(opt.value),
-                  );
+              {!userIsBand && (
+                <FormField
+                  control={control}
+                  name="specialities"
+                  render={({ field }) => {
+                    const selectedOptions = specialitiesOptions.filter((opt) =>
+                      field.value?.includes(opt.value),
+                    );
 
-                  return (
-                    <FormItem>
-                      <FormLabel>Especialidades:</FormLabel>
-                      <FormControl>
-                        <MultipleSelector
-                          value={selectedOptions}
-                          onChange={(newOptions) => {
-                            const newIds = newOptions.map((opt) => opt.value);
-                            field.onChange(newIds);
-                          }}
-                          defaultOptions={specialitiesOptions}
-                          options={specialitiesOptions}
-                          placeholder="Selecione as especialidades..."
-                          emptyIndicator={
-                            <p className="text-center text-sm leading-1 text-muted-foreground">
-                              Nenhum resultado encontrado.
-                            </p>
-                          }
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  );
-                }}
-              />
+                    return (
+                      <FormItem>
+                        <FormLabel>Especialidades:</FormLabel>
+                        <FormControl>
+                          <MultipleSelector
+                            value={selectedOptions}
+                            onChange={(newOptions) => {
+                              const newIds = newOptions.map((opt) => opt.value);
+                              field.onChange(newIds);
+                            }}
+                            defaultOptions={specialitiesOptions}
+                            options={specialitiesOptions}
+                            placeholder="Selecione as especialidades..."
+                            emptyIndicator={
+                              <p className="text-center text-sm leading-1 text-muted-foreground">
+                                Nenhum resultado encontrado.
+                              </p>
+                            }
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    );
+                  }}
+                />
+              )}
             </CardContent>
             <CardFooter className="flex justify-end">
               <Button type="submit" disabled={isPending || isChecking}>
